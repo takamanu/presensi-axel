@@ -34,3 +34,10 @@ Route::get(
         return view('pegawai.masuk');
     }
 );
+
+Route::get(
+    '/home-pegawai/keluar',
+    function () {
+        return view('pegawai.keluar');
+    }
+);

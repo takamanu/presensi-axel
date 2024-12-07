@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.authenticated')
 
 @section('content')
 <style>
@@ -49,7 +49,7 @@
                 <div id="detik_masuk"></div>
               </div>
 
-              <form method="POST" action="">
+              <form method="GET" action="/home-pegawai/masuk">
                 @csrf
                 <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
                 <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
@@ -100,7 +100,8 @@
                 <div id="detik_keluar"></div>
               </div>
 
-              <form method="POST" action="{{ route('presensi.keluar') }}">
+              <form method="POST" action="/masuk">
+                {{-- href="{{ route('login') }}" --}}
                 @csrf
                 <input type="hidden" name="id" value="1"> <!-- Hardcoded example ID -->
                 <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
