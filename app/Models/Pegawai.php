@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Pegawai extends Model
 {
     use HasFactory;
-
     protected $table = 'pegawai';
-
     protected $fillable = [
         'id',
         'nip',
