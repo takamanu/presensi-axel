@@ -50,6 +50,28 @@ Route::get(
         return view('pegawai.keluar');
     }
 );
+
+Route::get(
+    '/home-pegawai/presensi',
+    function () {
+        return view('pegawai.presensi.index');
+    }
+);
+
+Route::get(
+    '/home-pegawai/profile',
+    function () {
+        return view('pegawai.profile.view');
+    }
+);
+
+Route::get(
+    '/home-pegawai/profile/change-password',
+    function () {
+        return view('pegawai.profile.changepassword');
+    }
+);
+
 Route::post('/login', [LoginController::class, 'verifyLogin']);
 //Admin
 Route::get('/dashboard', [AdminController::class, 'index']);
