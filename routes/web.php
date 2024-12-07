@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +21,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('pegawai/store',[PegawaiController::class,'store'])->name('clients.store');
-Route::resource('pegawai',PegawaiController::class);
+Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
+Route::resource('pegawai', PegawaiController::class);
 
 
 Auth::routes();
@@ -50,3 +51,5 @@ Route::get(
     }
 );
 Route::post('/login', [LoginController::class, 'verifyLogin']);
+//Admin
+Route::get('/dashboard', [AdminController::class, 'index']);
