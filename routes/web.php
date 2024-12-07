@@ -20,3 +20,17 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get(
+    '/home-pegawai',
+    function () {
+        return view('pegawai.index');
+    }
+);
+
+Route::get(
+    '/home-pegawai/masuk',
+    function () {
+        return view('pegawai.masuk');
+    }
+);
