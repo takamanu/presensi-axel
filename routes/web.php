@@ -73,5 +73,6 @@ Route::get(
 );
 
 Route::post('/login', [LoginController::class, 'verifyLogin']);
+Route::post('/logout', [LoginController::class, 'logout']);
 //Admin
 Route::get('/dashboard', [AdminController::class, 'index']);

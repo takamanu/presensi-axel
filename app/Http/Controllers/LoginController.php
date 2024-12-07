@@ -15,17 +15,23 @@ class LoginController extends Controller
         if (Auth::attempt(['username' => $username, 'password' => $password])) {
             if (Auth::user()->status == "Aktif") {
                 if (Auth::user()->role == "admin") {
-                    return "Admin";
+                    return redirect('/dashboard');
                 } elseif (Auth::user()->role == "pegawai") {
                     return "Pegawai";
                 } elseif (Auth::user()->role == "supervisor") {
                     return "Supervisor";
                 }
             } else {
-                return "tidak aktif";
+                return redirect('/login');
             }
         } else {
-            return "email atau password salah";
+            return redirect('/login');
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/login');
     }
 }
