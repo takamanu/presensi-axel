@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,4 +26,27 @@ Route::resource('pegawai',PegawaiController::class);
 
 Auth::routes();
 
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get(
+    '/home-pegawai',
+    function () {
+        return view('pegawai.index');
+    }
+);
+
+Route::get(
+    '/home-pegawai/masuk',
+    function () {
+        return view('pegawai.masuk');
+    }
+);
+
+Route::get(
+    '/home-pegawai/keluar',
+    function () {
+        return view('pegawai.keluar');
+    }
+);
+Route::post('/login', [LoginController::class, 'verifyLogin']);

@@ -1,508 +1,177 @@
-<!doctype html>
-<html lang="en">
+@extends('layouts.authenticated')
 
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
-    <!-- CSS files -->
-    <link href="<?= base_url('assets/css/tabler.min.css?1692870487')?>"  rel="stylesheet"/>
-    <link href="<?= base_url('assets/css/tabler-vendors.min.css?1692870487')?>" rel="stylesheet"/>
-    <link href="<?= base_url('assets/css/demo.min.css?1692870487')?>" rel="stylesheet"/>
+@section('content')
+<style>
+  .parent_date {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    font-size: 20px;
+    text-align: center;
+    justify-content: center;
+  }
 
-    <!--- Fontawesome --->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <style>
-      @import url('https://rsms.me/inter/inter.css');
-      :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      }
-      body {
-      	font-feature-settings: "cv03", "cv04", "cv11";
-      }
-    </style>
-  </head>
-  <body >
-    <script src="./dist/js/demo-theme.min.js?1692870487"></script>
-    <div class="page">
-      <!-- Navbar -->
-      <header class="navbar navbar-expand-md d-print-none" >
-        <div class="container-xl">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-            <a href=".">
-            <img src="<?= base_url('assets/img/logo-small.svg') ?>" width="110" height="32" alt="Tabler" class="navbar-brand-image">
-            </a>
-          </h1>
-          <div class="navbar-nav flex-row order-md-last">
-           
-            <div class="d-none d-md-flex">
-              <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
-		   data-bs-placement="bottom">
-                <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
-              </a>
-              <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
-		   data-bs-placement="bottom">
-                <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
-              </a>
-              <div class="nav-item dropdown d-none d-md-flex me-3">
-                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
-                  <span class="badge bg-red"></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Last updates</h3>
-                    </div>
-                    <div class="list-group list-group-flush list-group-hoverable">
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
-                          <div class="col text-truncate">
-                            <a href="#" class="text-body d-block">Example 1</a>
-                            <div class="d-block text-secondary text-truncate mt-n1">
-                              Change deprecated html tags to text decoration classes (#29604)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <a href="#" class="list-group-item-actions">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot d-block"></span></div>
-                          <div class="col text-truncate">
-                            <a href="#" class="text-body d-block">Example 2</a>
-                            <div class="d-block text-secondary text-truncate mt-n1">
-                              justify-content:between ⇒ justify-content:space-between (#29734)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <a href="#" class="list-group-item-actions show">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot d-block"></span></div>
-                          <div class="col text-truncate">
-                            <a href="#" class="text-body d-block">Example 3</a>
-                            <div class="d-block text-secondary text-truncate mt-n1">
-                              Update change-version.js (#29736)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <a href="#" class="list-group-item-actions">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="list-group-item">
-                        <div class="row align-items-center">
-                          <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
-                          <div class="col text-truncate">
-                            <a href="#" class="text-body d-block">Example 4</a>
-                            <div class="d-block text-secondary text-truncate mt-n1">
-                              Regenerate package-lock.json (#29730)
-                            </div>
-                          </div>
-                          <div class="col-auto">
-                            <a href="#" class="list-group-item-actions">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="nav-item dropdown">
-              <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                <div class="d-none d-xl-block ps-2">
-                  <div><?= $_SESSION['nama'] ?></div>
-                  <div class="mt-1 small text-secondary"><?= $_SESSION['jabatan'] ?></div>
-                </div>
-              </a>
-              <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <a href="<?= base_url('supervisor/fitur_lainnya/profile.php') ?>" class="dropdown-item">Profile</a>
-                <a href="<?= base_url('supervisor/fitur_lainnya/ubah_password.php') ?>" class="dropdown-item">Ubah Password</a>
-                <a href="<?= base_url('auth/logout.php') ?>" class="dropdown-item">Logout</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-      <header class="navbar-expand-md">
-        <div class="collapse navbar-collapse" id="navbar-menu">
-          <div class="navbar">
-            <div class="container-xl">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="<?= base_url('supervisor/home/home.php') ?>" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      Home
-                    </span>
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link" href="<?= base_url('supervisor/data_pegawai/pegawai.php') ?>" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      Pegawai
-                    </span>
-                  </a>
-                </li>
-
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M9 14l2 2l4 -4" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      Rekap Presensi
-                    </span>
-                  </a>
-                  <div class="dropdown-menu">
-                    <div class="dropdown-menu-columns">
-                      <div class="dropdown-menu-column">
-                        <a class="dropdown-item" href="<?= base_url('supervisor/presensi/rekap_harian.php') ?>">
-                          Rekap Harian
-                        </a>
-                        <a class="dropdown-item" href="<?= base_url('supervisor/presensi/rekap_bulanan.php') ?>">
-                          Rekap Bulanan
-                        </a>
-                    </div>
-                  </div>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link" href="<?= base_url('supervisor/data_ketidakhadiran/ketidakhadiran.php') ?>" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M10 12l4 4m0 -4l-4 4" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      Ketidakhadiran
-                    </span>
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link" href="<?= base_url('auth/logout.php') ?>" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      Logout
-                    </span>
-                  </a>
-                </li>
-
-              </ul>
-              
-            </div>
-          </div>
-        </div>
-      </header>
-      <div class="page-wrapper">
-        <!-- Page header -->
-        <div class="page-header d-print-none">
-          <div class="container-xl">
-            <div class="row g-2 align-items-center">
-              <div class="col">
-
-                <h2 class="page-title">
-                  <?= $judul ?>
-                </h2>
-              </div>
-              <!-- Page title actions -->
-   
-            </div>
-          </div>
-        </div>
-
+  .parent_clock {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+    justify-content: center;
+  }
+</style>
 
 <div class="page-body">
-    <div class="container-xl">
+  <div class="container-xl">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <div class="card text-center h-100">
+          <div class="card-header">Presensi Masuk</div>
+          <div class="card-body">
+            @php
+              $presensiMasuk = false; // Set true or false to simulate data
+            @endphp
 
-    <a href="<?= base_url('supervisor/data_pegawai/tambah.php') ?>" class="btn btn-primary"><span class="text"><i class="fa-solid fa-circle-plus"></i> Tambah Data </span></a>
+            @if(!$presensiMasuk)
+              <div class="parent_date">
+                <div id="tanggal_masuk"></div>
+                <div class="ms-2"></div>
+                <div id="bulan_masuk"></div>
+                <div class="ms-2"></div>
+                <div id="tahun_masuk"></div>
+              </div>
 
-    <table class="table table-bordered mt-3">
-        <tr class="text-center">
-            <th>No</th>
-            <th>NIP</th>
-            <th>Nama</th>
-            <th>Username</th>
-            <th>Jabatan</th>
-            <th>Role</th>
-            <th>Aksi</th>
-        </tr>
-                <tr class="text-center">
-                    <td><?= $no++ ?></td>
-                    <td><?= $pegawai['nip'] ?></td>
-                    <td><?= $pegawai['nama'] ?></td>
-                    <td><?= $pegawai['username'] ?></td>
-                    <td><?= $pegawai['jabatan'] ?></td>
-                    <td><?= $pegawai['role'] ?></td>
-                    <td>
-                        <a href="<?= base_url('supervisor/data_pegawai/detail.php?id=' . $pegawai ['id']) ?>" class="badge bg-primary badge-pill">Detail</a>
-                        
-                        <a href="<?= base_url('supervisor/data_pegawai/edit.php?id=' . $pegawai ['id']) ?>" class="badge bg-primary badge-pill">Edit</a> 
+              <div class="parent_clock">
+                <div id="jam_masuk"></div>
+                <div>:</div>
+                <div id="menit_masuk"></div>
+                <div>:</div>
+                <div id="detik_masuk"></div>
+              </div>
 
-                        <a href="<?= base_url('supervisor/data_pegawai/hapus.php?id=' . $pegawai ['id']) ?>" class="badge badge-pill bg-danger tombol-hapus">Hapus</a> 
-                    </td>
-                </tr>
-    </table>
+              <form method="GET" action="/home-pegawai/masuk">
+                @csrf
+                <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
+                <input type="hidden" value="-6.200000" name="latitude_kantor">
+                <input type="hidden" value="106.816666" name="longitude_kantor">
+                <input type="hidden" value="100" name="radius">
+                <input type="hidden" value="WIB" name="zona_waktu">
+                <input type="hidden" value="{{ now()->format('Y-m-d') }}" name="tanggal_masuk">
+                <input type="hidden" value="{{ now()->format('H:i:s') }}" name="jam_masuk">
 
-    </div>
-</div>
-
-<footer class="footer footer-transparent d-print-none">
-    <div class="container-xl">
-      <div class="row text-center align-items-center flex-row-reverse">
-        <div class="col-lg-auto ms-lg-auto">
-          <ul class="list-inline list-inline-dots mb-0">
-            <li class="list-inline-item"><a href="https://tabler.io/docs" target="_blank" class="link-secondary" rel="noopener">Documentation</a></li>
-            <li class="list-inline-item"><a href="./license.html" class="link-secondary">License</a></li>
-            <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
-            <li class="list-inline-item">
-              <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary" rel="noopener">
-                <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                Sponsor
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-          <ul class="list-inline list-inline-dots mb-0">
-            <li class="list-inline-item">
-              Copyright &copy; 2023
-              <a href="." class="link-secondary">Tabler</a>.
-              All rights reserved.
-            </li>
-            <li class="list-inline-item">
-              <a href="./changelog.html" class="link-secondary" rel="noopener">
-                v1.0.0-beta20
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-</div>
-</div>
-<div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title">New report</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input type="text" class="form-control" name="example-text-input" placeholder="Your report name">
-      </div>
-      <label class="form-label">Report type</label>
-      <div class="form-selectgroup-boxes row mb-3">
-        <div class="col-lg-6">
-          <label class="form-selectgroup-item">
-            <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked>
-            <span class="form-selectgroup-label d-flex align-items-center p-3">
-              <span class="me-3">
-                <span class="form-selectgroup-check"></span>
-              </span>
-              <span class="form-selectgroup-label-content">
-                <span class="form-selectgroup-title strong mb-1">Simple</span>
-                <span class="d-block text-secondary">Provide only basic data needed for the report</span>
-              </span>
-            </span>
-          </label>
-        </div>
-        <div class="col-lg-6">
-          <label class="form-selectgroup-item">
-            <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
-            <span class="form-selectgroup-label d-flex align-items-center p-3">
-              <span class="me-3">
-                <span class="form-selectgroup-check"></span>
-              </span>
-              <span class="form-selectgroup-label-content">
-                <span class="form-selectgroup-title strong mb-1">Advanced</span>
-                <span class="d-block text-secondary">Insert charts and additional advanced analyses to be inserted in the report</span>
-              </span>
-            </span>
-          </label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="mb-3">
-            <label class="form-label">Report url</label>
-            <div class="input-group input-group-flat">
-              <span class="input-group-text">
-                https://tabler.io/reports/
-              </span>
-              <input type="text" class="form-control ps-0"  value="report-01" autocomplete="off">
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="mb-3">
-            <label class="form-label">Visibility</label>
-            <select class="form-select">
-              <option value="1" selected>Private</option>
-              <option value="2">Public</option>
-              <option value="3">Hidden</option>
-            </select>
+                <button type="submit" name="tombol_masuk" class="btn btn-primary mt-3">Masuk</button>
+              </form>
+            @else
+              <i class="fa-regular fa-circle-check fa-4x text-success"></i>
+              <h4 class="my-3">Anda telah melakukan <br> presensi masuk</h4>
+            @endif
           </div>
         </div>
       </div>
-    </div>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="mb-3">
-            <label class="form-label">Client name</label>
-            <input type="text" class="form-control">
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="mb-3">
-            <label class="form-label">Reporting period</label>
-            <input type="date" class="form-control">
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <div>
-            <label class="form-label">Additional information</label>
-            <textarea class="form-control" rows="3"></textarea>
+
+      <div class="col-md-4">
+        <div class="card text-center h-100">
+          <div class="card-header">Presensi Pulang</div>
+          <div class="card-body">
+            @php
+              $jamPulang = '17:00:00';
+              $waktuSekarang = now()->format('H:i:s');
+              $presensiPulang = false; // Simulate presensi pulang
+            @endphp
+
+            @if($waktuSekarang <= $jamPulang)
+              <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
+              <h4 class="my-3">Belum waktunya pulang</h4>
+            @elseif($presensiMasuk && !$presensiPulang)
+              <div class="parent_date">
+                <div id="tanggal_keluar"></div>
+                <div class="ms-2"></div>
+                <div id="bulan_keluar"></div>
+                <div class="ms-2"></div>
+                <div id="tahun_keluar"></div>
+              </div>
+
+              <div class="parent_clock">
+                <div id="jam_keluar"></div>
+                <div>:</div>
+                <div id="menit_keluar"></div>
+                <div>:</div>
+                <div id="detik_keluar"></div>
+              </div>
+
+              <form method="POST" action="/masuk">
+                {{-- href="{{ route('login') }}" --}}
+                @csrf
+                <input type="hidden" name="id" value="1"> <!-- Hardcoded example ID -->
+                <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
+                <input type="hidden" value="-6.200000" name="latitude_kantor">
+                <input type="hidden" value="106.816666" name="longitude_kantor">
+                <input type="hidden" value="100" name="radius">
+                <input type="hidden" value="WIB" name="zona_waktu">
+                <input type="hidden" value="{{ now()->format('Y-m-d') }}" name="tanggal_keluar">
+                <input type="hidden" value="{{ now()->format('H:i:s') }}" name="jam_keluar">
+
+                <button type="submit" name="tombol-keluar" class="btn btn-danger mt-3">Pulang</button>
+              </form>
+            @else
+              <i class="fa-regular fa-circle-check fa-4x text-success"></i>
+              <h4 class="my-3">Anda telah melakukan <br> presensi keluar</h4>
+            @endif
           </div>
         </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-        Cancel
-      </a>
-      <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-        Create new report
-      </a>
+      <div class="col-md-2"></div>
     </div>
   </div>
 </div>
-</div>
-<!-- Libs JS -->
-<script src="<?= base_url('assets/libs/apexcharts/dist/apexcharts.min.js?1692870487')?>" defer></script>
-<script src="<?= base_url('assets/libs/jsvectormap/dist/js/jsvectormap.min.js?1692870487')?>" defer></script>
-<script src="<?= base_url('assets/libs/jsvectormap/dist/maps/world.js?1692870487')?>" defer></script>
-<script src="<?= base_url('assets/libs/jsvectormap/dist/maps/world-merc.js?1692870487')?>" defer></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<!-- Tabler Core -->
-<script src="<?= base_url('assets/js/tabler.min.js?1692870487')?>" defer></script>
-<script src="<?= base_url('assets/js/demo.min.js?1692870487')?>" defer></script>
-<!-- sweet alert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- alert validasi-->
-<?php if(isset($_SESSION['validasi'])) : ?>
 
 <script>
-    const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
+    // Set waktu di card presensi masuk
+    window.setTimeout("waktuMasuk()", 1000);
+    const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+    function waktuMasuk() {
+      const waktu = new Date();
+      setTimeout("waktuMasuk()", 1000);
+      document.getElementById("tanggal_masuk").innerHTML = waktu.getDate().toString().padStart(2, '0');
+      document.getElementById("bulan_masuk").innerHTML = namaBulan[waktu.getMonth()];
+      document.getElementById("tahun_masuk").innerHTML = waktu.getFullYear();
+      document.getElementById("jam_masuk").innerHTML = waktu.getHours().toString().padStart(2, '0');
+      document.getElementById("menit_masuk").innerHTML = waktu.getMinutes().toString().padStart(2, '0');
+      document.getElementById("detik_masuk").innerHTML = waktu.getSeconds().toString().padStart(2, '0');
     }
-    });
-    Toast.fire({
-      icon: "error",
-      title: "<?= $_SESSION['validasi'] ?>"
-    });
-</script>
-<?php unset($_SESSION['validasi']); ?>
 
-<?php endif; ?>  
+    // Set waktu di card presensi pulang
+    window.setTimeout("waktuKeluar()", 1000);
 
-<!-- alert berhasil-->
-<?php if(isset($_SESSION['berhasil'])) : ?>
-
-<script>
-    const Berhasil = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
+    function waktuKeluar() {
+      const waktu = new Date();
+      setTimeout("waktuKeluar()", 1000);
+      document.getElementById("tanggal_keluar").innerHTML = waktu.getDate().toString().padStart(2, '0');
+      document.getElementById("bulan_keluar").innerHTML = namaBulan[waktu.getMonth()];
+      document.getElementById("tahun_keluar").innerHTML = waktu.getFullYear();
+      document.getElementById("jam_keluar").innerHTML = waktu.getHours().toString().padStart(2, '0');
+      document.getElementById("menit_keluar").innerHTML = waktu.getMinutes().toString().padStart(2, '0');
+      document.getElementById("detik_keluar").innerHTML = waktu.getSeconds().toString().padStart(2, '0');
     }
-    });
-    Berhasil.fire({
-      icon: "success",
-      title: "<?= $_SESSION['berhasil'] ?>"
-    });
-</script>
-<?php unset($_SESSION['berhasil']); ?>
 
-<?php endif; ?> 
+    // Geolocation for checking employee position
+    getLocation();
 
-<!-- alert konfirmasi hapus-->
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        alert("Browser Anda tidak mendukung");
+      }
+    }
 
-<script>
-    $('.tombol-hapus').on('click', function(){
-      var getLink = $(this).attr('href');
-      Swal.fire({
-        title: "Yakin hapus?",
-        text: "Data yang sudah dihapus dibisa dikembalikan",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, hapus"
-      }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = getLink
-        }
-      })
-      return false;
-    });
-</script>
+    function showPosition(position) {
+      document.getElementById('latitude_pegawai').value = position.coords.latitude;
+      document.getElementById('longitude_pegawai').value = position.coords.longitude;
+    }
+  </script>
 
-</body>
-
-</html>
+@endsection
