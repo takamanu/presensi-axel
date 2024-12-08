@@ -77,14 +77,15 @@
                 }
             };
 
-            xhttp.open("POST", "", true);
+            xhttp.open("POST", "/presensi/keluar", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
             xhttp.send(
                 'photo=' + encodeURIComponent(data_uri) +
                 '&id=' + encodeURIComponent(id) +
-                '&tanggal_masuk=' + encodeURIComponent(tanggal_masuk) +
-                '&jam_masuk=' + encodeURIComponent(jam_masuk)
+                '&tanggal_keluar=' + encodeURIComponent(tanggal_masuk) +
+                '&jam_keluar=' + encodeURIComponent(jam_masuk)
             );
         });
 
