@@ -21,111 +21,71 @@
 </style>
 
 <div class="page-body">
-  <div class="container-xl">
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-4">
-        <div class="card text-center h-100">
-          <div class="card-header">Presensi Masuk</div>
-          <div class="card-body">
-            @php
-              $presensiMasuk = false; // Set true or false to simulate data
-            @endphp
+    <div class="container-xl">
 
-            @if(!$presensiMasuk)
-              <div class="parent_date">
-                <div id="tanggal_masuk"></div>
-                <div class="ms-2"></div>
-                <div id="bulan_masuk"></div>
-                <div class="ms-2"></div>
-                <div id="tahun_masuk"></div>
-              </div>
+        <!-- Add Data Button -->
+        <a href="#" class="btn btn-primary"><span class="text"><i class="fa-solid fa-circle-plus"></i> Tambah Data </span></a>
 
-              <div class="parent_clock">
-                <div id="jam_masuk"></div>
-                <div>:</div>
-                <div id="menit_masuk"></div>
-                <div>:</div>
-                <div id="detik_masuk"></div>
-              </div>
+        <!-- Table displaying hardcoded employee data -->
+        <table class="table table-bordered mt-3">
+            <tr class="text-center">
+                <th>No</th>
+                <th>NIP</th>
+                <th>Nama</th>
+                <th>Username</th>
+                <th>Jabatan</th>
+                <th>Role</th>
+                <th>Aksi</th>
+            </tr>
 
-              <form method="GET" action="/home-pegawai/masuk">
-                @csrf
-                <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
-                <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
-                <input type="hidden" value="-6.200000" name="latitude_kantor">
-                <input type="hidden" value="106.816666" name="longitude_kantor">
-                <input type="hidden" value="100" name="radius">
-                <input type="hidden" value="WIB" name="zona_waktu">
-                <input type="hidden" value="{{ now()->format('Y-m-d') }}" name="tanggal_masuk">
-                <input type="hidden" value="{{ now()->format('H:i:s') }}" name="jam_masuk">
+            <!-- Hardcoded Data (for demonstration) -->
+            <tr class="text-center">
+                <td>1</td>
+                <td>123456789</td>
+                <td>John Doe</td>
+                <td>johndoe123</td>
+                <td>Manager</td>
+                <td>Admin</td>
+                <td>
+                    <a href="#" class="badge bg-primary badge-pill">Detail</a>
+                    <a href="#" class="badge bg-primary badge-pill">Edit</a>
+                    <a href="#" class="badge badge-pill bg-danger">Hapus</a>
+                </td>
+            </tr>
 
-                <button type="submit" name="tombol_masuk" class="btn btn-primary mt-3">Masuk</button>
-              </form>
-            @else
-              <i class="fa-regular fa-circle-check fa-4x text-success"></i>
-              <h4 class="my-3">Anda telah melakukan <br> presensi masuk</h4>
-            @endif
-          </div>
-        </div>
-      </div>
+            <tr class="text-center">
+                <td>2</td>
+                <td>987654321</td>
+                <td>Jane Smith</td>
+                <td>janesmith456</td>
+                <td>Supervisor</td>
+                <td>User</td>
+                <td>
+                    <a href="#" class="badge bg-primary badge-pill">Detail</a>
+                    <a href="#" class="badge bg-primary badge-pill">Edit</a>
+                    <a href="#" class="badge badge-pill bg-danger">Hapus</a>
+                </td>
+            </tr>
 
-      <div class="col-md-4">
-        <div class="card text-center h-100">
-          <div class="card-header">Presensi Pulang</div>
-          <div class="card-body">
-            @php
-              $jamPulang = '17:00:00';
-              $waktuSekarang = now()->format('H:i:s');
-              $presensiPulang = false; // Simulate presensi pulang
-            @endphp
+            <tr class="text-center">
+                <td>3</td>
+                <td>112233445</td>
+                <td>Robert Brown</td>
+                <td>robertbrown789</td>
+                <td>Staff</td>
+                <td>Employee</td>
+                <td>
+                    <a href="#" class="badge bg-primary badge-pill">Detail</a>
+                    <a href="#" class="badge bg-primary badge-pill">Edit</a>
+                    <a href="#" class="badge badge-pill bg-danger">Hapus</a>
+                </td>
+            </tr>
 
-            @if($waktuSekarang <= $jamPulang)
-              <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
-              <h4 class="my-3">Belum waktunya pulang</h4>
-            @elseif($presensiMasuk && !$presensiPulang)
-              <div class="parent_date">
-                <div id="tanggal_keluar"></div>
-                <div class="ms-2"></div>
-                <div id="bulan_keluar"></div>
-                <div class="ms-2"></div>
-                <div id="tahun_keluar"></div>
-              </div>
+        </table>
 
-              <div class="parent_clock">
-                <div id="jam_keluar"></div>
-                <div>:</div>
-                <div id="menit_keluar"></div>
-                <div>:</div>
-                <div id="detik_keluar"></div>
-              </div>
-
-              <form method="POST" action="/masuk">
-                {{-- href="{{ route('login') }}" --}}
-                @csrf
-                <input type="hidden" name="id" value="1"> <!-- Hardcoded example ID -->
-                <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
-                <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
-                <input type="hidden" value="-6.200000" name="latitude_kantor">
-                <input type="hidden" value="106.816666" name="longitude_kantor">
-                <input type="hidden" value="100" name="radius">
-                <input type="hidden" value="WIB" name="zona_waktu">
-                <input type="hidden" value="{{ now()->format('Y-m-d') }}" name="tanggal_keluar">
-                <input type="hidden" value="{{ now()->format('H:i:s') }}" name="jam_keluar">
-
-                <button type="submit" name="tombol-keluar" class="btn btn-danger mt-3">Pulang</button>
-              </form>
-            @else
-              <i class="fa-regular fa-circle-check fa-4x text-success"></i>
-              <h4 class="my-3">Anda telah melakukan <br> presensi keluar</h4>
-            @endif
-          </div>
-        </div>
-      </div>
-      <div class="col-md-2"></div>
     </div>
-  </div>
 </div>
+
 
 <script>
     // Set waktu di card presensi masuk
