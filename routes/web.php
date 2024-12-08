@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PresensiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,9 +21,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('pegawai/store',[PegawaiController::class,'store'])->name('clients.store');
-Route::resource('pegawai',PegawaiController::class);
-
+Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
+Route::post('presensi/masuk', [PresensiController::class, 'masuk'])->name('presensi.masuk');
+Route::post('presensi/keluar', [PresensiController::class, 'keluar'])->name('presensi.keluar');
+Route::resource('pegawai', PegawaiController::class);
 
 Auth::routes();
 

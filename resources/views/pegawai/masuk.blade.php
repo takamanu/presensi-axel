@@ -65,6 +65,8 @@
         let tanggal_masuk = document.getElementById('tanggal_masuk').value;
         let jam_masuk = document.getElementById('jam_masuk').value;
 
+        console.log(id, tanggal_masuk, jam_masuk);
+
         Webcam.snap(function (data_uri) {
             let xhttp = new XMLHttpRequest();
 
@@ -75,10 +77,12 @@
                 } else if (xhttp.readyState == 4) {
                     alert("Terjadi kesalahan, silakan coba lagi.");
                 }
+
             };
 
             xhttp.open("POST", "/presensi/masuk", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
             xhttp.send(
                 'photo=' + encodeURIComponent(data_uri) +
