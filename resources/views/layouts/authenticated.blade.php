@@ -13,6 +13,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
     <!-- CSS files -->
     <link href="{{ asset('assets/css/tabler.min.css') }}" rel="stylesheet" />
@@ -144,8 +146,8 @@
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                             class="icon icon-tabler icons-tabler-outline icon-tabler-user">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
@@ -247,9 +249,10 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                <form class="nav-link" action="/logout" method="POST">
+                                    @csrf
+                                    <button
+                                        class="text-decoration-none btn nav-link-icon d-md-none d-lg-inline-block m-0 border-0 p-0"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -260,14 +263,11 @@
                                             <path d="M9 12h12l-3 -3" />
                                             <path d="M18 15l3 -3" />
                                         </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        {{-- <form action="{{ route('logout') }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Logout</button>
-                                        </form> --}}
-                                    </span>
-                                </a>
+                                    </button>
+                                    <button class="nav-link-title text-decoration-none btn btn m-0 border-0 p-0">
+                                        Logout
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>

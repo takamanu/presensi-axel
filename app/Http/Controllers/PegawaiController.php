@@ -22,7 +22,7 @@ class PegawaiController extends Controller
         ");
 
         dd($results);
-        // return view('pegawai.index');
+        return view('pegawai.index');
     }
 
     /**
@@ -38,6 +38,10 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
+
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('profile/image');
+        }
 
         // $rules = [
         //     'nama' => 'required|string',

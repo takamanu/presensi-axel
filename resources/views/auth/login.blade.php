@@ -25,7 +25,7 @@
                                                 <input id="username" type="text" class="form-control" autofocus
                                                     name="username" placeholder="Username" autocomplete="off"
                                                     value="{{ old('username') }}"
-                                                    class="form-control @error('username') is-invalid @enderror">
+                                                    class="form-control @error('username') is-invalid @enderror" required>
 
                                                 @error('username')
                                                     <span class="invalid-feedback" role="alert">
@@ -41,7 +41,8 @@
                                                 <div class="input-group input-group-flat">
                                                     <input type="password" class="form-control" name="password"
                                                         placeholder="Password" autocomplete="off"
-                                                        class="form-control @error('password') is-invalid @enderror">
+                                                        class="form-control @error('password') is-invalid @enderror"
+                                                        required>
 
                                                     @error('password')
                                                         <span class="invalid-feedback" role="alert">
@@ -84,6 +85,5 @@
                     </div>
                 </div>
             </div>
-    </div>
     </div>
 @endsection
