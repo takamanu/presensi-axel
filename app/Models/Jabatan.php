@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Jabatan extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+
     protected $table = 'jabatan';
     protected $fillable = [
         'jabatan',

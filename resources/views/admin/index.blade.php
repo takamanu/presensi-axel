@@ -1,8 +1,7 @@
-@extends('layouts.authenticated')
+@extends('layouts.admin-header')
 
 @section('content')
     <!-- Page body -->
-
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-deck row-cards">
@@ -31,7 +30,7 @@
                                                 Total Pegawai Aktif
                                             </div>
                                             <div class="text-secondary">
-                                                0 pegawai
+                                                {{ $users }}
                                             </div>
                                         </div>
                                     </div>

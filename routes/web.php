@@ -27,7 +27,16 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('user.updatePassword');
 //Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], function () {
+    //Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+
+    //Master Data Jabatan
+    Route::get('/jabatan', [AdminController::class, 'jabatan'])->name('jabatan');
+    Route::get('/add-jabatan', [AdminController::class, 'addJabatan'])->name('add-jabatan');
+    Route::post('/store-jabatan', [AdminController::class, 'storeJabatan'])->name('store-jabatan');
+    Route::get('{id}/edit-jabatan', [AdminController::class, 'editJabatan'])->name('edit-jabatan');
+    Route::post('/update-jabatan/{id}', [AdminController::class, 'updateJabatan'])->name('update-jabatan');
+    Route::delete('/destroy-jabatan/{id}', [AdminController::class, 'destroyJabatan'])->name('destroy-jabatan');
 });
 
 Auth::routes();
