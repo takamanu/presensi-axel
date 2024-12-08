@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -27,5 +30,29 @@ class LoginController extends Controller
         } else {
             return "email atau password salah";
         }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'password_baru' => 'required|min:8',
+            'ulangi_password_baru' => 'required|same:password_baru',
+        ]);
+
+        $user = User::where('id_pegawai', 2)->first();
+        // $user = User::where('id_pegawai', auth()->user()->id_pegawai)->first();
+
+        if ($user) {
+            $user->timestamps = false;
+            $user->password = Hash::make($request->password_baru);
+            $user->save();
+            $user->timestamps = true;
+
+            Session::flash('berhasil', 'Password berhasil diubah');
+            return redirect()->route('home');
+        }
+
+        Session::flash('validasi', 'Gagal mengubah password');
+        return back();
     }
 }
