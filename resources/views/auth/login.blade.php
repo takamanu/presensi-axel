@@ -17,7 +17,7 @@
 
                                 <div class="card card-md">
                                     <div class="card-body">
-                                        <form method="POST" action="{{ route('login') }}">
+                                        <form method="POST" action="{{ route('verifyLogin') }}">
                                             @csrf
                                             <h2 class="h2 mb-4 text-center">Login to your account</h2>
                                             <div class="mb-3">

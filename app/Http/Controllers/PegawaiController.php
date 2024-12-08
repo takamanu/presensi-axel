@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
+use App\Models\Presensi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +25,54 @@ class PegawaiController extends Controller
 
         dd($results);
         return view('pegawai.index');
+    }
+
+    public function profile(Request $request)
+    {
+        $id = 2;
+        $result = DB::select("
+            SELECT 
+                users.id_pegawai, 
+                users.username, 
+                users.status, 
+                users.role, 
+                pegawai.*
+            FROM users 
+            JOIN pegawai ON users.id_pegawai = pegawai.id 
+            WHERE pegawai.id = ?
+        ", [$id]);
+
+
+        return view('pegawai.profile.view', ['pegawai' => $result[0]]);
+    }
+
+    public function pegawai(Request $request)
+    {
+        $tanggal_dari = $request->input('tanggal_dari', date('Y-m-d'));
+        $tanggal_sampai = $request->input('tanggal_sampai', date('Y-m-d'));
+
+        if (empty($request->tanggal_dari)) {
+            $presensi = DB::select(
+                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi 
+                FROM presensi 
+                JOIN pegawai ON presensi.id_pegawai = pegawai.id 
+                ORDER BY tanggal_masuk DESC",
+            );
+        } else {
+            $tanggal_dari = $request->tanggal_dari;
+            $tanggal_sampai = $request->tanggal_sampai;
+
+            $presensi = DB::select(
+                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi 
+                FROM presensi 
+                JOIN pegawai ON presensi.id_pegawai = pegawai.id 
+                WHERE tanggal_masuk BETWEEN ? AND ? 
+                ORDER BY tanggal_masuk DESC",
+                [$tanggal_dari, $tanggal_sampai]
+            );
+        };
+
+        return view('pegawai.presensi.index', compact('presensi', 'tanggal_dari', 'tanggal_sampai'));
     }
 
     /**

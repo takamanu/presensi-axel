@@ -21,13 +21,25 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/login');
 });
-
-Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
-Route::post('presensi/masuk', [PresensiController::class, 'masuk'])->name('presensi.masuk');
-Route::post('presensi/keluar', [PresensiController::class, 'keluar'])->name('presensi.keluar');
-Route::resource('pegawai', PegawaiController::class);
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/verifyLogin', [LoginController::class, 'verifyLogin'])->name('verifyLogin');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('user.updatePassword');
+//Admin
+Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+});
 
 Auth::routes();
+//Pegawai
+Route::group(['prefix' => 'pegawai', 'middleware' => ['auth'], 'as' => 'pegawai.'], function () {
+    Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
+    Route::post('presensi/masuk', [PresensiController::class, 'masuk'])->name('presensi.masuk');
+    Route::post('presensi/keluar', [PresensiController::class, 'keluar'])->name('presensi.keluar');
+    Route::post('presensi/export', [PresensiController::class, 'export'])->name('presensi.export');
+    Route::resource('pegawai', PegawaiController::class);
+});
+
 Route::get(
     '/home-pegawai',
     function () {
@@ -51,17 +63,15 @@ Route::get(
 
 Route::get(
     '/home-pegawai/presensi',
-    function () {
-        return view('pegawai.presensi.index');
-    }
-);
+    [PegawaiController::class, 'pegawai']
+)->name('pegawai.index');
 
 Route::get(
     '/home-pegawai/profile',
-    function () {
-        return view('pegawai.profile.view');
-    }
+    [PegawaiController::class, 'profile']
 );
+
+
 
 Route::get(
     '/home-pegawai/profile/change-password',
@@ -69,8 +79,3 @@ Route::get(
         return view('pegawai.profile.changepassword');
     }
 );
-
-Route::post('/login', [LoginController::class, 'verifyLogin']);
-Route::post('/logout', [LoginController::class, 'logout']);
-//Admin
-Route::get('/dashboard', [AdminController::class, 'index']);

@@ -24,32 +24,42 @@
 
 
         <table class="table table-bordered">
-            <tr class="text-center">
-                <th>No.</th>
-                <th>Tanggal</th>
-                <th>Jam Masuk</th>
-                <th>Jam Pulang</th>
-                <th>Total Jam</th>
-                <th>Total Terlambat</th>
-            </tr>
-
-                <tr>
-                    <td colspan="6">Data rekap presensi masih kosong.</td>
+            <thead>
+                <tr class="text-center">
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Tanggal</th>
+                    <th>Jam Masuk</th>
+                    <th>Jam Pulang</th>
+                    <th>Total Jam</th>
+                    <th>Total Terlambat</th>
                 </tr>
-
+            </thead>
+            <tbody>
+                @forelse ($presensi as $index => $item)
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $item->nama }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_masuk)->format('d F Y') }}</td>
+                        <td class="text-center">{{ $item->jam_masuk }}</td>
+                        <td class="text-center">{{ $item->jam_keluar }}</td>
                         <td class="text-center">
+                            @if ($item->jam_keluar)
+                                {{  \App\Helpers\TimeHelper::calculateTotalHours($item->jam_masuk, $item->jam_keluar) }}
+                            @else
                                 <span>0 Jam 0 Menit</span>
+                            @endif
                         </td>
                         <td class="text-center">
-                                <span class="badge bg-success">On Time</span>
+                            {{  \App\Helpers\TimeHelper::calculateLateHours($item->jam_masuk, '08:00:00') }}
                         </td>
                     </tr>
-
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">Data rekap presensi masih kosong.</td>
+                    </tr>
+                @endforelse
+            </tbody>
         </table>
     </div>
 </div>
@@ -61,9 +71,9 @@
                 <h5 class="modal-title">Export Excel Rekap Presensi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="{{route('presensi.export')}}">
                 <div class="modal-body">
-
+                    @csrf
                     <div class="mb-3">
                         <label for="">Tanggal Awal</label>
                         <input type="date" class="form-control" name="tanggal_dari">
