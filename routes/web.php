@@ -60,10 +60,10 @@ Route::get(
 
 Route::get(
     '/home-pegawai/profile',
-    function () {
-        return view('pegawai.profile.view');
-    }
+    [PegawaiController::class, 'profile']
 );
+
+
 
 Route::get(
     '/home-pegawai/profile/change-password',

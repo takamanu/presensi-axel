@@ -27,6 +27,25 @@ class PegawaiController extends Controller
         return view('pegawai.index');
     }
 
+    public function profile(Request $request)
+    {
+        $id = 2;
+        $result = DB::select("
+            SELECT 
+                users.id_pegawai, 
+                users.username, 
+                users.status, 
+                users.role, 
+                pegawai.*
+            FROM users 
+            JOIN pegawai ON users.id_pegawai = pegawai.id 
+            WHERE pegawai.id = ?
+        ", [$id]);
+
+
+        return view('pegawai.profile.view', ['pegawai' => $result[0]]);
+    }
+
     public function pegawai(Request $request)
     {
         $tanggal_dari = $request->input('tanggal_dari', date('Y-m-d'));
