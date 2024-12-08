@@ -17,47 +17,47 @@
                         <table class="table mt-4">
                             <tr>
                                 <td>Nama</td>
-                                <td>: John Doe</td>
+                                <td>: {{ $pegawai->nama }}</td>
                             </tr>
 
                             <tr>
                                 <td>Jenis Kelamin</td>
-                                <td>: Laki-laki</td>
+                                <td>: {{ $pegawai->jenis_kelamin }}</td>
                             </tr>
 
                             <tr>
                                 <td>Alamat</td>
-                                <td>: Jl. Contoh No. 123, Jakarta</td>
+                                <td>: {{ $pegawai->alamat }}</td>
                             </tr>
 
                             <tr>
                                 <td>No. Handphone</td>
-                                <td>: 081234567890</td>
+                                <td>: {{ $pegawai->no_handphone }}</td>
                             </tr>
 
                             <tr>
                                 <td>Jabatan</td>
-                                <td>: Manager</td>
+                                <td>: {{ $pegawai->jabatan }}</td>
                             </tr>
 
                             <tr>
                                 <td>Username</td>
-                                <td>: johndoe123</td>
+                                <td>: {{ $pegawai->username }}</td>
                             </tr>
 
                             <tr>
                                 <td>Role</td>
-                                <td>: Admin</td>
+                                <td>: {{ $pegawai->role }}</td>
                             </tr>
 
                             <tr>
                                 <td>Lokasi Presensi</td>
-                                <td>: Jakarta Office</td>
+                                <td>: {{ $pegawai->lokasi_presensi }}</td>
                             </tr>
 
                             <tr>
                                 <td>Status</td>
-                                <td>: Aktif</td>
+                                <td>: {{ $pegawai->status }}</td>
                             </tr>
                         </table>
                     </div>
