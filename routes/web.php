@@ -24,6 +24,7 @@ Route::get('/', function () {
 Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
 Route::post('presensi/masuk', [PresensiController::class, 'masuk'])->name('presensi.masuk');
 Route::post('presensi/keluar', [PresensiController::class, 'keluar'])->name('presensi.keluar');
+Route::post('presensi/export', [PresensiController::class, 'export'])->name('presensi.export');
 Route::resource('pegawai', PegawaiController::class);
 
 Auth::routes();
@@ -54,10 +55,8 @@ Route::get(
 
 Route::get(
     '/home-pegawai/presensi',
-    function () {
-        return view('pegawai.presensi.index');
-    }
-);
+    [PegawaiController::class, 'pegawai']
+)->name('pegawai.index');
 
 Route::get(
     '/home-pegawai/profile',
@@ -74,3 +73,4 @@ Route::get(
 );
 
 Route::post('/login', [LoginController::class, 'verifyLogin']);
+Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('user.updatePassword');
