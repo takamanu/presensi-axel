@@ -37,6 +37,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
     Route::get('{id}/edit-jabatan', [AdminController::class, 'editJabatan'])->name('edit-jabatan');
     Route::post('/update-jabatan/{id}', [AdminController::class, 'updateJabatan'])->name('update-jabatan');
     Route::delete('/destroy-jabatan/{id}', [AdminController::class, 'destroyJabatan'])->name('destroy-jabatan');
+
+    //Master Data Lokasi Presensi
+    Route::get('/lokasi-presensi', [AdminController::class, 'lokasiPresensi'])->name('lokasi-presensi');
+    Route::get('/add-lokasi', [AdminController::class, 'addLokasi'])->name('add-lokasi');
+    Route::post('/store-lokasi', [AdminController::class, 'storeLokasi'])->name('store-lokasi');
 });
 
 Auth::routes();

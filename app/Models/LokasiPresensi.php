@@ -11,6 +11,7 @@ class LokasiPresensi extends Model
     use HasFactory;
 
     protected $table = 'lokasi_presensi';
+    public $timestamps = false;
 
     protected $fillable = [
         'nama_lokasi',

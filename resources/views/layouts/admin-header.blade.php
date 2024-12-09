@@ -20,6 +20,7 @@
     <link href="{{ asset('assets/css/tabler.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/tabler-vendors.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/demo.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
@@ -185,7 +186,7 @@
                                             <a class="dropdown-item" href="{{ route('admin.jabatan') }}">
                                                 Jabatan
                                             </a>
-                                            <a class="dropdown-item" href="">
+                                            <a class="dropdown-item" href="{{ route('admin.lokasi-presensi') }}">
                                                 Lokasi Presensi
                                             </a>
                                         </div>
@@ -276,13 +277,29 @@
         </header>
         {{-- </div> --}}
     </div>
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
 
-    <main class="py-4">
-        @yield('content')
-    </main>
+                        <h2 class="page-title">
+                            {{ $title }}
+                        </h2>
+                    </div>
+                    <!-- Page title actions -->
 
-    <!-- Libs JS -->
-    <script src="{{ asset('assets/js/tabler.min.js') }}"></script>
+                </div>
+            </div>
+        </div>
+        <main class="py-4">
+            @yield('content')
+        </main>
+
+        <!-- Libs JS -->
+        <script src="{{ asset('assets/js/tabler.min.js') }}"></script>
+        {{-- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> --}}
 </body>
 
 </html>
