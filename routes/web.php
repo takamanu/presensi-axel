@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KetidakhadiranController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PresensiController;
@@ -25,12 +26,11 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/verifyLogin', [LoginController::class, 'verifyLogin'])->name('verifyLogin');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('user.updatePassword');
-//Admin
+
 Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], function () {
-    //Dashboard
+
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
-    //Master Data Jabatan
     Route::get('/jabatan', [AdminController::class, 'jabatan'])->name('jabatan');
     Route::get('/add-jabatan', [AdminController::class, 'addJabatan'])->name('add-jabatan');
     Route::post('/store-jabatan', [AdminController::class, 'storeJabatan'])->name('store-jabatan');
@@ -38,7 +38,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
     Route::post('/update-jabatan/{id}', [AdminController::class, 'updateJabatan'])->name('update-jabatan');
     Route::delete('/destroy-jabatan/{id}', [AdminController::class, 'destroyJabatan'])->name('destroy-jabatan');
 
-    //Master Data Lokasi Presensi
     Route::get('/lokasi-presensi', [AdminController::class, 'lokasiPresensi'])->name('lokasi-presensi');
     Route::get('/add-lokasi', [AdminController::class, 'addLokasi'])->name('add-lokasi');
     Route::post('/store-lokasi', [AdminController::class, 'storeLokasi'])->name('store-lokasi');
@@ -53,6 +52,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
     Route::post('/update-ketidakhadiran/{id}', [AdminController::class, 'updateKetidakhadiran'])->name('update-ketidakhadiran');
     Route::get('/download-ketidakhadiran/{id}', [AdminController::class, 'downloadFile'])->name('download-ketidakhadiran');
 });
+
+Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
+Route::get('data_pegawai', [PegawaiController::class, 'index'])->name('supervisor.data_pegawai.index');
+Route::get('data_pegawai/tambah', [PegawaiController::class, 'create'])->name('supervisor.data_pegawai.create');
+
+Route::get('data_pegawai/{id}/edit', [PegawaiController::class, 'edit'])->name('supervisor.data_pegawai.edit');
+Route::get('data_pegawai/{id}/destroy', [PegawaiController::class, 'data_pegawai_destroy'])->name('supervisor.data_pegawai.destroy');
+
+Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
+Route::post('presensi/masuk', [PresensiController::class, 'masuk'])->name('presensi.masuk');
+Route::post('presensi/keluar', [PresensiController::class, 'keluar'])->name('presensi.keluar');
+Route::post('presensi/export', [PresensiController::class, 'export'])->name('presensi.export');
+Route::resource('pegawai', PegawaiController::class);
 
 Auth::routes();
 //Pegawai
@@ -79,22 +91,69 @@ Route::get(
 
 Route::prefix('home-pegawai')->group(function () {
 
-    // Home Route for Pegawai
-    Route::get('/pegawai-index', function () {
+    Route::get('/', function () {
         return view('pegawai.index');
     });
 
-    // Masuk Route for Pegawai
     Route::get('/masuk', function () {
         return view('pegawai.masuk');
     });
 
-    // Keluar Route for Pegawai
     Route::get('/keluar', function () {
         return view('pegawai.keluar');
     });
+
+    Route::get('/presensi', [PegawaiController::class, 'pegawai']);
+
+    Route::get(
+        '/profile',
+        [PegawaiController::class, 'profile']
+    );
+
+    Route::get(
+        '/profile/change-password',
+        function () {
+            return view('pegawai.profile.changepassword');
+        }
+    );
 });
-Route::get(
-    '/home-pegawai/presensi',
-    [PegawaiController::class, 'pegawai']
-)->name('pegawai.index');
+
+Route::prefix('home-supervisor')->group(function () {
+
+    Route::get('/', function () {
+        return view('supervisor.index');
+    });
+
+    Route::get('/presensi', [PegawaiController::class, 'pegawai']);
+
+    Route::get(
+        '/profile',
+        ([PegawaiController::class, 'profile'])
+    );
+
+    Route::get('/profile/change-password', function () {
+        return view('supervisor.profile.changepassword');
+    });
+
+    Route::prefix('data-pegawai')->group(function () {
+        Route::get('/', [PegawaiController::class, 'data_pegawai']);
+
+        Route::get('/tambah', function () {
+            return view('supervisor.pegawai.create');
+        });
+
+        Route::get('/edit/{id}', function ($id) {
+            return view('supervisor.pegawai.edit', compact('id'));
+        });
+
+        Route::get('/detail/{id}', [PegawaiController::class, 'data_pegawai_show'])->name('supervisor.data_pegawai.show');
+    });
+});
+
+
+Route::post('/login', [LoginController::class, 'verifyLogin']);
+Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('user.updatePassword');
+
+
+Route::get('/ketidakhadiran', [KetidakhadiranController::class, 'index']);
+Route::get('/ketidakhadiran/detail', [KetidakhadiranController::class, 'show']);

@@ -2,23 +2,21 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Ketidakhadiran extends Model
 {
     use HasFactory;
-
+    protected $table = 'ketidakhadiran';
     public $timestamps = false;
 
-    protected $table = 'ketidakhadiran';
     protected $fillable = [
         'id_pegawai',
         'keterangan',
         'tanggal',
         'deskripsi',
         'file',
-        'status_pengajuan',
+        'status_pengajuan'
     ];
 }

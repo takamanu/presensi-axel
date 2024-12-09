@@ -60,7 +60,7 @@ class LoginController extends Controller
             'ulangi_password_baru' => 'required|same:password_baru',
         ]);
 
-        $user = User::where('id_pegawai', 2)->first();
+        $user = User::where('id_pegawai', 1)->first();
         // $user = User::where('id_pegawai', auth()->user()->id_pegawai)->first();
 
         if ($user) {

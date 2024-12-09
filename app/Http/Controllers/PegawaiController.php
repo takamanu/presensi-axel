@@ -54,26 +54,54 @@ class PegawaiController extends Controller
         if (empty($request->tanggal_dari)) {
             $presensi = DB::select(
                 "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi 
-                FROM presensi 
-                JOIN pegawai ON presensi.id_pegawai = pegawai.id 
-                ORDER BY tanggal_masuk DESC",
+            FROM presensi 
+            JOIN pegawai ON presensi.id_pegawai = pegawai.id 
+            ORDER BY tanggal_masuk DESC"
             );
         } else {
-            $tanggal_dari = $request->tanggal_dari;
-            $tanggal_sampai = $request->tanggal_sampai;
-
             $presensi = DB::select(
                 "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi 
-                FROM presensi 
-                JOIN pegawai ON presensi.id_pegawai = pegawai.id 
-                WHERE tanggal_masuk BETWEEN ? AND ? 
-                ORDER BY tanggal_masuk DESC",
+            FROM presensi 
+            JOIN pegawai ON presensi.id_pegawai = pegawai.id 
+            WHERE tanggal_masuk BETWEEN ? AND ? 
+            ORDER BY tanggal_masuk DESC",
                 [$tanggal_dari, $tanggal_sampai]
             );
-        };
+        }
 
         return view('pegawai.presensi.index', compact('presensi', 'tanggal_dari', 'tanggal_sampai'));
     }
+
+    public function data_pegawai()
+    {
+        $pegawai = Pegawai::join('users', 'users.id_pegawai', '=', 'pegawai.id')
+            ->select('users.id_pegawai', 'users.username', 'users.password', 'users.status', 'users.role', 'pegawai.*')
+            ->get();
+
+        return view('supervisor.pegawai.index', compact('pegawai'));
+    }
+
+    public function data_pegawai_show($id)
+    {
+        $pegawai = DB::select("
+            SELECT users.id_pegawai, users.username, users.password, users.status, users.role, pegawai.*
+            FROM users
+            JOIN pegawai ON users.id_pegawai = pegawai.id
+            WHERE pegawai.id = ?
+        ", [$id]);
+
+        $pegawai = $pegawai[0];
+
+        return view('supervisor.pegawai.view', compact('pegawai'));
+    }
+
+    public function data_pegawai_destroy($id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+        $pegawai->delete();
+        return redirect()->route('supervisor.data_pegawai.index')->with('pesan', 'Data berhasil dihapus');
+    }
+
 
     /**
      * Show the form for creating a new resource.
