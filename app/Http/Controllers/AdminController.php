@@ -126,4 +126,59 @@ class AdminController extends Controller
 
         return redirect()->route('admin.lokasi-presensi')->with('success', 'Lokasi Presensi berhasil ditambahkan');
     }
+
+    public function detailLokasi($id)
+    {
+        $title = "Detail Lokasi Presensi";
+        $lokasi = LokasiPresensi::where('id', $id)->first();
+        return view('admin.lokasi_presensi.detail', [
+            'title' => $title,
+            'lokasi' => $lokasi
+        ]);
+    }
+
+    public function editLokasi($id)
+    {
+        $title = "Edit Lokasi Presensi";
+        $lokasi = LokasiPresensi::where('id', $id)->first();
+        return view('admin.lokasi_presensi.edit', [
+            'title' => $title,
+            'lokasi' => $lokasi
+        ]);
+    }
+
+    public function updateLokasi(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'nama_lokasi' => 'required',
+            'alamat_lokasi' => 'required',
+            'tipe_lokasi' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'radius' => 'required',
+            'zona_waktu' => 'required',
+            'jam_masuk' => 'required',
+            'jam_pulang' => 'required',
+        ]);
+        $lokasi = LokasiPresensi::where('id', $id)->first();
+        $lokasi->update([
+            'nama_lokasi' => $validated['nama_lokasi'],
+            'alamat_lokasi' => $validated['alamat_lokasi'],
+            'tipe_lokasi' => $validated['tipe_lokasi'],
+            'latitude' => $validated['latitude'],
+            'longitude' => $validated['longitude'],
+            'radius' => $validated['radius'],
+            'zona_waktu' => $validated['zona_waktu'],
+            'jam_masuk' => $validated['jam_masuk'],
+            'jam_pulang' => $validated['jam_pulang'],
+        ]);
+        return redirect()->route('admin.lokasi-presensi')->with('success', 'Lokasi Presensi berhasil diubah');
+    }
+
+    public function destroyLokasi($id)
+    {
+        $lokasi = LokasiPresensi::where('id', $id)->first();
+        $lokasi->delete();
+        return redirect()->route('admin.lokasi-presensi')->with('success', 'Lokasi Presensi berhasil dihapus');
+    }
 }
