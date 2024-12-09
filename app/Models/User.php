@@ -47,6 +47,6 @@ class User extends Authenticatable
 
     public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Pegawai::class, 'id_pegawai', 'id_pegawai');
+        return $this->belongsTo(Pegawai::class, 'id_pegawai', 'id');
     }
 }

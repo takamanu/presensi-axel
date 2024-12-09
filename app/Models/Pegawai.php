@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pegawai extends Model
@@ -24,6 +25,16 @@ class Pegawai extends Model
 
     public function user(): HasOne
     {
-        return $this->hasOne(User::class, "id_pegawai", "id_pegawai");
+        return $this->hasOne(User::class, "id_pegawai", "id");
+    }
+
+    public function pegawaiLokasi(): BelongsTo
+    {
+        return $this->belongsTo(LokasiPresensi::class, 'lokasi_presensi', 'nama_lokasi');
+    }
+
+    public function pegawaiJabatan(): BelongsTo
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan', 'jabatan');
     }
 }

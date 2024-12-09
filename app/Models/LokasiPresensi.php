@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LokasiPresensi extends Model
 {
     use HasFactory;
 
     protected $table = 'lokasi_presensi';
+    public $timestamps = false;
 
     protected $fillable = [
         'nama_lokasi',
@@ -22,4 +24,9 @@ class LokasiPresensi extends Model
         'jam_masuk',
         'jam_pulang'
     ];
+
+    public function lokasiPegawai(): HasOne
+    {
+        return $this->hasOne(Pegawai::class, 'nama_lokasi', 'nama_lokasi');
+    }
 }

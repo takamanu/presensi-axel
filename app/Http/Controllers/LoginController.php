@@ -10,26 +10,47 @@ use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
+    public function index()
+    {
+        return view('auth.login');
+    }
     public function verifyLogin(Request $request)
     {
+        // dd($request->all());
         $username = $request->input('username');
         $password = $request->input('password');
 
         if (Auth::attempt(['username' => $username, 'password' => $password])) {
+
             if (Auth::user()->status == "Aktif") {
+                $user = Auth::user();
+                session::put('Id', $user->id);
+                session::put('Role', $user->role);
+                session::put('NIP', $user->pegawai->nip);
+                session::put('Nama', $user->pegawai->nama);
+                session::put('Jabatan', $user->pegawai->jabatan);
+                session::put('Lokasi Presensi', $user->pegawai->lokasi_presensi);
+
                 if (Auth::user()->role == "admin") {
-                    return "Admin";
+                    return redirect()->route('admin.dashboard');
                 } elseif (Auth::user()->role == "pegawai") {
-                    return "Pegawai";
+                    return redirect('pegawai.home-pegawai');
                 } elseif (Auth::user()->role == "supervisor") {
                     return "Supervisor";
                 }
             } else {
-                return "tidak aktif";
+                return redirect()->route('login')->with('error', 'Akun anda tidak aktif');
             }
         } else {
-            return "email atau password salah";
+            return redirect()->route('login')->with('error', 'Username atau password salah');
         }
+    }
+
+    public function logout()
+    {
+        Session::flush();
+        Auth::logout();
+        return redirect()->route('login');
     }
 
     public function updatePassword(Request $request)

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Presensi extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $table = 'presensi';
     protected $fillable = [
         'id_pegawai',
