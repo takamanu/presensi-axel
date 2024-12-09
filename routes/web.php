@@ -46,6 +46,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
     Route::get('/edit-lokasi/{id}', [AdminController::class, 'editLokasi'])->name('edit-lokasi');
     Route::post('/update-lokasi/{id}', [AdminController::class, 'updateLokasi'])->name('update-lokasi');
     Route::delete('/destroy-lokasi/{id}', [AdminController::class, 'destroyLokasi'])->name('destroy-lokasi');
+
+    //Ketidakhadiran
+    Route::get('/ketidakhadiran', [AdminController::class, 'ketidakhadiran'])->name('ketidakhadiran');
+    Route::get('/detail-ketidakhadiran/{id}', [AdminController::class, 'detailKetidakhadiran'])->name('detail-ketidakhadiran');
+    Route::post('/update-ketidakhadiran/{id}', [AdminController::class, 'updateKetidakhadiran'])->name('update-ketidakhadiran');
+    Route::get('/download-ketidakhadiran/{id}', [AdminController::class, 'downloadFile'])->name('download-ketidakhadiran');
 });
 
 Auth::routes();
