@@ -41,6 +41,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
     Route::get('/lokasi-presensi', [AdminController::class, 'lokasiPresensi'])->name('lokasi-presensi');
     Route::get('/add-lokasi', [AdminController::class, 'addLokasi'])->name('add-lokasi');
     Route::post('/store-lokasi', [AdminController::class, 'storeLokasi'])->name('store-lokasi');
+    Route::get('/detail-lokasi/{id}', [AdminController::class, 'detailLokasi'])->name('detail-lokasi');
+    Route::get('/edit-lokasi/{id}', [AdminController::class, 'editLokasi'])->name('edit-lokasi');
+    Route::post('/update-lokasi/{id}', [AdminController::class, 'updateLokasi'])->name('update-lokasi');
+    Route::delete('/destroy-lokasi/{id}', [AdminController::class, 'destroyLokasi'])->name('destroy-lokasi');
+
+    //Ketidakhadiran
+    Route::get('/ketidakhadiran', [AdminController::class, 'ketidakhadiran'])->name('ketidakhadiran');
+    Route::get('/detail-ketidakhadiran/{id}', [AdminController::class, 'detailKetidakhadiran'])->name('detail-ketidakhadiran');
+    Route::post('/update-ketidakhadiran/{id}', [AdminController::class, 'updateKetidakhadiran'])->name('update-ketidakhadiran');
+    Route::get('/download-ketidakhadiran/{id}', [AdminController::class, 'downloadFile'])->name('download-ketidakhadiran');
 });
 
 Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');

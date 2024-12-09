@@ -35,11 +35,20 @@
                                     <td>{{ $i->latitude }} / {{ $i->longitude }}</td>
                                     <td>{{ $i->radius }}</td>
                                     <td>
-                                        <a href="" class="badge bg-primary badge-pill">Detail</a>
+                                        <div style="display: flex; justify-content: center; gap: 5px;">
+                                            <a href="{{ route('admin.detail-lokasi', $i->id) }}"
+                                                class="badge bg-primary badge-pill">Detail</a>
 
-                                        <a href="" class="badge bg-primary badge-pill">Edit</a>
-
-                                        <a href="" class="badge badge-pill bg-danger tombol-hapus">Hapus</a>
+                                            <a href="{{ route('admin.edit-lokasi', $i->id) }}"
+                                                class="badge bg-primary badge-pill">Edit</a>
+                                            <form action="{{ route('admin.destroy-lokasi', $i->id) }}" method="POST"
+                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" style="color: aliceblue"
+                                                    class="badge badge-pill bg-danger tombol-hapus">Hapus</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
