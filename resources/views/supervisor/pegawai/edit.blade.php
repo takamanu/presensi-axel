@@ -4,65 +4,116 @@
 <div class="page-body">
     <div class="container-xl">
 
-        <!-- Add Data Button -->
-        <a href="#" class="btn btn-primary"><span class="text"><i class="fa-solid fa-circle-plus"></i> Tambah Data </span></a>
+    <form action="/supervisor/data_pegawai/edit" method="POST" enctype="multipart/form-data">
+        <div class="row">
 
-        <!-- Table displaying hardcoded employee data -->
-        <table class="table table-bordered mt-3">
-            <tr class="text-center">
-                <th>No</th>
-                <th>NIP</th>
-                <th>Nama</th>
-                <th>Username</th>
-                <th>Jabatan</th>
-                <th>Role</th>
-                <th>Aksi</th>
-            </tr>
+        <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
 
-            <!-- Hardcoded Data (for demonstration) -->
-            <tr class="text-center">
-                <td>1</td>
-                <td>123456789</td>
-                <td>John Doe</td>
-                <td>johndoe123</td>
-                <td>Manager</td>
-                <td>Admin</td>
-                <td>
-                    <a href="#" class="badge bg-primary badge-pill">Detail</a>
-                    <a href="#" class="badge bg-primary badge-pill">Edit</a>
-                    <a href="#" class="badge badge-pill bg-danger">Hapus</a>
-                </td>
-            </tr>
+                    <div class="mb-3">
+                        <label for="">Nama</label>
+                        <input type="text" class="form-control" name="nama" value="John Doe">
+                    </div>
 
-            <tr class="text-center">
-                <td>2</td>
-                <td>987654321</td>
-                <td>Jane Smith</td>
-                <td>janesmith456</td>
-                <td>Supervisor</td>
-                <td>User</td>
-                <td>
-                    <a href="#" class="badge bg-primary badge-pill">Detail</a>
-                    <a href="#" class="badge bg-primary badge-pill">Edit</a>
-                    <a href="#" class="badge badge-pill bg-danger">Hapus</a>
-                </td>
-            </tr>
+                    <div class="mb-3">
+                        <label for="">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" class="form-control">
+                            <option value="">--Pilih Jenis Kelamin--</option>
+                            <option selected value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
 
-            <tr class="text-center">
-                <td>3</td>
-                <td>112233445</td>
-                <td>Robert Brown</td>
-                <td>robertbrown789</td>
-                <td>Staff</td>
-                <td>Employee</td>
-                <td>
-                    <a href="#" class="badge bg-primary badge-pill">Detail</a>
-                    <a href="#" class="badge bg-primary badge-pill">Edit</a>
-                    <a href="#" class="badge badge-pill bg-danger">Hapus</a>
-                </td>
-            </tr>
+                    <div class="mb-3">
+                        <label for="">Alamat</label>
+                        <input type="text" class="form-control" name="alamat" value="123 Main Street">
+                    </div>
 
-        </table>
+                    <div class="mb-3">
+                        <label for="">No. Handphone</label>
+                        <input type="text" class="form-control" name="no_handphone" value="08123456789">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Jabatan</label>
+                        <select name="jabatan" class="form-control">
+                            <option value="">--Pilih Jabatan--</option>
+                            <option selected value="Manager">Manager</option>
+                            <option value="Staff">Staff</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Status</label>
+                        <select name="status" class="form-control">
+                            <option value="">--Pilih Status--</option>
+                            <option selected value="Aktif">Aktif</option>
+                            <option value="Tidak Aktif">Tidak Aktif</option>
+                        </select>
+                    </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label for="">Username</label>
+                        <input type="text" class="form-control" name="username" value="johndoe">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Password</label>
+                        <input type="hidden" value="oldpassword123" name="password_lama">
+                        <input type="password" class="form-control" name="password">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Ulangi Password</label>
+                        <input type="password" class="form-control" name="ulangi_password">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Role</label>
+                        <select name="role" class="form-control">
+                            <option value="">--Pilih Role--</option>
+                            <option value="admin">Admin</option>
+                            <option selected value="pegawai">Pegawai</option>
+                            <option value="supervisor">Supervisor</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Lokasi Presensi</label>
+                        <select name="lokasi_presensi" class="form-control">
+                            <option value="">--Pilih Lokasi Presensi--</option>
+                            <option selected value="Head Office">Head Office</option>
+                            <option value="Branch Office">Branch Office</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Foto</label>
+                        <input type="hidden" value="default.jpg" name="foto_lama">
+                        <input type="file" class="form-control" name="foto_baru">
+                    </div>
+
+                    <input type="hidden" value="1" name="id">
+
+                    <button type="submit "class="btn btn-primary" name="edit">Update</button>
+
+                </div>
+            </div>
+        </div>
+        </form>
+        </div>
+
+
+
+        </div>
 
     </div>
 </div>
