@@ -4,16 +4,18 @@
 <div class="page-body">
     <div class="container-xl">
 
-    <form action="/supervisor/data_pegawai/edit" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('pegawai.update.fixed')}}" method="POST" enctype="multipart/form-data">
         <div class="row">
-
+            @csrf
         <div class="col-md-6">
         <div class="card">
             <div class="card-body">
 
+                    <input type="text" class="form-control" name="id_pegawai" value="{{ $employee->id_pegawai }}">
+
                     <div class="mb-3">
                         <label for="">Nama</label>
-                        <input type="text" class="form-control" name="nama" value="John Doe">
+                        <input type="text" class="form-control" name="nama" value="{{ $employee->nama}}">
                     </div>
 
                     <div class="mb-3">
@@ -97,7 +99,7 @@
 
                     <div class="mb-3">
                         <label for="">Foto</label>
-                        <input type="hidden" value="default.jpg" name="foto_lama">
+                        <input type="hidden" value="{{$employee->foto}}" name="foto_lama">
                         <input type="file" class="form-control" name="foto_baru">
                     </div>
 

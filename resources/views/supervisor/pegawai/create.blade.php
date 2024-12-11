@@ -3,8 +3,8 @@
 @section('content')
 <div class="page-body">
     <div class="container-xl">
-        <form action="" method="POST" enctype="multipart/form-data">
-            {{-- @csrf --}}
+        <form action="{{ route('pegawai.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="row">
 
                 <div class="col-md-6">
