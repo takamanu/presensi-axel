@@ -51,6 +51,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
     Route::get('/detail-ketidakhadiran/{id}', [AdminController::class, 'detailKetidakhadiran'])->name('detail-ketidakhadiran');
     Route::post('/update-ketidakhadiran/{id}', [AdminController::class, 'updateKetidakhadiran'])->name('update-ketidakhadiran');
     Route::get('/download-ketidakhadiran/{id}', [AdminController::class, 'downloadFile'])->name('download-ketidakhadiran');
+
+    //Profile
+    Route::get('/change-password', [AdminController::class, 'changePassword'])->name('change-password');
+    Route::post('/update-password', [AdminController::class, 'updatePassword'])->name('update-password');
+    Route::get('/profile-admin', [AdminController::class, 'profileAdmin'])->name('profile-admin');
 });
 
 Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
@@ -67,14 +72,6 @@ Route::post('presensi/export', [PresensiController::class, 'export'])->name('pre
 Route::resource('pegawai', PegawaiController::class);
 
 Auth::routes();
-//Pegawai
-// Route::group(['prefix' => 'pegawai', 'middleware' => ['auth'], 'as' => 'pegawai.'], function () {
-//     Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
-//     Route::post('presensi/masuk', [PresensiController::class, 'masuk'])->name('presensi.masuk');
-//     Route::post('presensi/keluar', [PresensiController::class, 'keluar'])->name('presensi.keluar');
-//     Route::post('presensi/export', [PresensiController::class, 'export'])->name('presensi.export');
-//     Route::resource('pegawai', PegawaiController::class);
-// });
 
 Route::get(
     '/home-pegawai/profile',
@@ -149,11 +146,6 @@ Route::prefix('home-supervisor')->group(function () {
         Route::get('/detail/{id}', [PegawaiController::class, 'data_pegawai_show'])->name('supervisor.data_pegawai.show');
     });
 });
-
-
-Route::post('/login', [LoginController::class, 'verifyLogin']);
-Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('user.updatePassword');
-
 
 Route::get('/ketidakhadiran', [KetidakhadiranController::class, 'index']);
 Route::get('/ketidakhadiran/detail', [KetidakhadiranController::class, 'show']);

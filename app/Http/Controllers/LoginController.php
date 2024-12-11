@@ -70,7 +70,13 @@ class LoginController extends Controller
             $user->timestamps = true;
 
             Session::flash('berhasil', 'Password berhasil diubah');
-            return redirect()->route('home');
+            if (Auth::user()->role == "pegawai") {
+                return redirect()->route('pegawai.home-pegawai');
+            } elseif (Auth::user()->role == "admin") {
+                return redirect()->route('admin.dashboard');
+            } elseif (Auth::user()->role == "supervisor") {
+                return redirect()->route('supervisor.dashboard');
+            }
         }
 
         Session::flash('validasi', 'Gagal mengubah password');

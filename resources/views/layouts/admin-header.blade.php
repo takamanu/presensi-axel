@@ -91,8 +91,8 @@
 
                         <!-- Dropdown Menu -->
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <a href="{{ url('home-pegawai/profile') }}" class="dropdown-item">Profile</a>
-                            <a href="{{ url('home-pegawai/profile/change-password') }}" class="dropdown-item">Ubah
+                            <a href="{{ route('admin.profile-admin') }}" class="dropdown-item">Profile</a>
+                            <a href="{{ route('admin.change-password') }}" class="dropdown-item">Ubah
                                 Password</a>
                             {{-- <form action="{{ route('logout') }}" method="POST">
                                 @csrf

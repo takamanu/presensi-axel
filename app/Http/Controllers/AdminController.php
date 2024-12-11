@@ -8,6 +8,10 @@ use App\Models\Presensi;
 use Illuminate\Http\Request;
 use App\Models\Ketidakhadiran;
 use App\Models\LokasiPresensi;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+
 
 class AdminController extends Controller
 {
@@ -224,5 +228,46 @@ class AdminController extends Controller
             return response()->download($filePath);
         }
         return redirect()->route('admin.ketidakhadiran')->with('error', 'File tidak ditemukan.');
+    }
+
+    public function changePassword()
+    {
+        $title = "Ubah Password";
+        return view('admin.profile.change_password', [
+            'title' => $title
+        ]);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'password_baru' => 'required|min:8',
+            'ulangi_password_baru' => 'required|same:password_baru',
+        ]);
+
+        $user = User::where('id_pegawai', auth()->user()->id_pegawai)->first();
+
+        if ($user) {
+            $user->timestamps = false;
+            $user->password = Hash::make($request->password_baru);
+            $user->save();
+            $user->timestamps = true;
+
+            Session::flash('berhasil', 'Password berhasil diubah');
+            return redirect()->route('admin.dashboard');
+        }
+
+        Session::flash('validasi', 'Gagal mengubah password');
+        return back();
+    }
+
+    public function profileAdmin()
+    {
+        $title = "";
+        $user = Auth::user();
+        return view('admin.profile.profile', [
+            'title' => $title,
+            'user' => $user
+        ]);
     }
 }
