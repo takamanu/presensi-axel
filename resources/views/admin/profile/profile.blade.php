@@ -1,4 +1,4 @@
-@extends('layouts.authenticated')
+@extends('layouts.admin-header')
 
 @section('content')
     <div class="page-body">
@@ -18,47 +18,47 @@
                             <table class="mt-4 table">
                                 <tr>
                                     <td>Nama</td>
-                                    <td>: {{ $pegawai->nama }}</td>
+                                    <td>: {{ $user->pegawai->nama }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>Jenis Kelamin</td>
-                                    <td>: {{ $pegawai->jenis_kelamin }}</td>
+                                    <td>: {{ $user->pegawai->jenis_kelamin }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>Alamat</td>
-                                    <td>: {{ $pegawai->alamat }}</td>
+                                    <td>: {{ $user->pegawai->alamat }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>No. Handphone</td>
-                                    <td>: {{ $pegawai->no_handphone }}</td>
+                                    <td>: {{ $user->pegawai->no_handphone }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>Jabatan</td>
-                                    <td>: {{ $pegawai->jabatan }}</td>
+                                    <td>: {{ $user->pegawai->jabatan }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>Username</td>
-                                    <td>: {{ $pegawai->username }}</td>
+                                    <td>: {{ $user->username }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>Role</td>
-                                    <td>: {{ $pegawai->role }}</td>
+                                    <td>: {{ $user->role }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>Lokasi Presensi</td>
-                                    <td>: {{ $pegawai->lokasi_presensi }}</td>
+                                    <td>: {{ $user->pegawai->lokasi_presensi }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>Status</td>
-                                    <td>: {{ $pegawai->status }}</td>
+                                    <td>: {{ $user->status }}</td>
                                 </tr>
                             </table>
                         </div>
