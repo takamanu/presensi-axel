@@ -16,7 +16,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.update-password') }}" method="POST">
+            <form action="{{ route('updatePassword') }}" method="POST">
                 @csrf
                 <div class="card col-md-6">
                     <div class="card-body">
