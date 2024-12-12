@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Jabatan;
+use App\Models\Pegawai;
 use App\Models\Presensi;
 use Illuminate\Http\Request;
 use App\Models\Ketidakhadiran;
 use App\Models\LokasiPresensi;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -238,34 +240,68 @@ class AdminController extends Controller
         ]);
     }
 
-    public function updatePassword(Request $request)
-    {
-        $request->validate([
-            'password_baru' => 'required|min:8',
-            'ulangi_password_baru' => 'required|same:password_baru',
-        ]);
-
-        $user = User::where('id_pegawai', auth()->user()->id_pegawai)->first();
-
-        if ($user) {
-            $user->timestamps = false;
-            $user->password = Hash::make($request->password_baru);
-            $user->save();
-            $user->timestamps = true;
-
-            Session::flash('berhasil', 'Password berhasil diubah');
-            return redirect()->route('admin.dashboard');
-        }
-
-        Session::flash('validasi', 'Gagal mengubah password');
-        return back();
-    }
-
     public function profileAdmin()
     {
         $title = "";
         $user = Auth::user();
         return view('admin.profile.profile', [
+            'title' => $title,
+            'user' => $user
+        ]);
+    }
+
+    public function pegawai()
+    {
+        $title = "Data Pegawai";
+        $pegawai = User::all();
+        return view('admin.pegawai.index', [
+            'title' => $title,
+            'pegawai' => $pegawai
+        ]);
+    }
+
+    public function addPegawai()
+    {
+        $title = "Tambah Data Pegawai";
+        return view('admin.pegawai.tambah', [
+            'title' => $title
+        ]);
+    }
+
+    public function editPegawai($id)
+    {
+        $title = "Edit Data Pegawai";
+        $employee = User::where('id', $id)->first();
+        return view('admin.pegawai.edit', [
+            'employee' => $employee,
+            'title' => $title
+        ]);
+    }
+
+    public function destroyPegawai($id)
+    {
+        $pegawai = User::where('id', $id)->first();
+
+        if (!$pegawai) {
+            return redirect()->route('admin.pegawai')->with('error', 'Pegawai tidak ditemukan');
+        }
+        if ($pegawai->user) {
+            $pegawai->user->delete();
+        }
+
+        // Hapus data pegawai
+        $pegawai->delete();
+
+        $pegawai->delete();
+        return redirect()->route('admin.pegawai')->with('success', 'Pegawai berhasil dihapus');
+    }
+
+    public function detailPegawai($id)
+    {
+        $title = "Detail Pegawai";
+        $user = User::where('id', $id)->first();
+
+        return view('admin.pegawai.detail', [
             'title' => $title,
             'user' => $user
         ]);

@@ -25,7 +25,7 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/verifyLogin', [LoginController::class, 'verifyLogin'])->name('verifyLogin');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('user.updatePassword');
+Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('updatePassword');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], function () {
 
@@ -56,6 +56,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
     Route::get('/change-password', [AdminController::class, 'changePassword'])->name('change-password');
     Route::post('/update-password', [AdminController::class, 'updatePassword'])->name('update-password');
     Route::get('/profile-admin', [AdminController::class, 'profileAdmin'])->name('profile-admin');
+
+    //Pegawai
+    Route::get('/pegawai', [AdminController::class, 'pegawai'])->name('pegawai');
+    Route::get('/add-pegawai', [AdminController::class, 'addPegawai'])->name('add-pegawai');
+    Route::get('/edit-pegawai/{id}', [AdminController::class, 'editPegawai'])->name('edit-pegawai');
+    Route::get('/detail-pegawai/{id}', [AdminController::class, 'detailPegawai'])->name('detail-pegawai');
+    Route::delete('/destroy-pegawai/{id}', [AdminController::class, 'destroyPegawai'])->name('destroy-pegawai');
 });
 
 Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
