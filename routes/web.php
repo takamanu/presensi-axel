@@ -68,7 +68,8 @@ Route::get('data_pegawai/tambah', [PegawaiController::class, 'create'])->name('s
 Route::get('data_pegawai/{id}/edit', [PegawaiController::class, 'edit'])->name('supervisor.data_pegawai.edit');
 Route::get('data_pegawai/{id}/destroy', [PegawaiController::class, 'data_pegawai_destroy'])->name('supervisor.data_pegawai.destroy');
 
-Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
+Route::post('pegawai/store', [PegawaiController::class, 'store'])->name('pegawai.store');
+Route::post('pegawai/update', [PegawaiController::class, 'update'])->name('pegawai.update.fixed');
 Route::post('presensi/masuk', [PresensiController::class, 'masuk'])->name('presensi.masuk');
 Route::post('presensi/keluar', [PresensiController::class, 'keluar'])->name('presensi.keluar');
 Route::post('presensi/export', [PresensiController::class, 'export'])->name('presensi.export');
@@ -142,9 +143,7 @@ Route::prefix('home-supervisor')->group(function () {
             return view('supervisor.pegawai.create');
         });
 
-        Route::get('/edit/{id}', function ($id) {
-            return view('supervisor.pegawai.edit', compact('id'));
-        });
+        Route::get('/edit/{id}', [PegawaiController::class, 'show'])->name('supervisor.data_pegawai.edit');
 
         Route::get('/detail/{id}', [PegawaiController::class, 'data_pegawai_show'])->name('supervisor.data_pegawai.show');
     });

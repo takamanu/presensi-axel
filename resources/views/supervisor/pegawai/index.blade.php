@@ -35,7 +35,7 @@
                             <td>{{ $item->role }}</td>
                             <td>
                                 <a href="{{ route('supervisor.data_pegawai.show', $item->id) }}" class="badge bg-primary badge-pill">Detail</a>
-                                <a href="" class="badge bg-primary badge-pill">Edit</a>
+                                <a href="{{route('supervisor.data_pegawai.edit', $item->id)}}" class="badge bg-primary badge-pill">Edit</a>
                                 <a href="{{ route('supervisor.data_pegawai.destroy', $item->id) }}" class="badge badge-pill bg-danger tombol-hapus">Hapus</a>
                             </td>
                         </tr>
