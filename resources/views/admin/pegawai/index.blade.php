@@ -5,7 +5,8 @@
         <div class="container-xl">
 
             <!-- Add Data Button -->
-            <a href="#" class="btn btn-primary"><span class="text"><i class="fa-solid fa-circle-plus"></i> Tambah Data
+            <a href="{{ route('admin.add-pegawai') }}" class="btn btn-primary"><span class="text"><i
+                        class="fa-solid fa-circle-plus"></i> Tambah Data
                 </span></a>
 
             <!-- Table displaying hardcoded employee data -->
@@ -35,11 +36,19 @@
                                 <td>{{ $item->pegawai->jabatan }}</td>
                                 <td>{{ $item->role }}</td>
                                 <td>
-                                    <a href="{{ route('supervisor.data_pegawai.show', $item->id) }}"
-                                        class="badge bg-primary badge-pill">Detail</a>
-                                    <a href="" class="badge bg-primary badge-pill">Edit</a>
-                                    <a href="{{ route('supervisor.data_pegawai.destroy', $item->id) }}"
-                                        class="badge badge-pill bg-danger tombol-hapus">Hapus</a>
+                                    <div style="display: flex; justify-content: center; gap: 5px;">
+                                        <a href="{{ route('admin.detail-pegawai', $item->id) }}"
+                                            class="badge bg-primary badge-pill">Detail</a>
+                                        <a href="{{ route('admin.edit-pegawai', $item->id) }}"
+                                            class="badge bg-primary badge-pill">Edit</a>
+                                        <form action="{{ route('admin.destroy-pegawai', $item->id) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" style="color: aliceblue"
+                                                class="badge badge-pill bg-danger tombol-hapus">Hapus</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

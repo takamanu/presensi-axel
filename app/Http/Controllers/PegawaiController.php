@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Pegawai;
 use App\Models\Presensi;
-use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
@@ -118,6 +119,7 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
         // $rules = [
         //     'nama' => 'required|string',
         //     'jenis_kelamin' => 'required|string',
@@ -188,6 +190,11 @@ class PegawaiController extends Controller
                 $request->role
             ]
         );
+        if ($user->role == "admin") {
+            return redirect()->route('admin.pegawai')->with('pesan', 'Data berhasil ditambahkan');
+        } elseif ($user->role == "supervisor") {
+            return redirect()->route('pegawai.data_pegawai.index')->with('pesan', 'Data berhasil ditambahkan');
+        }
     }
 
     /**
@@ -233,6 +240,7 @@ class PegawaiController extends Controller
     {
         // dd($request->all());
         // Prepare employee data
+        $user = Auth::user();
         $employeeData = [
             'nama' => $request->nama,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -279,6 +287,11 @@ class PegawaiController extends Controller
                 $request->id_pegawai,
             ]
         );
+        if ($user->role == "admin") {
+            return redirect()->route('admin.pegawai')->with('pesan', 'Data berhasil diubah');
+        } elseif ($user->role == "supervisor") {
+            return redirect()->route('pegawai.data_pegawai.index')->with('pesan', 'Data berhasil diubah');
+        }
     }
 
     /**

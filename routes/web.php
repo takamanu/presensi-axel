@@ -59,6 +59,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
 
     //Pegawai
     Route::get('/pegawai', [AdminController::class, 'pegawai'])->name('pegawai');
+    Route::get('/add-pegawai', [AdminController::class, 'addPegawai'])->name('add-pegawai');
+    Route::get('/edit-pegawai/{id}', [AdminController::class, 'editPegawai'])->name('edit-pegawai');
+    Route::get('/detail-pegawai/{id}', [AdminController::class, 'detailPegawai'])->name('detail-pegawai');
+    Route::delete('/destroy-pegawai/{id}', [AdminController::class, 'destroyPegawai'])->name('destroy-pegawai');
 });
 
 Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
