@@ -98,7 +98,7 @@ Route::prefix('home-pegawai')->group(function () {
 
     Route::get('/', function () {
         return view('pegawai.index');
-    });
+    })->name('home-pegawai.index');
 
     Route::get('/masuk', function () {
         return view('pegawai.masuk');

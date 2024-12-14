@@ -73,7 +73,8 @@
                     console.log(xhttp.responseText);
                     window.location.href = '{{ route("home") }}';
                 } else if (xhttp.readyState == 4) {
-                    alert("Terjadi kesalahan, silakan coba lagi.");
+                    alert("Terjadi kesalahan, silakan coba lagi.", `Status: ${xhttp.status}`);
+
                 }
             };
 

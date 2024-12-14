@@ -34,14 +34,14 @@ class PegawaiController extends Controller
     {
         $id = 2;
         $result = DB::select("
-            SELECT 
-                users.id_pegawai, 
-                users.username, 
-                users.status, 
-                users.role, 
+            SELECT
+                users.id_pegawai,
+                users.username,
+                users.status,
+                users.role,
                 pegawai.*
-            FROM users 
-            JOIN pegawai ON users.id_pegawai = pegawai.id 
+            FROM users
+            JOIN pegawai ON users.id_pegawai = pegawai.id
             WHERE pegawai.id = ?
         ", [$id]);
 
@@ -56,18 +56,18 @@ class PegawaiController extends Controller
 
         if (empty($request->tanggal_dari)) {
             $presensi = DB::select(
-                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi 
-            FROM presensi 
-            JOIN pegawai ON presensi.id_pegawai = pegawai.id 
+                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+            FROM presensi
+            JOIN pegawai ON presensi.id_pegawai = pegawai.id
             ORDER BY tanggal_masuk DESC"
             );
         } else {
             $presensi = DB::select(
-                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi 
-            FROM presensi 
-            JOIN pegawai ON presensi.id_pegawai = pegawai.id 
-            WHERE tanggal_masuk BETWEEN ? AND ? 
-            ORDER BY tanggal_masuk DESC",
+                `SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+            FROM presensi
+            JOIN pegawai ON presensi.id_pegawai = pegawai.id
+            WHERE tanggal_masuk BETWEEN ? AND ?
+            ORDER BY tanggal_masuk DESC`,
                 [$tanggal_dari, $tanggal_sampai]
             );
         }
@@ -161,7 +161,7 @@ class PegawaiController extends Controller
 
         DB::insert(
             "
-        INSERT INTO pegawai (nip, nama, jenis_kelamin, alamat, no_handphone, jabatan, lokasi_presensi, foto) 
+        INSERT INTO pegawai (nip, nama, jenis_kelamin, alamat, no_handphone, jabatan, lokasi_presensi, foto)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 $nip_baru,
@@ -180,7 +180,7 @@ class PegawaiController extends Controller
 
         DB::insert(
             "
-            INSERT INTO users (id_pegawai, username, password, status, role) 
+            INSERT INTO users (id_pegawai, username, password, status, role)
             VALUES (?, ?, ?, ?, ?)",
             [
                 $id_pegawai,
@@ -204,8 +204,8 @@ class PegawaiController extends Controller
     {
 
         $employee = DB::selectOne(
-            "SELECT users.*, pegawai.* FROM users 
-             JOIN pegawai ON users.id_pegawai = pegawai.id 
+            "SELECT users.*, pegawai.* FROM users
+             JOIN pegawai ON users.id_pegawai = pegawai.id
              WHERE pegawai.id = ?",
             [$id]
         );

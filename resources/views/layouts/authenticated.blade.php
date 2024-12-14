@@ -81,6 +81,7 @@
                             <!-- User Info -->
                             <div class="d-none d-xl-block ps-2">
                                 <div>{{ session('nama') }}</div>
+
                                 <div class="small text-secondary mt-1">{{ session('jabatan') }}</div>
                             </div>
 
@@ -108,6 +109,8 @@
                 <div class="navbar">
                     <div class="container-xl">
                         <ul class="navbar-nav">
+
+                            {{-- Home --}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -123,24 +126,32 @@
                                     <span class="nav-link-title">Home</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('home-pegawai/presensi') }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                            <path
-                                                d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                            <path d="M9 14l2 2l4 -4" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">Rekap Presensi</span>
-                                </a>
-                            </li>
 
+                            {{-- Rekap Presensi --}}
+                            {{-- {{ Auth::user()->role}} --}}
+
+                            @if (Auth::user()->role == "pegawai")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url('home-pegawai/presensi') }}">
+                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                                <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                <path d="M9 14l2 2l4 -4" />
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">Rekap Presensi</span>
+                                    </a>
+                                </li>
+                            @endif
+
+
+                            {{-- Pegawai --}}
+
+                            @if (Auth::user()->role != "pegawai")
                             <li class="nav-item">
                                 <a class="nav-link" href="">
                                     <span
@@ -159,16 +170,22 @@
                                     </span>
                                 </a>
                             </li>
+                            @endif
 
+
+
+                            {{--  Master Data --}}
+
+                            @if (Auth::user()->role != "pegawai")
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-database">
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-database">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
                                             <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
@@ -190,8 +207,12 @@
                                             </a>
                                         </div>
                                     </div>
-                            </li>
+                                </li>
+                                @endif
 
+
+                                {{-- Rekap Presensi --}}
+                            @if (Auth::user()->role != "pegawai")
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -225,7 +246,10 @@
                                         </div>
                                     </div>
                             </li>
+                            @endif
 
+                            {{--  Ketidakhadiran --}}
+                            @if (Auth::user()->role == "pegawai")
                             <li class="nav-item">
                                 <a class="nav-link" href="">
                                     <span
@@ -247,6 +271,10 @@
                                     </span>
                                 </a>
                             </li>
+                            @endif
+
+                            {{-- Logout --}}
+
 
                             <li class="nav-item">
                                 <form class="nav-link" action="/logout" method="POST">
