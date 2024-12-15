@@ -31,12 +31,16 @@
             <div class="col-md-6">
                 <div class="card text-center">
                     <div class="card-body" style="margin: auto;">
-                        <input type="hidden" id="id" value="12345">
+                        <input type="hidden" id="id" value="{{ $authUserId }}">
+
                         <input type="hidden" id="tanggal_masuk" value="2024-12-07">
                         <input type="hidden" id="jam_masuk" value="09:00:00">
                         <div id="my_camera"></div>
                         <div id="my_result"></div>
-                        <div>07 December 2024 - 09:00:00</div>
+                        {{-- <div id="display-datetime">07 December 2024 - 09:00:00</div> --}}
+                        {{-- <div>07 December 2024 - 09:00:00</div> --}}
+                        <div id="display-datetime">Loading...</div>
+
                         <button class="btn btn-primary mt-2" id="ambil-foto">Masuk</button>
                     </div>
                 </div>
@@ -47,7 +51,6 @@
 </div>
 
 <script>
-    // Webcam setup
     Webcam.set({
         width: 320,
         height: 240,
@@ -57,7 +60,32 @@
         jpeg_quality: 90,
         force_flash: false
     });
+
+
     Webcam.attach('#my_camera');
+
+        function updateDateTime() {
+        const today = new Date();
+
+        // Format date as DD MMMM YYYY
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const date = today.toLocaleDateString('id-ID', options);
+
+        // Format time as HH:MM:SS
+        const time = today.toTimeString().split(' ')[0];
+
+        // Update the hidden inputs
+        document.getElementById('tanggal_masuk').value = today.toISOString().split('T')[0];
+        document.getElementById('jam_masuk').value = time;
+
+        // Update the displayed date and time
+        document.getElementById('display-datetime').textContent = `${date} - ${time}`;
+    }
+
+    // Update immediately and then every second
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
 
     document.getElementById('ambil-foto').addEventListener('click', function () {
 
@@ -73,9 +101,9 @@
             xhttp.onreadystatechange = function () {
                 if (xhttp.readyState == 4 && xhttp.status == 200) {
                     console.log(xhttp.responseText);
-                    window.location.href = '/home';
+                    window.location.href = '/home-pegawai';
                 } else if (xhttp.readyState == 4) {
-                    alert("Terjadi kesalahan, silakan coba lagi.", `Status: ${xhttp.status}`);
+                    alert(`Terjadi kesalahan, silakan coba lagi kontol ${xhttp.status}, `);
                 }
 
             };
@@ -83,6 +111,10 @@
             xhttp.open("POST", "/presensi/masuk", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+            alert('&id=' + encodeURIComponent(id) +
+                '&tanggal_masuk=' + encodeURIComponent(tanggal_masuk) +
+                '&jam_masuk=' + encodeURIComponent(jam_masuk))
 
             xhttp.send(
                 'photo=' + encodeURIComponent(data_uri) +

@@ -53,12 +53,27 @@ class PresensiController extends Controller
         $photoData = str_replace(' ', '+', $photoData);
         $decodedPhoto = base64_decode($photoData);
 
+        $user = DB::selectOne("SELECT * FROM users WHERE id = ?", [$request->id]);
+
+        // Check if the user was found
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Retrieve the pegawai_id from the result
+        $id_pegawai = $user->id_pegawai;
+
+        // Check if the pegawai_id exists
+        if (!$id_pegawai) {
+            return response()->json(['message' => 'Pegawai id not found'], 500);
+        }
+
         $fileName = 'foto/masuk_' . now()->format('Y-m-d_H-i-s') . '.png';
 
         if (Storage::put($fileName, $decodedPhoto)) {
             $result = DB::table('presensi')->insert([
                 // 'id_pegawai' => $request->id,
-                'id_pegawai' => 11,
+                'id_pegawai' => $id_pegawai,
                 'tanggal_masuk' => $request->tanggal_masuk,
                 'jam_masuk' => $request->jam_masuk,
                 'foto_masuk' => $fileName,

@@ -32,7 +32,13 @@ class PegawaiController extends Controller
 
     public function profile(Request $request)
     {
-        $id = 2;
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'You must be logged in.');
+        }
+
+        $userID = Auth::user()->id;
+        // $id = 2;
         $result = DB::select("
             SELECT
                 users.id_pegawai,
@@ -42,8 +48,10 @@ class PegawaiController extends Controller
                 pegawai.*
             FROM users
             JOIN pegawai ON users.id_pegawai = pegawai.id
-            WHERE pegawai.id = ?
-        ", [$id]);
+            WHERE users.id = ?
+        ", [$userID]);
+
+        // return dd($result);
 
 
         return view('pegawai.profile.view', ['pegawai' => $result[0]]);

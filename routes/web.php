@@ -96,14 +96,17 @@ Route::get(
 );
 
 
-Route::prefix('home-pegawai')->group(function () {
+Route::prefix('home-pegawai')->middleware('auth')->group(function () {
 
     Route::get('/', function () {
         return view('pegawai.index');
     })->name('home-pegawai.index');
 
     Route::get('/masuk', function () {
-        return view('pegawai.masuk')->with('authUser', Auth::user());
+        return view('pegawai.masuk')->with([
+            'authUser' => Auth::user(),
+            'authUserId' => Auth::id(),
+        ]);
     });
 
     Route::get('/keluar', function () {
@@ -112,17 +115,11 @@ Route::prefix('home-pegawai')->group(function () {
 
     Route::get('/presensi', [PegawaiController::class, 'pegawai']);
 
-    Route::get(
-        '/profile',
-        [PegawaiController::class, 'profile']
-    );
+    Route::get('/profile', [PegawaiController::class, 'profile']);
 
-    Route::get(
-        '/profile/change-password',
-        function () {
-            return view('pegawai.profile.changepassword');
-        }
-    );
+    Route::get('/profile/change-password', function () {
+        return view('pegawai.profile.changepassword');
+    });
 });
 
 Route::prefix('home-supervisor')->group(function () {
