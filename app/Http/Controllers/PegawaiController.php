@@ -295,6 +295,7 @@ class PegawaiController extends Controller
                 $request->id_pegawai,
             ]
         );
+        // dd($request->all());
         if ($user->role == "admin") {
             return redirect()->route('admin.pegawai')->with('pesan', 'Data berhasil diubah');
         } elseif ($user->role == "supervisor") {

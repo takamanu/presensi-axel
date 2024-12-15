@@ -10,7 +10,7 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-
+                                <label for="">ID Pegawai</label>
                                 <input type="text" class="form-control" name="id_pegawai"
                                     value="{{ $employee->id_pegawai }}">
 
@@ -42,18 +42,28 @@
                                 <div class="mb-3">
                                     <label for="">Jabatan</label>
                                     <select name="jabatan" class="form-control">
-                                        <option value="">--Pilih Jabatan--</option>
-                                        <option selected value="Manager">Manager</option>
-                                        <option value="Staff">Staff</option>
+                                        <option selected disabled value="">--Pilih Jabatan--</option>
+                                        <option value="admin"
+                                            {{ $employee->pegawai->jabatan == 'admin' ? 'selected' : '' }}>Admin
+                                        </option>
+                                        <option value="supervisor"
+                                            {{ $employee->pegawai->jabatan == 'supervisor' ? 'selected' : '' }}>
+                                            Supervisor</option>
+                                        <option value="marketing"
+                                            {{ $employee->pegawai->jabatan == 'marketing' ? 'selected' : '' }}>
+                                            Marketing</option>
                                     </select>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="">Status</label>
                                     <select name="status" class="form-control">
-                                        <option value="">--Pilih Status--</option>
-                                        <option selected value="Aktif">Aktif</option>
-                                        <option value="Tidak Aktif">Tidak Aktif</option>
+                                        <option selected disabled value="">--Pilih Status--</option>
+                                        <option value="Aktif" {{ $employee->status == 'Aktif' ? 'selected' : '' }}>
+                                            Aktif</option>
+                                        <option value="Tidak Aktif"
+                                            {{ $employee->status == 'Tidak Aktif' ? 'selected' : '' }}>
+                                            Tidak Aktif</option>
                                     </select>
                                 </div>
                             </div>
@@ -102,7 +112,7 @@
 
                                 <div class="mb-3">
                                     <label for="">Foto</label>
-                                    <input type="hidden" value="{{ $employee->foto }}" name="foto_lama">
+                                    <input type="hidden" value="{{ $employee->pegawai->foto }}" name="foto_lama">
                                     <input type="file" class="form-control" name="foto_baru">
                                 </div>
 
