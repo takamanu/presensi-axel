@@ -27,7 +27,12 @@ Route::post('/verifyLogin', [LoginController::class, 'verifyLogin'])->name('veri
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('updatePassword');
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', function ($request, $next) {
+    if (Auth::user()->role !== 'admin') {
+        abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+    }
+    return $next($request);
+}], 'as' => 'admin.'], function () {
 
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
