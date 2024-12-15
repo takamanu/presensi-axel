@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LokasiPresensi;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Pegawai;
@@ -210,6 +211,7 @@ class PegawaiController extends Controller
      */
     public function show($id)
     {
+        $lokasi = LokasiPresensi::all();
 
         $employee = DB::selectOne(
             "SELECT users.*, pegawai.* FROM users
@@ -229,6 +231,7 @@ class PegawaiController extends Controller
             'roles' => $roles,
             'positions' => array_column($positions, 'jabatan'),
             'locations' => array_column($locations, 'nama_lokasi'),
+            'lokasi' => $lokasi
         ]);
         // return view('supervisor.pegawai.edit', compact('id'));
     }
