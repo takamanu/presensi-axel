@@ -11,8 +11,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <label for="">ID Pegawai</label>
-                                <input type="text" class="form-control" name="id_pegawai"
-                                    value="{{ $employee->id_pegawai }}">
+                                <input type="text" class="form-control" name="id_pegawai" value="{{ $employee->id }}">
 
                                 <div class="mb-3">
                                     <label for="">Nama</label>
@@ -23,9 +22,15 @@
                                 <div class="mb-3">
                                     <label for="">Jenis Kelamin</label>
                                     <select name="jenis_kelamin" class="form-control">
-                                        <option value="">--Pilih Jenis Kelamin--</option>
-                                        <option selected value="Laki-laki">Laki-laki</option>
-                                        <option value="Perempuan">Perempuan</option>
+                                        <option selected disabled value="">--Pilih Jenis Kelamin--</option>
+                                        <option value="Laki-laki"
+                                            {{ $employee->pegawai->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>
+                                            Laki-laki
+                                        </option>
+                                        <option value="Perempuan"
+                                            {{ $employee->pegawai->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>
+                                            Perempuan
+                                        </option>
                                     </select>
                                 </div>
 
@@ -94,19 +99,27 @@
                                 <div class="mb-3">
                                     <label for="">Role</label>
                                     <select name="role" class="form-control">
-                                        <option value="">--Pilih Role--</option>
-                                        <option value="admin">Admin</option>
-                                        <option selected value="pegawai">Pegawai</option>
-                                        <option value="supervisor">Supervisor</option>
+                                        <option selected disabled value="">--Pilih Role--</option>
+                                        <option value="admin" {{ $employee->role == 'admin' ? 'selected' : '' }}>
+                                            Admin</option>
+                                        <option value="pegawai" {{ $employee->status == 'pegawai' ? 'selected' : '' }}>
+                                            Pegawai</option>
+                                        <option value="supervisor"
+                                            {{ $employee->status == 'supervisor' ? 'selected' : '' }}>
+                                            Supervisor</option>
                                     </select>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="">Lokasi Presensi</label>
                                     <select name="lokasi_presensi" class="form-control">
-                                        <option value="">--Pilih Lokasi Presensi--</option>
-                                        <option selected value="Head Office">Head Office</option>
-                                        <option value="Branch Office">Branch Office</option>
+                                        <option selected disabled value="">--Pilih Lokasi Presensi--</option>
+                                        @foreach ($lokasi as $i)
+                                            <option value="{{ $i->nama_lokasi }}"
+                                                {{ $employee->pegawai->lokasi_presensi == $i->nama_lokasi ? 'selected' : '' }}>
+                                                {{ $i->nama_lokasi }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
 

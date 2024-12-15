@@ -283,10 +283,12 @@ class AdminController extends Controller
     public function editPegawai($id)
     {
         $title = "Edit Data Pegawai";
+        $lokasi = LokasiPresensi::all();
         $employee = User::where('id', $id)->first();
         return view('admin.pegawai.edit', [
             'employee' => $employee,
-            'title' => $title
+            'title' => $title,
+            'lokasi' => $lokasi
         ]);
     }
 

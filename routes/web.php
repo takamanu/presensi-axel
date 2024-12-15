@@ -131,7 +131,7 @@ Route::prefix('home-supervisor')->group(function () {
 
     Route::get('/', function () {
         return view('supervisor.index');
-    });
+    })->name('home-supervisor.index');
 
     Route::get('/presensi', [PegawaiController::class, 'pegawai']);
 
