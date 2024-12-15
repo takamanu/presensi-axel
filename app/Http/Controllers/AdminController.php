@@ -202,12 +202,24 @@ class AdminController extends Controller
     public function detailKetidakhadiran($id)
     {
         $title = "Detail Ketidakhadiran";
+
+        // Ambil data ketidakhadiran berdasarkan ID
         $ketidakhadiran = Ketidakhadiran::where('id', $id)->first();
+
+        // Cek apakah data ada dan apakah bukti bernilai null
+        if (!$ketidakhadiran || is_null($ketidakhadiran->bukti)) {
+            // Redirect ke halaman tertentu dengan pesan
+            return redirect()->route('admin.ketidakhadiran.index')
+                ->with('error', 'Bukti tidak ditemukan atau belum tersedia.');
+        }
+
+        // Jika bukti ada, tampilkan detail
         return view('admin.ketidakhadiran.detail', [
             'title' => $title,
             'ketidakhadiran' => $ketidakhadiran
         ]);
     }
+
 
     public function updateKetidakhadiran(Request $request, $id)
     {
