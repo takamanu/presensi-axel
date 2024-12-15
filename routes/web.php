@@ -65,6 +65,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], 
     Route::delete('/destroy-pegawai/{id}', [AdminController::class, 'destroyPegawai'])->name('destroy-pegawai');
 });
 
+
+
 Route::get('pegawai/store', [PegawaiController::class, 'store'])->name('clients.store');
 Route::get('data_pegawai', [PegawaiController::class, 'index'])->name('supervisor.data_pegawai.index');
 Route::get('data_pegawai/tambah', [PegawaiController::class, 'create'])->name('supervisor.data_pegawai.create');
@@ -101,7 +103,7 @@ Route::prefix('home-pegawai')->group(function () {
     })->name('home-pegawai.index');
 
     Route::get('/masuk', function () {
-        return view('pegawai.masuk');
+        return view('pegawai.masuk')->with('authUser', Auth::user());
     });
 
     Route::get('/keluar', function () {
