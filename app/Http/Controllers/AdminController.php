@@ -201,7 +201,7 @@ class AdminController extends Controller
 
     public function detailKetidakhadiran($id)
     {
-        $title = "Detail Ketidakhadiran";
+        $title = "Detail Cuti";
         $ketidakhadiran = Ketidakhadiran::where('id', $id)->first();
         return view('admin.ketidakhadiran.detail', [
             'title' => $title,

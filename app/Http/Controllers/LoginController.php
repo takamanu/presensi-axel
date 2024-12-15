@@ -36,7 +36,9 @@ class LoginController extends Controller
                 } else if (Auth::user()->role == "pegawai") {
                     return redirect()->route('home-pegawai.index');
                 } else if (Auth::user()->role == "supervisor") {
-                    return "Supervisor";
+                    return redirect()->route('admin.dashboard');
+
+                    // return redirect()->route('home-supervisor.index');
                 }
             } else {
                 return redirect()->route('login')->with('error', 'Akun anda tidak aktif');
@@ -75,7 +77,7 @@ class LoginController extends Controller
             } elseif (Auth::user()->role == "admin") {
                 return redirect()->route('admin.dashboard');
             } elseif (Auth::user()->role == "supervisor") {
-                return redirect()->route('supervisor.dashboard');
+                return redirect()->route('supervisor.home-supervisor');
             }
         }
 

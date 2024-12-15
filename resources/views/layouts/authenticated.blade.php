@@ -182,7 +182,7 @@
 
                             {{--  Master Data --}}
 
-                            @if (Auth::user()->role != "pegawai")
+                            @if (Auth::user()->role == "admin")
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -214,7 +214,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                @endif
+                            @endif
 
 
                                 {{-- Rekap Presensi --}}
@@ -252,12 +252,14 @@
                                         </div>
                                     </div>
                             </li>
+
+
                             @endif
 
                             {{--  Ketidakhadiran --}}
                             @if (Auth::user()->role == "pegawai")
                             <li class="nav-item">
-                                <a class="nav-link" href="">
+                                <a class="nav-link" href="{{ route('admin.ketidakhadiran') }}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -273,7 +275,7 @@
                                         </svg>
                                     </span>
                                     <span class="nav-link-title">
-                                        Ketidakhadiran
+                                        Cuti
                                     </span>
                                 </a>
                             </li>

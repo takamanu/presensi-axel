@@ -18,7 +18,7 @@
                 <tbody>
                     @if ($ketidakhadiran->isEmpty())
                         <tr>
-                            <td colspan="7">Data Ketidakhadiran masih kosong</td>
+                            <td colspan="7">Data Cuti masih kosong</td>
                         </tr>
                     @else
                         @php
