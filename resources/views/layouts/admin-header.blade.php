@@ -143,7 +143,9 @@
                                 </a>
                             </li>
 
+                            @if (Auth::user()->role == "admin")
                             <li class="nav-item dropdown">
+                                {{-- {{ Auth::user()->role }} --}}
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span
@@ -174,6 +176,8 @@
                                         </div>
                                     </div>
                             </li>
+
+                            @endif
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
@@ -226,7 +230,7 @@
                                         </svg>
                                     </span>
                                     <span class="nav-link-title">
-                                        Ketidakhadiran
+                                        Cuti
                                     </span>
                                 </a>
                             </li>

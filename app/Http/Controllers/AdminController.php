@@ -201,9 +201,7 @@ class AdminController extends Controller
 
     public function detailKetidakhadiran($id)
     {
-        $title = "Detail Ketidakhadiran";
-
-        // Ambil data ketidakhadiran berdasarkan ID
+        $title = "Detail Cuti";
         $ketidakhadiran = Ketidakhadiran::where('id', $id)->first();
 
         // Cek apakah data ada dan apakah bukti bernilai null

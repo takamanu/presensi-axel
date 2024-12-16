@@ -127,7 +127,7 @@ Route::prefix('home-pegawai')->middleware('auth')->group(function () {
     });
 });
 
-Route::prefix('home-supervisor')->group(function () {
+Route::prefix('home-supervisor')->middleware('auth')->group(function () {
 
     Route::get('/', function () {
         return view('supervisor.index');

@@ -63,22 +63,47 @@ class PegawaiController extends Controller
         $tanggal_dari = $request->input('tanggal_dari', date('Y-m-d'));
         $tanggal_sampai = $request->input('tanggal_sampai', date('Y-m-d'));
 
+        $id_pegawai = Auth::user()->id_pegawai;
+
         if (empty($request->tanggal_dari)) {
-            $presensi = DB::select(
-                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+            if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
+                $presensi = DB::select(
+                    "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
             FROM presensi
             JOIN pegawai ON presensi.id_pegawai = pegawai.id
             ORDER BY tanggal_masuk DESC"
-            );
+                );
+            } else {
+                $presensi = DB::select(
+                    "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+                FROM presensi
+                JOIN pegawai ON presensi.id_pegawai = pegawai.id
+                WHERE pegawai.id = ?
+                ORDER BY tanggal_masuk DESC",
+                    [$id_pegawai]
+                );
+            }
         } else {
-            $presensi = DB::select(
-                `SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
-            FROM presensi
-            JOIN pegawai ON presensi.id_pegawai = pegawai.id
-            WHERE tanggal_masuk BETWEEN ? AND ?
-            ORDER BY tanggal_masuk DESC`,
-                [$tanggal_dari, $tanggal_sampai]
-            );
+            if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
+                $presensi = DB::select(
+                    "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+                FROM presensi
+                JOIN pegawai ON presensi.id_pegawai = pegawai.id
+                AND tanggal_masuk BETWEEN ? AND ?
+                ORDER BY tanggal_masuk DESC",
+                    [$tanggal_dari, $tanggal_sampai]
+                );
+            } else {
+                $presensi = DB::select(
+                    "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+                FROM presensi
+                JOIN pegawai ON presensi.id_pegawai = pegawai.id
+                WHERE pegawai.id = ?
+                AND tanggal_masuk BETWEEN ? AND ?
+                ORDER BY tanggal_masuk DESC",
+                    [$id_pegawai, $tanggal_dari, $tanggal_sampai]
+                );
+            }
         }
 
         return view('pegawai.presensi.index', compact('presensi', 'tanggal_dari', 'tanggal_sampai'));
