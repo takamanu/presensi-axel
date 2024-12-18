@@ -205,9 +205,9 @@ class AdminController extends Controller
         $ketidakhadiran = Ketidakhadiran::where('id', $id)->first();
 
         // Cek apakah data ada dan apakah bukti bernilai null
-        if (!$ketidakhadiran || is_null($ketidakhadiran->bukti)) {
+        if (!$ketidakhadiran || is_null($ketidakhadiran->file)) {
             // Redirect ke halaman tertentu dengan pesan
-            return redirect()->route('admin.ketidakhadiran.index')
+            return redirect()->route('admin.ketidakhadiran')
                 ->with('error', 'Bukti tidak ditemukan atau belum tersedia.');
         }
 

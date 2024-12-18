@@ -29,7 +29,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/reset/password', [LoginController::class, 'updatePassword'])->name('updatePassword');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', function ($request, $next) {
-    if (Auth::user()->role !== 'admin') {
+    if (Auth::user()->role != 'admin' && Auth::user()->role != 'supervisor') {
         abort(403, 'Anda tidak memiliki akses ke halaman ini.');
     }
     return $next($request);
