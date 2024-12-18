@@ -6,6 +6,7 @@ use App\Models\LokasiPresensi;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Pegawai;
+use App\Models\Ketidakhadiran;
 use App\Models\Presensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -343,4 +344,106 @@ class PegawaiController extends Controller
             return response()->json(['message' => 'Pegawai not found.']);
         }
     }
+
+    public function ketidakhadiran()
+    {
+        $userID = Auth::user()->id;
+        // $id = 2;
+        $result = DB::select("
+            SELECT
+                users.id_pegawai,
+                users.username,
+                users.status,
+                users.role,
+                pegawai.*
+            FROM users
+            JOIN pegawai ON users.id_pegawai = pegawai.id
+            WHERE users.id = ?
+        ", [$userID]);
+
+        $title = "Data Ketidakhadiran";
+        $ketidakhadiran = Ketidakhadiran::orderBy('id', 'desc')->where('id_pegawai', $result[0]->id_pegawai)->get();
+
+        return view('pegawai.cuti.index', [
+            'title' => $title,
+            'ketidakhadiran' => $ketidakhadiran
+        ]);
+    }
+
+    public function createKetidakhadiran()
+    {
+        // $title = "Data Ketidakhadiran";
+        // $ketidakhadiran = Ketidakhadiran::orderBy('id', 'desc')->where('id_pegawai', $result[0]->id_pegawai)->get();
+        return view('pegawai.cuti.create');
+    }
+
+    public function detailKetidakhadiran($id)
+    {
+        $title = "Detail Cuti";
+        $ketidakhadiran = Ketidakhadiran::where('id', $id)->first();
+        // return dd($ketidakhadiran);
+
+        // Cek apakah data ada dan apakah bukti bernilai null
+        if (!$ketidakhadiran || is_null($ketidakhadiran->file)) {
+            // Redirect ke halaman tertentu dengan pesan
+            return redirect()->route('home-pegawai.ketidakhadiran')
+                ->with('error', 'Bukti tidak ditemukan atau belum tersedia.');
+        }
+
+        // Jika bukti ada, tampilkan detail
+        return view('pegawai.cuti.detail', [
+            'title' => $title,
+            'ketidakhadiran' => $ketidakhadiran
+        ]);
+    }
+
+
+    public function updateKetidakhadiran(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status_pengajuan' => 'required',
+        ]);
+        $ketidakhadiran = Ketidakhadiran::where('id', $id)->first();
+        $ketidakhadiran->update([
+            'status_pengajuan' => $validated['status_pengajuan'],
+        ]);
+        return view('pegawai.cuti.index')->with('success', 'Ketidakhadiran berhasil diubah');
+    }
+
+    public function downloadFile($id)
+    {
+        // Find the record
+        $ketidakhadiran = Ketidakhadiran::find($id);
+
+        if (!$ketidakhadiran) {
+
+            return redirect()->action([self::class, 'ketidakhadiran'])
+                ->with('error', 'Data tidak ditemukan.');
+        }
+
+        // Normalize file path using DIRECTORY_SEPARATOR
+        $filePath = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR .  $ketidakhadiran->file);
+
+        // return $filePath;
+        // Check if the file exists
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+
+        return redirect()->action([self::class, 'ketidakhadiran'])
+            ->with('error', 'Data tidak ditemukan.');
+    }
+
+
+
+    // public function downloadFile($id)
+    // {
+    //     $ketidakhadiran = Ketidakhadiran::where('id', $id)->first();
+    //     $filePath = public_path() . '/assets/ketidakhadiran/' . $ketidakhadiran->file;
+
+    //     if (file_exists($filePath)) {
+    //         return response()->download($filePath);
+    //     }
+    //     return redirect()->route('admin.ketidakhadiran')->with('error', 'File tidak ditemukan.');
+    // }
 }

@@ -15,11 +15,31 @@ class KetidakhadiranController extends Controller
      */
     public function index()
     {
-        $dataKetidakhadiran = Ketidakhadiran::where('id_pegawai', 16)
+        $userID = Auth::user()->id;
+        // $id = 2;
+        $result = DB::select("
+            SELECT
+                users.id_pegawai,
+                users.username,
+                users.status,
+                users.role,
+                pegawai.*
+            FROM users
+            JOIN pegawai ON users.id_pegawai = pegawai.id
+            WHERE users.id = ?
+        ", [$userID]);
+
+        $dataKetidakhadiran = Ketidakhadiran::where('id_pegawai', $result[0]->id_pegawai)
             ->orderBy('id', 'desc')
             ->get();
 
-        dd($dataKetidakhadiran);
+        // dd($dataKetidakhadiran);
+
+        $title = "Data Cuti";
+        return view('pegawai.ketidakhadiran.index', [
+            'title' => $title,
+            'ketidakhadiran' => $dataKetidakhadiran
+        ]);
     }
 
     /**
@@ -35,29 +55,49 @@ class KetidakhadiranController extends Controller
      */
     public function store(Request $request)
     {
+
+        $userID = Auth::user()->id;
+        // $id = 2;
+        $result = DB::select("
+            SELECT
+                users.id_pegawai,
+                users.username,
+                users.status,
+                users.role,
+                pegawai.*
+            FROM users
+            JOIN pegawai ON users.id_pegawai = pegawai.id
+            WHERE users.id = ?
+        ", [$userID]);
+
         $request->validate([
             'tanggal' => 'required|date',
             'keterangan' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'status_pengajuan' => 'required|string',
         ]);
 
         $file = $request->file('file');
         $filePath = null;
 
         if ($file) {
-            $filePath = $file->store('file_ketidakhadiran', 'public');
+            // Store the file using the Laravel storage system
+            $storedPath = $file->store('file_ketidakhadiran', 'public');
+
+            // Replace forward slashes with backslashes
+            $filePath = str_replace('/', '\\', $storedPath);
         }
 
         Ketidakhadiran::create([
-            // 'id_pegawai' => Auth::id(),
+            'id_pegawai' => $result[0]->id_pegawai,
             'tanggal' => $request->tanggal,
             'keterangan' => $request->keterangan,
             'deskripsi' => $request->deskripsi,
             'file' => $filePath,
-            'status_pengajuan' => $request->status_pengajuan,
+            'status_pengajuan' => "PENDING",
         ]);
+
+        return redirect()->route('home-pegawai.ketidakhadiran')->with('success', '');
     }
 
     /**
@@ -66,10 +106,10 @@ class KetidakhadiranController extends Controller
     public function show(Ketidakhadiran $ketidakhadiran)
     {
         $pegawai = DB::selectOne("
-            SELECT 
+            SELECT
                 users.id_pegawai, users.username, users.password, users.status, users.role, pegawai.*
-            FROM users 
-            JOIN pegawai ON users.id_pegawai = pegawai.id 
+            FROM users
+            JOIN pegawai ON users.id_pegawai = pegawai.id
             WHERE pegawai.id = ?", [16]);
 
         dd($pegawai);
@@ -115,10 +155,13 @@ class KetidakhadiranController extends Controller
      */
     public function destroy($id)
     {
+        // return "sini";
         $ketidakhadiran = Ketidakhadiran::findOrFail($id);
         if ($ketidakhadiran->file) {
             Storage::disk('public')->delete($ketidakhadiran->file);
         }
         $ketidakhadiran->delete();
+
+        return redirect()->route('home-pegawai.ketidakhadiran')->with('success', '');
     }
 }

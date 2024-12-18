@@ -5,6 +5,7 @@ use App\Http\Controllers\KetidakhadiranController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PresensiController;
+use App\Models\Ketidakhadiran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -119,6 +120,14 @@ Route::prefix('home-pegawai')->middleware('auth')->group(function () {
     });
 
     Route::get('/presensi', [PegawaiController::class, 'pegawai']);
+
+    Route::get('/ketidakhadiran', [PegawaiController::class, 'ketidakhadiran'])->name('home-pegawai.ketidakhadiran');
+    Route::get('/ketidakhadiran/create', [PegawaiController::class, 'createKetidakhadiran'])->name('home-pegawai.create-ketidakhadiran');
+    Route::post('/ketidakhadiran/store', [KetidakhadiranController::class, 'store'])->name('home-pegawai.store');
+    Route::get('/detail-ketidakhadiran/{id}', [PegawaiController::class, 'detailKetidakhadiran'])->name('pegawai.detail-ketidakhadiran');
+    Route::post('/update-ketidakhadiran/{id}', [PegawaiController::class, 'updateKetidakhadiran'])->name('pegawai.update-ketidakhadiran');
+    Route::get('/download-ketidakhadiran/{id}', [PegawaiController::class, 'downloadFile'])->name('pegawai.download-ketidakhadiran');
+    Route::delete('/delete-ketidakhadiran/{id}', [KetidakhadiranController::class, 'destroy'])->name('pegawai.delete-ketidakhadiran');
 
     Route::get('/profile', [PegawaiController::class, 'profile']);
 
