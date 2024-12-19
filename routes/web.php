@@ -69,6 +69,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', function ($request, 
     Route::get('/edit-pegawai/{id}', [AdminController::class, 'editPegawai'])->name('edit-pegawai');
     Route::get('/detail-pegawai/{id}', [AdminController::class, 'detailPegawai'])->name('detail-pegawai');
     Route::delete('/destroy-pegawai/{id}', [AdminController::class, 'destroyPegawai'])->name('destroy-pegawai');
+
+    //Rekap Bulanan
+    Route::get('/rekap-bulanan', [AdminController::class, 'rekapBulanan'])->name('rekap-bulanan');
+    Route::post('/rekap-bulanan/export', [AdminController::class, 'exportRekapBulanan'])->name('rekap-bulanan-export');
+
+    //Rekap Harian
+    Route::get('/rekap-harian', [AdminController::class, 'rekapHarian'])->name('rekap-harian');
+    Route::post('/rekap-harian/export', [AdminController::class, 'exportRekapHarian'])->name('rekap-harian-export');
 });
 
 

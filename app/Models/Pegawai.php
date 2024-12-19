@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pegawai extends Model
@@ -36,5 +37,10 @@ class Pegawai extends Model
     public function pegawaiJabatan(): BelongsTo
     {
         return $this->belongsTo(Jabatan::class, 'jabatan', 'jabatan');
+    }
+
+    public function pegawaiPresensi(): HasMany
+    {
+        return $this->hasMany(Presensi::class, 'id_pegawai', 'id');
     }
 }

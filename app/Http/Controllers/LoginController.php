@@ -40,7 +40,7 @@ class LoginController extends Controller
                     // return redirect()->route('home-supervisor.index');
                 }
             } else {
-                return redirect()->route('login')->with('error', 'Akun anda tidak aktif');
+                return redirect()->route('login')->with('akun', 'Akun anda tidak aktif');
             }
         } else {
             return redirect()->route('login')->with('error', 'Username atau password salah');

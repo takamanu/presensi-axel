@@ -31,7 +31,7 @@
                                 <td>{{ $i->keterangan }}</td>
                                 <td>{{ $i->deskripsi }}</td>
                                 <td class="text-center">
-                                    <a target="_blank" href="{{ route('admin.download-ketidakhadiran', $i->file) }}"
+                                    <a target="_blank" href="{{ route('admin.download-ketidakhadiran', $i->id) }}"
                                         class="badge badge-pill bg-primary">Download</a>
                                 </td>
                                 <td class="text-center">

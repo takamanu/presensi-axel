@@ -1,4 +1,4 @@
-@extends('layouts.authenticated')
+@extends('layouts.admin-header')
 
 @section('content')
     <style>
@@ -98,6 +98,7 @@
                     <th>Total Jam</th>
                     <th>Total Terlambat</th>
                 </tr>
+
                 @forelse ($presensi as $key => $data)
                     <tr>
                         <td>{{ $key + 1 }}</td>
@@ -150,7 +151,7 @@
                     <h5 class="modal-title">Export Excel Rekap Presensi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{ route('supervisor.rekap-bulanan.export') }}">
+                <form method="POST" action="{{ route('admin.rekap-bulanan-export') }}">
                     @csrf
                     <div class="modal-body">
                         <!-- Month Selection -->
