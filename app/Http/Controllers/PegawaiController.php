@@ -59,20 +59,89 @@ class PegawaiController extends Controller
         return view('pegawai.profile.view', ['pegawai' => $result[0]]);
     }
 
+    // public function pegawai(Request $request)
+    // {
+    //     $tanggal_dari = $request->input('tanggal_dari', date('Y-m-d'));
+    //     $tanggal_sampai = $request->input('tanggal_sampai', date('Y-m-d'));
+
+    //     $id_pegawai = Auth::user()->id_pegawai;
+
+    //     if (empty($request->tanggal_dari)) {
+    //         if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
+    //             $presensi = DB::select(
+    //                 "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+    //         FROM presensi
+    //         JOIN pegawai ON presensi.id_pegawai = pegawai.id
+    //         ORDER BY tanggal_masuk DESC"
+    //             );
+    //         } else {
+    //             $presensi = DB::select(
+    //                 "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+    //             FROM presensi
+    //             JOIN pegawai ON presensi.id_pegawai = pegawai.id
+    //             WHERE pegawai.id = ?
+    //             ORDER BY tanggal_masuk DESC",
+    //                 [$id_pegawai]
+    //             );
+    //         }
+    //     } else {
+    //         if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
+    //             $presensi = DB::select(
+    //                 "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+    //             FROM presensi
+    //             JOIN pegawai ON presensi.id_pegawai = pegawai.id
+    //             AND tanggal_masuk BETWEEN ? AND ?
+    //             ORDER BY tanggal_masuk DESC",
+    //                 [$tanggal_dari, $tanggal_sampai]
+    //             );
+    //         } else {
+    //             $presensi = DB::select(
+    //                 "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+    //             FROM presensi
+    //             JOIN pegawai ON presensi.id_pegawai = pegawai.id
+    //             WHERE pegawai.id = ?
+    //             AND tanggal_masuk BETWEEN ? AND ?
+    //             ORDER BY tanggal_masuk DESC",
+    //                 [$id_pegawai, $tanggal_dari, $tanggal_sampai]
+    //             );
+    //         }
+    //     }
+    //     if ($tanggal_dari && $tanggal_sampai) {
+    //         $formatted_date_range = \Carbon\Carbon::parse($tanggal_dari)->translatedFormat('d F Y') .
+    //             ' - ' .
+    //             \Carbon\Carbon::parse($tanggal_sampai)->translatedFormat('d F Y');
+    //     } else {
+    //         $formatted_date_range = \Carbon\Carbon::now()->translatedFormat('d F Y');
+    //     }
+
+    //     if (Auth::user()->role == "supervisor") {
+    //         return view('supervisor.presensi.rekap-harian', compact('presensi', 'tanggal_dari', 'tanggal_sampai', 'formatted_date_range'));
+    //     }
+
+    //     return view('pegawai.presensi.index', compact('presensi', 'tanggal_dari', 'tanggal_sampai', 'formatted_date_range'));
+    // }
+
     public function pegawai(Request $request)
     {
-        $tanggal_dari = $request->input('tanggal_dari', date('Y-m-d'));
-        $tanggal_sampai = $request->input('tanggal_sampai', date('Y-m-d'));
+        // Determine default date range
+        if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
+            $tanggal_dari = $request->input('tanggal_dari', \Carbon\Carbon::now()->subDays(7)->format('Y-m-d'));
+            $tanggal_sampai = $request->input('tanggal_sampai', \Carbon\Carbon::now()->format('Y-m-d'));
+        } else {
+            $tanggal_dari = $request->input('tanggal_dari', date('Y-m-d'));
+            $tanggal_sampai = $request->input('tanggal_sampai', date('Y-m-d'));
+        }
 
         $id_pegawai = Auth::user()->id_pegawai;
 
-        if (empty($request->tanggal_dari)) {
+        // Query logic
+        if (empty($request->tanggal_dari) && empty($request->tanggal_sampai)) {
             if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
                 $presensi = DB::select(
                     "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
-            FROM presensi
-            JOIN pegawai ON presensi.id_pegawai = pegawai.id
-            ORDER BY tanggal_masuk DESC"
+                FROM presensi
+                JOIN pegawai ON presensi.id_pegawai = pegawai.id
+                ORDER BY tanggal_masuk DESC"
                 );
             } else {
                 $presensi = DB::select(
@@ -107,8 +176,119 @@ class PegawaiController extends Controller
             }
         }
 
-        return view('pegawai.presensi.index', compact('presensi', 'tanggal_dari', 'tanggal_sampai'));
+        // Format the date range for display
+        $formatted_date_range = \Carbon\Carbon::parse($tanggal_dari)->translatedFormat('d F Y') .
+            ' - ' .
+            \Carbon\Carbon::parse($tanggal_sampai)->translatedFormat('d F Y');
+
+        // View logic based on role
+        if (Auth::user()->role == "supervisor") {
+            return view('supervisor.presensi.rekap-harian', compact('presensi', 'tanggal_dari', 'tanggal_sampai', 'formatted_date_range'));
+        }
+
+        return view('pegawai.presensi.index', compact('presensi', 'tanggal_dari', 'tanggal_sampai', 'formatted_date_range'));
     }
+
+    public function rekapHarian(Request $request)
+    {
+        // Get current date
+        $currentDate = \Carbon\Carbon::now();
+        $currentDateMinusSeven = \Carbon\Carbon::now()->subDays(7);
+
+        // Set default 'tanggal_dari' to 7 days ago and 'tanggal_sampai' to today
+        $tanggal_dari = $request->input('tanggal_dari', $currentDateMinusSeven->format('Y-m-d'));
+        $tanggal_sampai = $request->input('tanggal_sampai', $currentDate->format('Y-m-d'));
+
+
+        // If both 'bulan' and 'tahun' are missing from the query, redirect with the current month and year
+        if (!$request->has('tanggal_dari') || !$request->has('tanggal_sampai')) {
+            // return $tanggal_dari . " " . $tanggal_sampai;
+            return redirect()->route('supervisor.rekap-harian', [
+                'tanggal_dari' => $tanggal_dari,
+                'tanggal_sampai' => $tanggal_sampai
+            ]);
+        }
+
+        $id_pegawai = Auth::user()->id_pegawai;
+
+        // Query logic based on role
+        if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
+            $presensi = DB::select(
+                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+            FROM presensi
+            JOIN pegawai ON presensi.id_pegawai = pegawai.id
+            WHERE tanggal_masuk BETWEEN ? AND ?
+            ORDER BY tanggal_masuk DESC",
+                [$tanggal_dari, $tanggal_sampai]
+            );
+        }
+
+        // Format the date range for display
+        $formatted_date_range = \Carbon\Carbon::parse($tanggal_dari)->translatedFormat('d F Y') .
+            ' - ' .
+            \Carbon\Carbon::parse($tanggal_sampai)->translatedFormat('d F Y');
+
+        // Pass data to the view
+        return view('supervisor.presensi.rekap-harian', compact('presensi', 'formatted_date_range', 'tanggal_dari', 'tanggal_sampai'));
+    }
+
+
+
+    public function rekapBulanan(Request $request)
+    {
+        // Get current month and year
+        $currentMonth = \Carbon\Carbon::now()->month;
+        $currentYear = \Carbon\Carbon::now()->year;
+
+        // Retrieve query parameters for month and year
+        $bulan = $request->input('bulan', $currentMonth);
+        $tahun = $request->input('tahun', $currentYear);
+
+        // Calculate the start and end dates for the selected month and year
+        $tanggal_dari = \Carbon\Carbon::createFromDate($tahun, $bulan, 1)->startOfMonth()->format('Y-m-d');
+        $tanggal_sampai = \Carbon\Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('Y-m-d');
+
+        $id_pegawai = Auth::user()->id_pegawai;
+
+        // Query logic based on role
+        if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
+            $presensi = DB::select(
+                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+                FROM presensi
+                JOIN pegawai ON presensi.id_pegawai = pegawai.id
+                WHERE tanggal_masuk BETWEEN ? AND ?
+                ORDER BY tanggal_masuk DESC",
+                [$tanggal_dari, $tanggal_sampai]
+            );
+        } else {
+            $presensi = DB::select(
+                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+                FROM presensi
+                JOIN pegawai ON presensi.id_pegawai = pegawai.id
+                WHERE pegawai.id = ?
+                AND tanggal_masuk BETWEEN ? AND ?
+                ORDER BY tanggal_masuk DESC",
+                [$id_pegawai, $tanggal_dari, $tanggal_sampai]
+            );
+        }
+
+        // Format the date range for display
+        $formatted_date_range = \Carbon\Carbon::parse($tanggal_dari)->translatedFormat('d F Y') .
+            ' - ' .
+            \Carbon\Carbon::parse($tanggal_sampai)->translatedFormat('d F Y');
+
+        // Redirect with query parameters on first load
+        if (!$request->has('bulan') || !$request->has('tahun')) {
+            return redirect()->route('supervisor.rekap-bulanan', [
+                'bulan' => $currentMonth,
+                'tahun' => $currentYear
+            ]);
+        }
+
+        // Pass data to the view
+        return view('supervisor.presensi.rekap-bulanan', compact('presensi', 'formatted_date_range', 'bulan', 'tahun'));
+    }
+
 
     public function data_pegawai()
     {

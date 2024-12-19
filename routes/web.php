@@ -142,7 +142,9 @@ Route::prefix('home-supervisor')->middleware('auth')->group(function () {
         return view('supervisor.index');
     })->name('home-supervisor.index');
 
-    Route::get('/presensi', [PegawaiController::class, 'pegawai']);
+    Route::get('/presensi/rekap-harian', [PegawaiController::class, 'rekapHarian'])->name('supervisor.rekap-harian');
+
+    Route::get('/presensi/rekap-bulanan', [PegawaiController::class, 'rekapBulanan'])->name('supervisor.rekap-bulanan');
 
     Route::get(
         '/profile',

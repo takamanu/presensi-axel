@@ -203,10 +203,10 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="">
+                                            <a class="dropdown-item" href="{{ route('supervisor.rekap-harian') }}">
                                                 Rekap Harian
                                             </a>
-                                            <a class="dropdown-item" href="">
+                                            <a class="dropdown-item" href="{{ route('supervisor.rekap-bulanan') }}">
                                                 Rekap Bulanan
                                             </a>
                                         </div>
