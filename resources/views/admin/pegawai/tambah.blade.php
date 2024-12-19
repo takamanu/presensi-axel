@@ -102,7 +102,6 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-primary" name="submit">Simpan</button>
-
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,17 @@
     <div class="page-body">
         <div class="container-xl">
 
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <table class="table-bordered mt-3 table">
                 <thead>
                     <tr class="text-center">

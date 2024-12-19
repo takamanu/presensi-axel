@@ -37,6 +37,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', function ($request, 
 
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
+    //Jabatan
     Route::get('/jabatan', [AdminController::class, 'jabatan'])->name('jabatan');
     Route::get('/add-jabatan', [AdminController::class, 'addJabatan'])->name('add-jabatan');
     Route::post('/store-jabatan', [AdminController::class, 'storeJabatan'])->name('store-jabatan');
@@ -44,6 +45,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', function ($request, 
     Route::post('/update-jabatan/{id}', [AdminController::class, 'updateJabatan'])->name('update-jabatan');
     Route::delete('/destroy-jabatan/{id}', [AdminController::class, 'destroyJabatan'])->name('destroy-jabatan');
 
+    //Lokasi Presensi
     Route::get('/lokasi-presensi', [AdminController::class, 'lokasiPresensi'])->name('lokasi-presensi');
     Route::get('/add-lokasi', [AdminController::class, 'addLokasi'])->name('add-lokasi');
     Route::post('/store-lokasi', [AdminController::class, 'storeLokasi'])->name('store-lokasi');

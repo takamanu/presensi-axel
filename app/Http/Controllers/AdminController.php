@@ -231,7 +231,7 @@ class AdminController extends Controller
         $ketidakhadiran->update([
             'status_pengajuan' => $validated['status_pengajuan'],
         ]);
-        return redirect()->route('admin.ketidakhadiran')->with('success', 'Ketidakhadiran berhasil diubah');
+        return redirect()->route('admin.ketidakhadiran')->with('success', 'Status berhasil diubah');
     }
 
     public function downloadFile($id)

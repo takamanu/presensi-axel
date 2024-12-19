@@ -3,6 +3,23 @@
 @section('content')
     <div class="page-body">
         <div class="container-xl">
+            @if (session('pesan'))
+                <div class="alert alert-success">
+                    {{ session('pesan') }}
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             <!-- Add Data Button -->
             <a href="{{ route('admin.add-pegawai') }}" class="btn btn-primary"><span class="text"><i

@@ -12,9 +12,13 @@
                 <div class="col-lg">
                     <div class="container-tight">
                         @if (session('error'))
-                            <div class="alert alert-danger text-center">
-                                {{ session('error') }}
-                            </div>
+                            <script>
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: '{{ session('error') }}',
+                                });
+                            </script>
                         @endif
                         <div class="card card-md" style="border: none">
                             <div class="card-body">
