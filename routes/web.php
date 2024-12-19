@@ -143,8 +143,11 @@ Route::prefix('home-supervisor')->middleware('auth')->group(function () {
     })->name('home-supervisor.index');
 
     Route::get('/presensi/rekap-harian', [PegawaiController::class, 'rekapHarian'])->name('supervisor.rekap-harian');
-
+    // Route::get('/presensi/rekap-harian', [PegawaiController::class, 'rea'])->name('supervisor.rekap-harian');
     Route::get('/presensi/rekap-bulanan', [PegawaiController::class, 'rekapBulanan'])->name('supervisor.rekap-bulanan');
+
+    Route::post('/presensi/rekap-harian/export', [PegawaiController::class, 'exportRekapHarian'])->name('supervisor.rekap-harian.export');
+    Route::post('/presensi/rekap-bulanan/export', [PegawaiController::class, 'exportRekapBulanan'])->name('supervisor.rekap-bulanan.export');
 
     Route::get(
         '/profile',

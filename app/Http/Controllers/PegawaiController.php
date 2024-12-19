@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class PegawaiController extends Controller
 {
@@ -289,6 +291,233 @@ class PegawaiController extends Controller
         return view('supervisor.presensi.rekap-bulanan', compact('presensi', 'formatted_date_range', 'bulan', 'tahun'));
     }
 
+    public function exportRekapHarian(Request $request)
+    {
+        // Get the date range from the request
+        $tanggal_dari = $request->tanggal_dari;
+        $tanggal_sampai = $request->tanggal_sampai;
+
+        // Validate the input dates
+        // $validated = $request->validate([
+        //     'tanggal_dari' => 'required|date',
+        //     'tanggal_sampai' => 'required|date',
+        // ]);
+
+        // Retrieve the presensi data for a specific employee within the date range
+        $presensi = Presensi::whereBetween('tanggal_masuk', [$tanggal_dari, $tanggal_sampai])
+            ->orderByDesc('tanggal_masuk')
+            ->get();
+
+        // Get the location settings from the session or database
+        $lokasi_presensi = Session::get('lokasi_presensi');
+        $lokasi = LokasiPresensi::where('nama_lokasi', 'Kantor Pusat')->first();  // Adjust as needed
+        $jam_masuk_kantor = date('H:i:s', strtotime($lokasi->jam_masuk));
+
+        // Create the spreadsheet and set up the first sheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set the header
+        $sheet->setCellValue('A1', 'REKAP PRESENSI');
+        $sheet->setCellValue('A2', 'Tanggal Awal');
+        $sheet->setCellValue('A3', 'Tanggal Akhir');
+        $sheet->setCellValue('C2', $tanggal_dari);
+        $sheet->setCellValue('C3', $tanggal_sampai);
+        $sheet->setCellValue('A5', 'NO');
+        $sheet->setCellValue('B5', 'TANGGAL MASUK');
+        $sheet->setCellValue('C5', 'JAM MASUK');
+        $sheet->setCellValue('D5', 'TANGGAL KELUAR');
+        $sheet->setCellValue('E5', 'JAM KELUAR');
+        $sheet->setCellValue('F5', 'TOTAL JAM KERJA');
+        $sheet->setCellValue('G5', 'TOTAL JAM TERLAMBAR');
+
+        // Merge header cells
+        $sheet->mergeCells('A1:F1');
+        $sheet->mergeCells('A2:B2');
+        $sheet->mergeCells('A3:B3');
+
+        // Initialize row and counter for presensi data
+        $no = 1;
+        $row = 6;
+
+        // Loop through each presensi record and add data to the sheet
+        foreach ($presensi as $data) {
+            $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($data->tanggal_masuk . ' ' . $data->jam_masuk));
+            $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($data->tanggal_keluar . ' ' . $data->jam_keluar));
+
+            // Calculate total work hours and late hours
+            $timestamp_masuk = strtotime($jam_tanggal_masuk);
+            $timestamp_keluar = strtotime($jam_tanggal_keluar);
+            $selisih = $timestamp_keluar - $timestamp_masuk;
+            $total_jam_kerja = floor($selisih / 3600);
+            $selisih -= $total_jam_kerja * 3600;
+            $selisih_menit_kerja = floor($selisih / 60);
+
+            // Calculate late arrival
+            $jam_masuk = date('H:i:s', strtotime($data->jam_masuk));
+            $timestamp_jam_masuk_real = strtotime($jam_masuk);
+            $timestamp_jam_masuk_kantor = strtotime($jam_masuk_kantor);
+            $terlambat = $timestamp_jam_masuk_real - $timestamp_jam_masuk_kantor;
+            $total_jam_terlambat = floor($terlambat / 3600);
+            $terlambat -= $total_jam_terlambat * 3600;
+            $selisih_menit_terlambat = floor($terlambat / 60);
+
+            // Set row data
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $data->tanggal_masuk);
+            $sheet->setCellValue('C' . $row, $data->jam_masuk);
+            $sheet->setCellValue('D' . $row, $data->tanggal_keluar);
+            $sheet->setCellValue('E' . $row, $data->jam_keluar);
+            $sheet->setCellValue('F' . $row, $total_jam_kerja . ' Jam ' . $selisih_menit_kerja . ' Menit');
+            $sheet->setCellValue('G' . $row, $total_jam_terlambat . ' Jam ' . $selisih_menit_terlambat . ' Menit');
+
+            $no++;
+            $row++;
+        }
+
+        // Return the Excel file as a response for download
+
+        $randomString = strtoupper(substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 5));
+        // Get the current time
+        $currentTime = date('Y-m-d'); // Format: YYYY-MM-DD HH:MM:SS
+
+
+        return response()->stream(
+            function () use ($spreadsheet) {
+                $writer = new Xlsx($spreadsheet);
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment;filename="LRPH_' . $randomString . $currentTime . '.xlsx"',
+                'Cache-Control' => 'max-age=0',
+            ]
+        );
+    }
+
+    public function exportRekapBulanan(Request $request)
+    {
+        // Get current month and year
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        // Retrieve query parameters for month and year
+        $bulan = $request->input('bulan', $currentMonth);
+        $tahun = $request->input('tahun', $currentYear);
+
+        // Calculate the start and end dates for the selected month and year
+        $tanggal_dari = Carbon::createFromDate($tahun, $bulan, 1)->startOfMonth()->format('Y-m-d');
+        $tanggal_sampai = Carbon::createFromDate($tahun, $bulan, 1)->endOfMonth()->format('Y-m-d');
+
+        $id_pegawai = Auth::user()->id_pegawai;
+
+        // Query logic based on role
+        if (Auth::user()->role == "admin" || Auth::user()->role == "supervisor") {
+            $presensi = DB::select(
+                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+            FROM presensi
+            JOIN pegawai ON presensi.id_pegawai = pegawai.id
+            WHERE tanggal_masuk BETWEEN ? AND ?
+            ORDER BY tanggal_masuk DESC",
+                [$tanggal_dari, $tanggal_sampai]
+            );
+        } else {
+            $presensi = DB::select(
+                "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi
+            FROM presensi
+            JOIN pegawai ON presensi.id_pegawai = pegawai.id
+            WHERE pegawai.id = ?
+            AND tanggal_masuk BETWEEN ? AND ?
+            ORDER BY tanggal_masuk DESC",
+                [$id_pegawai, $tanggal_dari, $tanggal_sampai]
+            );
+        }
+
+        // Create the spreadsheet and set up the first sheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set the header
+        $sheet->setCellValue('A1', 'REKAP PRESENSI BULANAN');
+        $sheet->setCellValue('A2', 'Bulan');
+        $sheet->setCellValue('A3', 'Tahun');
+        $sheet->setCellValue('C2', Carbon::parse($tanggal_dari)->translatedFormat('F Y'));
+        $sheet->setCellValue('C3', $tahun);
+        $sheet->setCellValue('A5', 'NO');
+        $sheet->setCellValue('B5', 'TANGGAL MASUK');
+        $sheet->setCellValue('C5', 'JAM MASUK');
+        $sheet->setCellValue('D5', 'TANGGAL KELUAR');
+        $sheet->setCellValue('E5', 'JAM KELUAR');
+        $sheet->setCellValue('F5', 'TOTAL JAM KERJA');
+        $sheet->setCellValue('G5', 'TOTAL JAM TERLAMBAR');
+
+        // Merge header cells
+        $sheet->mergeCells('A1:F1');
+        $sheet->mergeCells('A2:B2');
+        $sheet->mergeCells('A3:B3');
+
+        // Initialize row and counter for presensi data
+        $no = 1;
+        $row = 6;
+
+        $lokasi = LokasiPresensi::where('nama_lokasi', 'Kantor Pusat')->first();  // Adjust as needed
+        $jam_masuk_kantor = date('H:i:s', strtotime($lokasi->jam_masuk));
+
+        // Loop through each presensi record and add data to the sheet
+        foreach ($presensi as $data) {
+            $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($data->tanggal_masuk . ' ' . $data->jam_masuk));
+            $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($data->tanggal_keluar . ' ' . $data->jam_keluar));
+
+            // Calculate total work hours and late hours
+            $timestamp_masuk = strtotime($jam_tanggal_masuk);
+            $timestamp_keluar = strtotime($jam_tanggal_keluar);
+            $selisih = $timestamp_keluar - $timestamp_masuk;
+            $total_jam_kerja = floor($selisih / 3600);
+            $selisih -= $total_jam_kerja * 3600;
+            $selisih_menit_kerja = floor($selisih / 60);
+
+            // Calculate late arrival
+            $jam_masuk = date('H:i:s', strtotime($data->jam_masuk));
+            $timestamp_jam_masuk_real = strtotime($jam_masuk);
+            $timestamp_jam_masuk_kantor = strtotime($jam_masuk_kantor);
+            $terlambat = $timestamp_jam_masuk_real - $timestamp_jam_masuk_kantor;
+            $total_jam_terlambat = floor($terlambat / 3600);
+            $terlambat -= $total_jam_terlambat * 3600;
+            $selisih_menit_terlambat = floor($terlambat / 60);
+
+            // Set row data
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $data->tanggal_masuk);
+            $sheet->setCellValue('C' . $row, $data->jam_masuk);
+            $sheet->setCellValue('D' . $row, $data->tanggal_keluar);
+            $sheet->setCellValue('E' . $row, $data->jam_keluar);
+            $sheet->setCellValue('F' . $row, $total_jam_kerja . ' Jam ' . $selisih_menit_kerja . ' Menit');
+            $sheet->setCellValue('G' . $row, $total_jam_terlambat . ' Jam ' . $selisih_menit_terlambat . ' Menit');
+
+            $no++;
+            $row++;
+        }
+
+        // Generate a random string and current time for the file name
+        $randomString = strtoupper(substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 5));
+        $currentTime = Carbon::now()->format('Y-m-d');
+
+        // Return the Excel file as a response for download
+        return response()->stream(
+            function () use ($spreadsheet) {
+                $writer = new Xlsx($spreadsheet);
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment;filename="LRPB_' . $randomString . '_' . $currentTime . '.xlsx"',
+                'Cache-Control' => 'max-age=0',
+            ]
+        );
+    }
+
 
     public function data_pegawai()
     {
@@ -298,6 +527,8 @@ class PegawaiController extends Controller
 
         return view('supervisor.pegawai.index', compact('pegawai'));
     }
+
+
 
     public function data_pegawai_show($id)
     {

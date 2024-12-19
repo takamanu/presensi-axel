@@ -105,25 +105,25 @@
                 <h5 class="modal-title">Export Excel Rekap Presensi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="{{route('supervisor.rekap-harian.export')}}">
+                @csrf
                 <div class="modal-body">
-
                     <div class="mb-3">
                         <label for="">Tanggal Awal</label>
-                        <input type="date" class="form-control" name="tanggal_dari">
+                        <input type="date" class="form-control" name="tanggal_dari" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="">Tanggal Akhir</label>
-                        <input type="date" class="form-control" name="tanggal_sampai">
+                        <input type="date" class="form-control" name="tanggal_sampai" required>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Export</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

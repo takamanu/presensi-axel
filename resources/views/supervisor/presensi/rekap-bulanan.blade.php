@@ -127,25 +127,51 @@
                 <h5 class="modal-title">Export Excel Rekap Presensi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="">
+            <form method="POST" action="{{ route('supervisor.rekap-bulanan.export') }}">
+                @csrf
                 <div class="modal-body">
-
+                    <!-- Month Selection -->
                     <div class="mb-3">
-                        <label for="">Bulan Awal</label>
-                        <input type="date" class="form-control" name="tanggal_dari">
+                        <label for="bulan" class="form-label">Pilih Bulan</label>
+                        <select class="form-control" name="bulan" id="bulan" required>
+                            <option value="">Pilih Bulan</option>
+                            <option value="1">Januari</option>
+                            <option value="2">Februari</option>
+                            <option value="3">Maret</option>
+                            <option value="4">April</option>
+                            <option value="5">Mei</option>
+                            <option value="6">Juni</option>
+                            <option value="7">Juli</option>
+                            <option value="8">Agustus</option>
+                            <option value="9">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
                     </div>
 
+                    <!-- Year Selection -->
                     <div class="mb-3">
-                        <label for="">Bulan Akhir</label>
-                        <input type="date" class="form-control" name="tanggal_sampai">
+                        <label for="tahun" class="form-label">Pilih Tahun</label>
+                        <select class="form-control" name="tahun" id="tahun" required>
+                            <option value="">Pilih Tahun</option>
+                            @php
+                                $currentYear = now()->year;
+                                $endYear = $currentYear + 5;
+                            @endphp
+                            @for ($year = $currentYear; $year <= $endYear; $year++)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </select>
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Export</button>
+                    <button type="submit" class="btn btn-primary">Export</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
