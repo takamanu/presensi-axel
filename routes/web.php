@@ -167,17 +167,16 @@ Route::prefix('home-supervisor')->middleware('auth')->group(function () {
     });
 
     Route::prefix('data-pegawai')->group(function () {
-        Route::get('/', [PegawaiController::class, 'data_pegawai']);
+        Route::get('/', [PegawaiController::class, 'data_pegawai'])->name('supervisor.data_pegawai.index');
 
         Route::get('/tambah', function () {
             return view('supervisor.pegawai.create');
-        });
+        })->name('supervisor.data_pegawai.create');
 
         Route::get('/edit/{id}', [PegawaiController::class, 'show'])->name('supervisor.data_pegawai.edit');
 
         Route::get('/detail/{id}', [PegawaiController::class, 'data_pegawai_show'])->name('supervisor.data_pegawai.show');
     });
+    Route::get('/ketidakhadiran', [KetidakhadiranController::class, 'index'])->name('ketidakhadiran.index');
+    Route::get('/ketidakhadiran/detail', [KetidakhadiranController::class, 'show'])->name('ketidakhadiran.show');
 });
-
-Route::get('/ketidakhadiran', [KetidakhadiranController::class, 'index']);
-Route::get('/ketidakhadiran/detail', [KetidakhadiranController::class, 'show']);

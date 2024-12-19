@@ -30,7 +30,7 @@ class PegawaiController extends Controller
             JOIN pegawai ON users.id_pegawai = pegawai.id
         ");
 
-        dd($results);
+        // dd($results);
         return view('pegawai.index');
     }
 

@@ -63,8 +63,8 @@
                 {{-- @dd($user->pegawai->foto) --}}
                 <div class="col-md-6">
                     <!-- Hardcoded Image -->
-                    <img style="width: 350px; border-radius: 10px"
-                        src={{ asset('assets/img/foto_pegawai/' . $user->pegawai->foto) }} alt="">
+                    <img style="width: 350px; border-radius: 10px" src="{{ asset('storage/' . $user->pegawai->foto) }}"
+                        alt="Foto">
                 </div>
             </div>
 
