@@ -75,14 +75,13 @@
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
                             <!-- Avatar -->
-                            <span class="avatar avatar-sm rounded-circle"
-                                style="background-image: url('https://via.placeholder.com/32')"></span>
+                            <img class="avatar avatar-sm rounded-circle"
+                                src="{{ asset('storage/' . auth()->user()->pegawai->foto) }}" alt="Foto Profil">
 
                             <!-- User Info -->
                             <div class="d-none d-xl-block ps-2">
-                                <div>{{ session('nama') }}</div>
-
-                                <div class="small text-secondary mt-1">{{ session('jabatan') }}</div>
+                                <div>{{ auth()->user()->pegawai->nama }}</div>
+                                <div class="small text-secondary mt-1">{{ auth()->user()->pegawai->jabatan }}</div>
                             </div>
 
                             <!-- Bootstrap Dropdown Icon -->
@@ -112,40 +111,41 @@
 
                             {{-- Home --}}
                             <li class="nav-item">
-                                @if (Auth::user()->role == "pegawai")
-                                <a class="nav-link" href="{{ route('home-pegawai.index') }}">
-
-                                @else
-                                <a class="nav-link" href="{{ route('admin.dashboard') }}">
-
+                                @if (Auth::user()->role == 'pegawai')
+                                    <a class="nav-link" href="{{ route('home-pegawai.index') }}">
+                                    @else
+                                        <a class="nav-link" href="{{ route('home-supervisor.index') }}">
                                 @endif
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
-                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">Home</span>
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                                        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">Home</span>
                                 </a>
                             </li>
 
                             {{-- Rekap Presensi --}}
                             {{-- {{ Auth::user()->role}} --}}
 
-                            @if (Auth::user()->role == "pegawai")
+                            @if (Auth::user()->role == 'pegawai')
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ url('home-pegawai/presensi') }}">
                                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                                <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                <path
+                                                    d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                                <path
+                                                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
                                                 <path d="M9 14l2 2l4 -4" />
                                             </svg>
                                         </span>
@@ -157,150 +157,150 @@
 
                             {{-- Pegawai --}}
 
-                            @if (Auth::user()->role != "pegawai")
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.pegawai') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-user">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        Pegawai
-                                    </span>
-                                </a>
-                            </li>
+                            @if (Auth::user()->role != 'pegawai')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('supervisor.data_pegawai.index') }}">
+                                        <span
+                                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-user">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Pegawai
+                                        </span>
+                                    </a>
+                                </li>
                             @endif
 
 
 
                             {{--  Master Data --}}
 
-                            @if (Auth::user()->role == "admin")
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-database">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
-                                            <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
-                                            <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        Master data
-                                    </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-menu-columns">
-                                        <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="">
-                                                Jabatan
-                                            </a>
-                                            <a class="dropdown-item" href="">
-                                                Lokasi Presensi
-                                            </a>
+                            @if (Auth::user()->role == 'admin')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                        <span
+                                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-database">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
+                                                <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
+                                                <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Master data
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-menu-columns">
+                                            <div class="dropdown-menu-column">
+                                                <a class="dropdown-item" href="">
+                                                    Jabatan
+                                                </a>
+                                                <a class="dropdown-item" href="">
+                                                    Lokasi Presensi
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
                                 </li>
                             @endif
 
 
-                                {{-- Rekap Presensi --}}
-                            @if (Auth::user()->role != "pegawai")
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                            <path
-                                                d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                            <path d="M9 14l2 2l4 -4" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        Rekap Presensi
-                                    </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-menu-columns">
-                                        <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{ route('supervisor.rekap-harian') }}">
-                                                Rekap Harian
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('supervisor.rekap-bulanan') }}">
-                                                Rekap Bulanan
-                                            </a>
+                            {{-- Rekap Presensi --}}
+                            @if (Auth::user()->role != 'pegawai')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                        <span
+                                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                                <path
+                                                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                <path d="M9 14l2 2l4 -4" />
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Rekap Presensi
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-menu-columns">
+                                            <div class="dropdown-menu-column">
+                                                <a class="dropdown-item"
+                                                    href="{{ route('supervisor.rekap-harian') }}">
+                                                    Rekap Harian
+                                                </a>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('supervisor.rekap-bulanan') }}">
+                                                    Rekap Bulanan
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                            </li>
-
-
+                                </li>
                             @endif
 
                             {{--  Ketidakhadiran --}}
-                            @if (Auth::user()->role == "pegawai")
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home-pegawai.ketidakhadiran') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-x">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                            <path
-                                                d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                            <path d="M10 12l4 4m0 -4l-4 4" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        Cuti
-                                    </span>
-                                </a>
-                            </li>
-                            @elseif (Auth::user()->role == "supervisor" || Auth::user()->role == "admin")
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.ketidakhadiran') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-x">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                            <path
-                                                d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                            <path d="M10 12l4 4m0 -4l-4 4" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        Cuti
-                                    </span>
-                                </a>
-                            </li>
+                            @if (Auth::user()->role == 'pegawai')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('home-pegawai.ketidakhadiran') }}">
+                                        <span
+                                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-x">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                                <path
+                                                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                <path d="M10 12l4 4m0 -4l-4 4" />
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Cuti
+                                        </span>
+                                    </a>
+                                </li>
+                            @elseif (Auth::user()->role == 'supervisor' || Auth::user()->role == 'admin')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ketidakhadiran.index') }}">
+                                        <span
+                                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-x">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                                <path
+                                                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                                <path d="M10 12l4 4m0 -4l-4 4" />
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Cuti
+                                        </span>
+                                    </a>
+                                </li>
                             @endif
 
                             {{-- Logout --}}

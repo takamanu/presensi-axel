@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-body">
         <div class="container-xl">
-            <form action="{{ route('pegawai.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.store-pegawai') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
 
@@ -102,7 +102,6 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-primary" name="submit">Simpan</button>
-
                             </div>
                         </div>
                     </div>

@@ -11,8 +11,8 @@
                         <div class="card-body">
                             <center>
                                 <!-- Hardcoded employee photo -->
-                                <img style="border-radius: 100%; width: 50%" src="https://via.placeholder.com/150"
-                                    alt="Employee Photo">
+                                <img style="border-radius: 100%; width: 50%"
+                                    src="{{ asset('storage/' . auth()->user()->pegawai->foto) }}" alt="Foto Profil">
                             </center>
 
                             <table class="mt-4 table">

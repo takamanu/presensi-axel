@@ -3,8 +3,12 @@
 @section('content')
     <div class="page-body">
         <div class="container-xl">
-
-            <form action="{{ route('pegawai.update.fixed') }}" method="POST" enctype="multipart/form-data">
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+            <form action="{{ route('admin.update-pegawai') }}" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     @csrf
                     <div class="col-md-6">
@@ -15,8 +19,7 @@
 
                                 <div class="mb-3">
                                     <label for="">Nama</label>
-                                    <input type="text" class="form-control" name="nama"
-                                        value="{{ $employee->pegawai->nama }}">
+                                    <input type="text" class="form-control" name="nama" value="{{ $employee->nama }}">
                                 </div>
 
                                 <div class="mb-3">
@@ -24,11 +27,11 @@
                                     <select name="jenis_kelamin" class="form-control">
                                         <option selected disabled value="">--Pilih Jenis Kelamin--</option>
                                         <option value="Laki-laki"
-                                            {{ $employee->pegawai->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>
+                                            {{ $employee->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>
                                             Laki-laki
                                         </option>
                                         <option value="Perempuan"
-                                            {{ $employee->pegawai->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>
+                                            {{ $employee->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>
                                             Perempuan
                                         </option>
                                     </select>
@@ -48,14 +51,12 @@
                                     <label for="">Jabatan</label>
                                     <select name="jabatan" class="form-control">
                                         <option selected disabled value="">--Pilih Jabatan--</option>
-                                        <option value="admin"
-                                            {{ $employee->pegawai->jabatan == 'admin' ? 'selected' : '' }}>Admin
+                                        <option value="admin" {{ $employee->jabatan == 'admin' ? 'selected' : '' }}>Admin
                                         </option>
                                         <option value="supervisor"
-                                            {{ $employee->pegawai->jabatan == 'supervisor' ? 'selected' : '' }}>
+                                            {{ $employee->jabatan == 'supervisor' ? 'selected' : '' }}>
                                             Supervisor</option>
-                                        <option value="marketing"
-                                            {{ $employee->pegawai->jabatan == 'marketing' ? 'selected' : '' }}>
+                                        <option value="marketing" {{ $employee->jabatan == 'marketing' ? 'selected' : '' }}>
                                             Marketing</option>
                                     </select>
                                 </div>
@@ -102,10 +103,9 @@
                                         <option selected disabled value="">--Pilih Role--</option>
                                         <option value="admin" {{ $employee->role == 'admin' ? 'selected' : '' }}>
                                             Admin</option>
-                                        <option value="pegawai" {{ $employee->status == 'pegawai' ? 'selected' : '' }}>
+                                        <option value="pegawai" {{ $employee->role == 'pegawai' ? 'selected' : '' }}>
                                             Pegawai</option>
-                                        <option value="supervisor"
-                                            {{ $employee->status == 'supervisor' ? 'selected' : '' }}>
+                                        <option value="supervisor" {{ $employee->role == 'supervisor' ? 'selected' : '' }}>
                                             Supervisor</option>
                                     </select>
                                 </div>
@@ -116,7 +116,7 @@
                                         <option selected disabled value="">--Pilih Lokasi Presensi--</option>
                                         @foreach ($lokasi as $i)
                                             <option value="{{ $i->nama_lokasi }}"
-                                                {{ $employee->pegawai->lokasi_presensi == $i->nama_lokasi ? 'selected' : '' }}>
+                                                {{ $employee->lokasi_presensi == $i->nama_lokasi ? 'selected' : '' }}>
                                                 {{ $i->nama_lokasi }}
                                             </option>
                                         @endforeach
@@ -125,7 +125,7 @@
 
                                 <div class="mb-3">
                                     <label for="">Foto</label>
-                                    <input type="hidden" value="{{ $employee->pegawai->foto }}" name="foto_lama">
+                                    <input type="hidden" value="{{ $employee->foto }}" name="foto_lama">
                                     <input type="file" class="form-control" name="foto_baru">
                                 </div>
 

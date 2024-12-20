@@ -3,6 +3,23 @@
 @section('content')
     <div class="page-body">
         <div class="container-xl">
+            @if (session('pesan'))
+                <div class="alert alert-success">
+                    {{ session('pesan') }}
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             <!-- Add Data Button -->
             <a href="{{ route('admin.add-pegawai') }}" class="btn btn-primary"><span class="text"><i
@@ -39,7 +56,7 @@
                                     <div style="display: flex; justify-content: center; gap: 5px;">
                                         <a href="{{ route('admin.detail-pegawai', $item->id) }}"
                                             class="badge bg-primary badge-pill">Detail</a>
-                                        <a href="{{ route('admin.edit-pegawai', $item->id) }}"
+                                        <a href="{{ route('admin.edit-pegawai', $item->id_pegawai) }}"
                                             class="badge bg-primary badge-pill">Edit</a>
                                         <form action="{{ route('admin.destroy-pegawai', $item->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin ingin menghapus data ini?')">

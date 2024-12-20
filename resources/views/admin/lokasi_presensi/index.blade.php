@@ -4,6 +4,12 @@
     <div class="page-body">
         <div class="container-xl">
 
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <a href="{{ route('admin.add-lokasi') }}" class="btn btn-primary"><span class="text"><i
                         class="fa-solid fa-circle-plus"></i> Tambah
                     Data</span></a>

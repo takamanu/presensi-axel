@@ -36,11 +36,11 @@ class LoginController extends Controller
                 } else if (Auth::user()->role == "pegawai") {
                     return redirect()->route('home-pegawai.index');
                 } else if (Auth::user()->role == "supervisor") {
-                    return redirect()->route('admin.dashboard');
+                    return redirect()->route('home-supervisor.index');
                     // return redirect()->route('home-supervisor.index');
                 }
             } else {
-                return redirect()->route('login')->with('error', 'Akun anda tidak aktif');
+                return redirect()->route('login')->with('akun', 'Akun anda tidak aktif');
             }
         } else {
             return redirect()->route('login')->with('error', 'Username atau password salah');

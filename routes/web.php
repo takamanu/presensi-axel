@@ -37,6 +37,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', function ($request, 
 
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
+    //Jabatan
     Route::get('/jabatan', [AdminController::class, 'jabatan'])->name('jabatan');
     Route::get('/add-jabatan', [AdminController::class, 'addJabatan'])->name('add-jabatan');
     Route::post('/store-jabatan', [AdminController::class, 'storeJabatan'])->name('store-jabatan');
@@ -44,6 +45,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', function ($request, 
     Route::post('/update-jabatan/{id}', [AdminController::class, 'updateJabatan'])->name('update-jabatan');
     Route::delete('/destroy-jabatan/{id}', [AdminController::class, 'destroyJabatan'])->name('destroy-jabatan');
 
+    //Lokasi Presensi
     Route::get('/lokasi-presensi', [AdminController::class, 'lokasiPresensi'])->name('lokasi-presensi');
     Route::get('/add-lokasi', [AdminController::class, 'addLokasi'])->name('add-lokasi');
     Route::post('/store-lokasi', [AdminController::class, 'storeLokasi'])->name('store-lokasi');
@@ -66,9 +68,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', function ($request, 
     //Pegawai
     Route::get('/pegawai', [AdminController::class, 'pegawai'])->name('pegawai');
     Route::get('/add-pegawai', [AdminController::class, 'addPegawai'])->name('add-pegawai');
+    Route::post('/store-pegawai', [AdminController::class, 'storePegawai'])->name('store-pegawai');
     Route::get('/edit-pegawai/{id}', [AdminController::class, 'editPegawai'])->name('edit-pegawai');
+    Route::post('/update-pegawai', [AdminController::class, 'updatePegawai'])->name('update-pegawai');
     Route::get('/detail-pegawai/{id}', [AdminController::class, 'detailPegawai'])->name('detail-pegawai');
     Route::delete('/destroy-pegawai/{id}', [AdminController::class, 'destroyPegawai'])->name('destroy-pegawai');
+
+    //Rekap Bulanan
+    Route::get('/rekap-bulanan', [AdminController::class, 'rekapBulanan'])->name('rekap-bulanan');
+    Route::post('/rekap-bulanan/export', [AdminController::class, 'exportRekapBulanan'])->name('rekap-bulanan-export');
+
+    //Rekap Harian
+    Route::get('/rekap-harian', [AdminController::class, 'rekapHarian'])->name('rekap-harian');
+    Route::post('/rekap-harian/export', [AdminController::class, 'exportRekapHarian'])->name('rekap-harian-export');
 });
 
 
@@ -159,17 +171,16 @@ Route::prefix('home-supervisor')->middleware('auth')->group(function () {
     });
 
     Route::prefix('data-pegawai')->group(function () {
-        Route::get('/', [PegawaiController::class, 'data_pegawai']);
+        Route::get('/', [PegawaiController::class, 'data_pegawai'])->name('supervisor.data_pegawai.index');
 
         Route::get('/tambah', function () {
             return view('supervisor.pegawai.create');
-        });
+        })->name('supervisor.data_pegawai.create');
 
         Route::get('/edit/{id}', [PegawaiController::class, 'show'])->name('supervisor.data_pegawai.edit');
 
         Route::get('/detail/{id}', [PegawaiController::class, 'data_pegawai_show'])->name('supervisor.data_pegawai.show');
     });
+    Route::get('/ketidakhadiran', [KetidakhadiranController::class, 'index'])->name('ketidakhadiran.index');
+    Route::get('/ketidakhadiran/detail', [KetidakhadiranController::class, 'show'])->name('ketidakhadiran.show');
 });
-
-Route::get('/ketidakhadiran', [KetidakhadiranController::class, 'index']);
-Route::get('/ketidakhadiran/detail', [KetidakhadiranController::class, 'show']);

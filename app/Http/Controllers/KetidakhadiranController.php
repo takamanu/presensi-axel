@@ -15,30 +15,11 @@ class KetidakhadiranController extends Controller
      */
     public function index()
     {
-        $userID = Auth::user()->id;
-        // $id = 2;
-        $result = DB::select("
-            SELECT
-                users.id_pegawai,
-                users.username,
-                users.status,
-                users.role,
-                pegawai.*
-            FROM users
-            JOIN pegawai ON users.id_pegawai = pegawai.id
-            WHERE users.id = ?
-        ", [$userID]);
-
-        $dataKetidakhadiran = Ketidakhadiran::where('id_pegawai', $result[0]->id_pegawai)
-            ->orderBy('id', 'desc')
-            ->get();
-
-        // dd($dataKetidakhadiran);
-
-        $title = "Data Cuti";
-        return view('pegawai.ketidakhadiran.index', [
+        $title = "Data Ketidakhadiran";
+        $ketidakhadiran = Ketidakhadiran::orderBy('id', 'desc')->get();
+        return view('supervisor.ketidakhadiran.index', [
             'title' => $title,
-            'ketidakhadiran' => $dataKetidakhadiran
+            'ketidakhadiran' => $ketidakhadiran
         ]);
     }
 

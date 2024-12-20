@@ -15,12 +15,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <title>{{ $title }}</title>
     <!-- CSS files -->
     <link href="{{ asset('assets/css/tabler.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/tabler-vendors.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/demo.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
@@ -57,32 +59,17 @@
                     </a>
                 </h1>
                 <div class="navbar-nav order-md-last flex-row">
-                    {{-- <div class="d-none d-md-flex">
-                            <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-                                </svg>
-                            </a>
-                            <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                                    <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
-                                </svg>
-                            </a>
-                        </div> --}}
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
                             <!-- Avatar -->
-                            <span class="avatar avatar-sm rounded-circle"
-                                style="background-image: url('https://via.placeholder.com/32')"></span>
+                            <img class="avatar avatar-sm rounded-circle"
+                                src="{{ asset('storage/' . auth()->user()->pegawai->foto) }}" alt="Foto Profil">
 
                             <!-- User Info -->
                             <div class="d-none d-xl-block ps-2">
-                                <div>{{ session('nama') }}</div>
-                                <div class="small text-secondary mt-1">{{ session('jabatan') }}</div>
+                                <div>{{ auth()->user()->pegawai->nama }}</div>
+                                <div class="small text-secondary mt-1">{{ auth()->user()->pegawai->jabatan }}</div>
                             </div>
 
                             <!-- Bootstrap Dropdown Icon -->
@@ -143,40 +130,39 @@
                                 </a>
                             </li>
 
-                            @if (Auth::user()->role == "admin")
-                            <li class="nav-item dropdown">
-                                {{-- {{ Auth::user()->role }} --}}
-                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-database">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
-                                            <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
-                                            <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        Master data
-                                    </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-menu-columns">
-                                        <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{ route('admin.jabatan') }}">
-                                                Jabatan
-                                            </a>
-                                            <a class="dropdown-item" href="{{ route('admin.lokasi-presensi') }}">
-                                                Lokasi Presensi
-                                            </a>
+                            @if (Auth::user()->role == 'admin')
+                                <li class="nav-item dropdown">
+                                    {{-- {{ Auth::user()->role }} --}}
+                                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                        <span
+                                            class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-database">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
+                                                <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
+                                                <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            Master data
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-menu-columns">
+                                            <div class="dropdown-menu-column">
+                                                <a class="dropdown-item" href="{{ route('admin.jabatan') }}">
+                                                    Jabatan
+                                                </a>
+                                                <a class="dropdown-item" href="{{ route('admin.lokasi-presensi') }}">
+                                                    Lokasi Presensi
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                            </li>
-
+                                </li>
                             @endif
 
                             <li class="nav-item dropdown">
@@ -203,10 +189,10 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{ route('supervisor.rekap-harian') }}">
+                                            <a class="dropdown-item" href="{{ route('admin.rekap-harian') }}">
                                                 Rekap Harian
                                             </a>
-                                            <a class="dropdown-item" href="{{ route('supervisor.rekap-bulanan') }}">
+                                            <a class="dropdown-item" href="{{ route('admin.rekap-bulanan') }}">
                                                 Rekap Bulanan
                                             </a>
                                         </div>
@@ -289,3 +275,4 @@
 </body>
 
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

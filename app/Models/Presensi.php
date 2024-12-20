@@ -16,4 +16,9 @@ class Presensi extends Model
         'jam_masuk',
         'foto_masuk',
     ];
+
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'id_pegawai', 'id');
+    }
 }

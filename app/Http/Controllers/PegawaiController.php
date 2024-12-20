@@ -30,7 +30,7 @@ class PegawaiController extends Controller
             JOIN pegawai ON users.id_pegawai = pegawai.id
         ");
 
-        dd($results);
+        // dd($results);
         return view('pegawai.index');
     }
 
@@ -736,11 +736,7 @@ class PegawaiController extends Controller
             ]
         );
         // dd($request->all());
-        if ($user->role == "admin") {
-            return redirect()->route('admin.pegawai')->with('pesan', 'Data berhasil diubah');
-        } elseif ($user->role == "supervisor") {
-            return redirect()->route('pegawai.data_pegawai.index')->with('pesan', 'Data berhasil diubah');
-        }
+        return redirect()->route('supervisor.data_pegawai.index')->with('pesan', 'Data berhasil diubah');
     }
 
     /**
