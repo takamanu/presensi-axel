@@ -56,7 +56,7 @@
                                     <div style="display: flex; justify-content: center; gap: 5px;">
                                         <a href="{{ route('admin.detail-pegawai', $item->id) }}"
                                             class="badge bg-primary badge-pill">Detail</a>
-                                        <a href="{{ route('admin.edit-pegawai', $item->id) }}"
+                                        <a href="{{ route('admin.edit-pegawai', $item->id_pegawai) }}"
                                             class="badge bg-primary badge-pill">Edit</a>
                                         <form action="{{ route('admin.destroy-pegawai', $item->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin ingin menghapus data ini?')">

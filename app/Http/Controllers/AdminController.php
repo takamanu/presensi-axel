@@ -294,17 +294,141 @@ class AdminController extends Controller
         ]);
     }
 
+    public function storePegawai(Request $request)
+    {
+        $user = Auth::user();
+
+        $results = DB::select("
+            select nip from pegawai order by nip desc limit 1");
+
+        if (!empty($results)) {
+            $nip_db = $results[0]->nip;
+            $nip_parts = explode("-", $nip_db);
+            $no_baru = (int)$nip_parts[1] + 1;
+            $nip_baru = "PEG-" . str_pad($no_baru, 4, "0", STR_PAD_LEFT);
+        } else {
+            $nip_baru = "PEG-0001";
+        }
+
+        $nama = $request->nama;
+        $jenis_kelamin = $request->jenis_kelamin;
+        $alamat = $request->alamat;
+        $no_handphone = $request->no_handphone;
+        $jabatan = $request->jabatan;
+        $lokasi_presensi = $request->lokasi_presensi;
+
+        $fotoPath = null;
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('foto_pegawai', 'public');
+        }
+
+
+        DB::insert(
+            "
+        INSERT INTO pegawai (nip, nama, jenis_kelamin, alamat, no_handphone, jabatan, lokasi_presensi, foto)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+                $nip_baru,
+                $nama,
+                $jenis_kelamin,
+                $alamat,
+                $no_handphone,
+                $jabatan,
+                $lokasi_presensi,
+                $fotoPath
+            ]
+        );
+
+        $id_pegawai = Pegawai::where('nip', $nip_baru)->first()->id;
+
+
+        DB::insert(
+            "
+            INSERT INTO users (id_pegawai, username, password, status, role)
+            VALUES (?, ?, ?, ?, ?)",
+            [
+                $id_pegawai,
+                $request->username,
+                Hash::make($request->password),
+                $request->status,
+                $request->role
+            ]
+        );
+        return redirect()->route('admin.pegawai')->with('pesan', 'Data berhasil ditambahkan');
+    }
+
     public function editPegawai($id)
     {
         $title = "Edit Data Pegawai";
         $lokasi = LokasiPresensi::all();
-        $employee = User::where('id', $id)->first();
+        $employee = DB::selectOne(
+            "SELECT users.*, pegawai.* FROM users
+             JOIN pegawai ON users.id_pegawai = pegawai.id
+             WHERE pegawai.id = ?",
+            [$id]
+        );
         return view('admin.pegawai.edit', [
             'employee' => $employee,
             'title' => $title,
             'lokasi' => $lokasi
         ]);
     }
+
+    public function updatePegawai(Request $request)
+    {
+        // dd($request->all());
+        // Prepare employee data
+        $user = Auth::user();
+        $employeeData = [
+            'nama' => $request->nama,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'alamat' => $request->alamat,
+            'no_handphone' => $request->no_handphone,
+            'jabatan' => $request->jabatan,
+            'lokasi_presensi' => $request->lokasi_presensi,
+        ];
+
+        if ($request->hasFile('foto_baru')) {
+            $filename = $request->file('foto_baru')->store('foto_pegawai', 'public');
+            // $fotoPath = $request->file('foto')->store('foto_pegawai', 'public');
+            $employeeData['foto'] = $filename;
+        } else {
+            $employeeData['foto'] = $request->foto_lama;
+        }
+
+        // Update employee data with raw query
+        DB::update(
+            "UPDATE pegawai SET nama = ?, jenis_kelamin = ?, alamat = ?, no_handphone = ?, jabatan = ?, lokasi_presensi = ?, foto = ? WHERE id = ?",
+            array_merge(array_values($employeeData), [$request->id_pegawai])
+        );
+
+        // Prepare user data
+        $userData = [
+            'username' => $request->username,
+            'role' => $request->role,
+            'status' => $request->status,
+        ];
+
+        if ($request->password) {
+            $userData['password'] = Hash::make($request->password);
+        }
+
+        // Update user data with raw query
+        DB::update(
+            "UPDATE users SET username = ?, role = ?, status = ?, password = IF(? IS NOT NULL, ?, password) WHERE id_pegawai = ?",
+            [
+                $userData['username'],
+                $userData['role'],
+                $userData['status'],
+                $request->password ? $userData['password'] : null,
+                $request->password ? $userData['password'] : null,
+                $request->id_pegawai,
+            ]
+        );
+        // dd($request->all());
+        return redirect()->route('admin.pegawai')->with('pesan', 'Data berhasil diubah');
+    }
+
 
     public function destroyPegawai($id)
     {
