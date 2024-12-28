@@ -34,6 +34,78 @@ class PegawaiController extends Controller
         return view('pegawai.index');
     }
 
+    public function homePegawai()
+    {
+
+        $idPegawai = Auth::user()->id_pegawai;
+
+        $status_wh = "";
+
+        $lokasiPresensi = DB::table('pegawai')
+            ->join('lokasi_presensi', 'pegawai.lokasi_presensi', '=', 'lokasi_presensi.nama_lokasi')
+            ->where('pegawai.id', $idPegawai)
+            ->select('lokasi_presensi.jam_masuk', 'lokasi_presensi.jam_pulang', 'lokasi_presensi.latitude', 'lokasi_presensi.longitude')
+            ->first();
+
+        if (!$lokasiPresensi) {
+            return response()->json(['message' => 'Location not found for this employee.']);
+        }
+
+        $currentTime = Carbon::now()->setTimezone('Asia/Jakarta')->format('H:i:s');
+
+        $jamMasuk = $lokasiPresensi->jam_masuk;
+        $jamPulang = $lokasiPresensi->jam_pulang;
+
+        // return $currentTime . $jamPulang;
+
+        if ($currentTime >= $jamMasuk && $currentTime < $jamPulang) {
+            $status_wh = 'in_wh';
+        } elseif ($currentTime >= $jamPulang) {
+            $status_wh = 'after_wh';
+        } else {
+            $status_wh = 'before_wh';
+        }
+
+        $presensiMasuk = false;
+        $presensiKeluar = false;
+        $presensiMasukDate = "";
+        $presensiKeluarDate = "";
+
+
+        $results = DB::select("
+            SELECT *
+            FROM presensi
+            WHERE id_pegawai = ?
+            AND DATE(tanggal_masuk) = CURDATE()
+            AND DATE(tanggal_keluar) = CURDATE()
+            LIMIT 1
+        ", [$idPegawai]);
+
+        if (empty($results)) {
+            return view('pegawai.index', compact('status_wh', 'presensiMasuk', 'presensiKeluar', 'presensiMasukDate', 'presensiKeluarDate', 'jamMasuk', 'jamPulang', 'lokasiPresensi'));
+            // return response()->json(['message' => 'No data available for today.']);
+        }
+
+        $presensi = new Presensi();
+        foreach ((array)$results[0] as $key => $value) {
+            $presensi->$key = $value;
+        }
+
+        $presensiMasuk = true;
+        $presensiMasukDate = $presensi->jam_masuk;
+
+        if ($presensi->foto_keluar == "null") {
+
+            return view('pegawai.index', compact('status_wh', 'presensiMasuk', 'presensiKeluar', 'presensiMasukDate', 'presensiKeluarDate', 'jamMasuk', 'jamPulang', 'lokasiPresensi'));
+        }
+
+        $presensiKeluar = true;
+        $presensiKeluarDate = $presensi->jam_keluar;
+
+        return view('pegawai.index', compact('status_wh', 'presensiMasuk', 'presensiKeluar', 'presensiMasukDate', 'presensiKeluarDate', 'jamMasuk', 'jamPulang', 'lokasiPresensi'));
+    }
+
+
     public function profile(Request $request)
     {
         // Check if the user is authenticated
@@ -639,7 +711,7 @@ class PegawaiController extends Controller
         if ($user->role == "admin") {
             return redirect()->route('admin.pegawai')->with('pesan', 'Data berhasil ditambahkan');
         } elseif ($user->role == "supervisor") {
-            return redirect()->route('pegawai.data_pegawai.index')->with('pesan', 'Data berhasil ditambahkan');
+            return redirect()->route('supervisor.data_pegawai.index')->with('pesan', 'Data berhasil ditambahkan');
         }
     }
 

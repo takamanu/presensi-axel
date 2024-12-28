@@ -15,16 +15,16 @@
                         <div class="card">
                             <div class="card-body">
                                 <label for="">ID Pegawai</label>
-                                <input type="text" class="form-control" name="id_pegawai" value="{{ $employee->id }}">
+                                <input type="text" class="form-control" name="id_pegawai" value="{{ $employee->id }}" disabled>
 
                                 <div class="mb-3">
                                     <label for="">Nama</label>
-                                    <input type="text" class="form-control" name="nama" value="{{ $employee->nama }}">
+                                    <input type="text" class="form-control" name="nama" value="{{ $employee->nama }}" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="">Jenis Kelamin</label>
-                                    <select name="jenis_kelamin" class="form-control">
+                                    <select name="jenis_kelamin" class="form-control" required>
                                         <option selected disabled value="">--Pilih Jenis Kelamin--</option>
                                         <option value="Laki-laki"
                                             {{ $employee->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>
@@ -39,17 +39,18 @@
 
                                 <div class="mb-3">
                                     <label for="">Alamat</label>
-                                    <input type="text" class="form-control" name="alamat" value="123 Main Street">
+                                    <input type="text" class="form-control" name="alamat" value="{{ $employee->alamat }}" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="">No. Handphone</label>
-                                    <input type="text" class="form-control" name="no_handphone" value="08123456789">
+                                    <input type="text" class="form-control" name="no_handphone" value="{{ $employee->no_handphone }}" required>
                                 </div>
+
 
                                 <div class="mb-3">
                                     <label for="">Jabatan</label>
-                                    <select name="jabatan" class="form-control">
+                                    <select name="jabatan" class="form-control" required>
                                         <option selected disabled value="">--Pilih Jabatan--</option>
                                         <option value="admin" {{ $employee->jabatan == 'admin' ? 'selected' : '' }}>Admin
                                         </option>
@@ -63,7 +64,7 @@
 
                                 <div class="mb-3">
                                     <label for="">Status</label>
-                                    <select name="status" class="form-control">
+                                    <select name="status" class="form-control" required>
                                         <option selected disabled value="">--Pilih Status--</option>
                                         <option value="Aktif" {{ $employee->status == 'Aktif' ? 'selected' : '' }}>
                                             Aktif</option>
@@ -83,7 +84,7 @@
                                 <div class="mb-3">
                                     <label for="">Username</label>
                                     <input type="text" class="form-control" name="username"
-                                        value="{{ $employee->username }}">
+                                        value="{{ $employee->username }}" required>
                                 </div>
 
                                 <div class="mb-3">
@@ -99,7 +100,7 @@
 
                                 <div class="mb-3">
                                     <label for="">Role</label>
-                                    <select name="role" class="form-control">
+                                    <select name="role" class="form-control" required>
                                         <option selected disabled value="">--Pilih Role--</option>
                                         <option value="admin" {{ $employee->role == 'admin' ? 'selected' : '' }}>
                                             Admin</option>
@@ -112,7 +113,7 @@
 
                                 <div class="mb-3">
                                     <label for="">Lokasi Presensi</label>
-                                    <select name="lokasi_presensi" class="form-control">
+                                    <select name="lokasi_presensi" class="form-control" required>
                                         <option selected disabled value="">--Pilih Lokasi Presensi--</option>
                                         @foreach ($lokasi as $i)
                                             <option value="{{ $i->nama_lokasi }}"

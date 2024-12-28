@@ -11,10 +11,14 @@ class Presensi extends Model
     public $timestamps = false;
     protected $table = 'presensi';
     protected $fillable = [
+        'id',
         'id_pegawai',
         'tanggal_masuk',
         'jam_masuk',
         'foto_masuk',
+        'tanggal_keluar',
+        'jam_keluar',
+        'foto_keluar',
     ];
 
     public function pegawai()

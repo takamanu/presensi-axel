@@ -72,11 +72,11 @@ class LoginController extends Controller
 
             Session::flash('berhasil', 'Password berhasil diubah');
             if (Auth::user()->role == "pegawai") {
-                return redirect()->route('pegawai.home-pegawai');
+                return redirect()->route('home-pegawai.index');
             } elseif (Auth::user()->role == "admin") {
                 return redirect()->route('admin.dashboard');
             } elseif (Auth::user()->role == "supervisor") {
-                return redirect()->route('supervisor.home-supervisor');
+                return redirect()->route('home-supervisor.index');
             }
         }
 

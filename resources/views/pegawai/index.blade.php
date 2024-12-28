@@ -28,9 +28,10 @@
                     <div class="card h-100 text-center">
                         <div class="card-header">Presensi Masuk</div>
                         <div class="card-body">
-                            @php
+                            {{-- @php
                                 $presensiMasuk = false; // Set true or false to simulate data
-                            @endphp
+                                $presensiKeluar = false; // Set true or false to simulate data
+                            @endphp --}}
 
                             @if (!$presensiMasuk)
                                 <div class="parent_date">
@@ -53,8 +54,8 @@
                                     @csrf
                                     <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
                                     <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
-                                    <input type="hidden" value="-6.200000" name="latitude_kantor">
-                                    <input type="hidden" value="106.816666" name="longitude_kantor">
+                                    <input type="hidden" value="{{ $lokasiPresensi->latitude }}" name="latitude_kantor">
+                                    <input type="hidden" value="{{ $lokasiPresensi->longitude }}" name="longitude_kantor">
                                     <input type="hidden" value="100" name="radius">
                                     <input type="hidden" value="WIB" name="zona_waktu">
                                     <input type="hidden" value="{{ now()->format('Y-m-d') }}" name="tanggal_masuk">
@@ -76,14 +77,14 @@
                         <div class="card-body">
                             @php
                                 $jamPulang = '17:00:00';
-                                $waktuSekarang = now()->format('H:i:s');
+                                $waktuSekarang = now()->setTimezone('Asia/Jakarta')->format('H:i:s');
                                 $presensiPulang = false; // Simulate presensi pulang
                             @endphp
 
-                            @if ($waktuSekarang <= $jamPulang)
+                            @if ($status_wh == "in_wh" || $status_wh == "before_wh")
                                 <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
-                                <h4 class="my-3">Belum waktunya pulang</h4>
-                            @elseif($presensiMasuk && !$presensiPulang)
+                                <h4 class="my-3">Belum waktunya pulang. {{ $waktuSekarang }} {{ $jamPulang }}</h4>
+                            @elseif($presensiMasuk && !$presensiKeluar)
                                 <div class="parent_date">
                                     <div id="tanggal_keluar"></div>
                                     <div class="ms-2"></div>
@@ -100,14 +101,14 @@
                                     <div id="detik_keluar"></div>
                                 </div>
 
-                                <form method="POST" action="/masuk">
+                                <form method="GET" action="/home-pegawai/keluar">
                                     {{-- href="{{ route('login') }}" --}}
                                     @csrf
-                                    <input type="hidden" name="id" value="1"> <!-- Hardcoded example ID -->
+                                    {{-- <input type="hidden" name="id" value="1"> <!-- Hardcoded example ID --> --}}
                                     <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
                                     <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
-                                    <input type="hidden" value="-6.200000" name="latitude_kantor">
-                                    <input type="hidden" value="106.816666" name="longitude_kantor">
+                                    <input type="hidden" value="{{ $lokasiPresensi->latitude }}" name="latitude_kantor">
+                                    <input type="hidden" value="{{ $lokasiPresensi->longitude }}" name="longitude_kantor">
                                     <input type="hidden" value="100" name="radius">
                                     <input type="hidden" value="WIB" name="zona_waktu">
                                     <input type="hidden" value="{{ now()->format('Y-m-d') }}" name="tanggal_keluar">

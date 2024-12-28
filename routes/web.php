@@ -116,9 +116,7 @@ Route::get(
 
 Route::prefix('home-pegawai')->middleware('auth')->group(function () {
 
-    Route::get('/', function () {
-        return view('pegawai.index');
-    })->name('home-pegawai.index');
+    Route::get('/', [PegawaiController::class, 'homePegawai'])->name('home-pegawai.index');
 
     Route::get('/masuk', function () {
         return view('pegawai.masuk')->with([
@@ -128,7 +126,10 @@ Route::prefix('home-pegawai')->middleware('auth')->group(function () {
     });
 
     Route::get('/keluar', function () {
-        return view('pegawai.keluar');
+        return view('pegawai.keluar')->with([
+            'authUser' => Auth::user(),
+            'authUserId' => Auth::id(),
+        ]);
     });
 
     Route::get('/presensi', [PegawaiController::class, 'pegawai']);

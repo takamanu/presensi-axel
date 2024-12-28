@@ -11,18 +11,18 @@
                             <div class="mb-3">
                                 <label for="">Nama Lokasi</label>
                                 <input type="text" class="form-control" name="nama_lokasi"
-                                    value="{{ $lokasi->nama_lokasi }}">
+                                    value="{{ $lokasi->nama_lokasi }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Alamat Lokasi</label>
                                 <input type="text" class="form-control" name="alamat_lokasi"
-                                    value="{{ $lokasi->alamat_lokasi }}">
+                                    value="{{ $lokasi->alamat_lokasi }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Tipe Lokasi</label>
-                                <select name="tipe_lokasi" class="form-control">
+                                <select name="tipe_lokasi" class="form-control" required>
                                     <option selected disabled value="">--Pilih Tipe Lokasi--</option>
                                     <option value="Pusat" {{ $lokasi->tipe_lokasi == 'Pusat' ? 'selected' : '' }}>Pusat
                                     </option>
@@ -34,24 +34,24 @@
                             <div class="mb-3">
                                 <label for="">Latitude</label>
                                 <input type="text" class="form-control" id="latitude" name="latitude"
-                                    value="{{ $lokasi->latitude }}">
+                                    value="{{ $lokasi->latitude }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Longitude</label>
                                 <input type="text" class="form-control" id="longitude" name="longitude"
-                                    value="{{ $lokasi->longitude }}">
+                                    value="{{ $lokasi->longitude }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Radius</label>
                                 <input value="{{ $lokasi->radius }}" type="number" class="form-control" id="radius"
-                                    name="radius">
+                                    name="radius" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Zona Waktu</label>
-                                <select name="zona_waktu" class="form-control">
+                                <select name="zona_waktu" class="form-control" required>
                                     <option selected disabled value="">--Pilih Zona Waktu--</option>
                                     <option value="WIB" {{ $lokasi->zona_waktu == 'WIB' ? 'selected' : '' }}>WIB
                                     </option>
@@ -67,13 +67,13 @@
                             <div class="mb-3">
                                 <label for="">Jam Masuk</label>
                                 <input type="time" class="form-control" name="jam_masuk"
-                                    value="{{ $lokasi->jam_masuk }}">
+                                    value="{{ $lokasi->jam_masuk }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Jam Pulang</label>
                                 <input type="time" class="form-control" name="jam_pulang"
-                                    value="{{ $lokasi->jam_pulang }}">
+                                    value="{{ $lokasi->jam_pulang }}" required>
                             </div>
 
                             <button type="submit "class="btn btn-primary" name="submit">Simpan</button>

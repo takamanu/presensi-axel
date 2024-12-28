@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class PresensiController extends Controller
@@ -79,7 +81,7 @@ class PresensiController extends Controller
                 'foto_masuk' => $fileName,
                 'tanggal_keluar' => $request->tanggal_masuk,
                 'jam_keluar' => $request->jam_masuk,
-                'foto_keluar' => $fileName
+                'foto_keluar' => 'null'
             ]);
 
             if ($result) {
@@ -103,10 +105,29 @@ class PresensiController extends Controller
         $fileName = 'foto/keluar_' . now()->format('Y-m-d_H-i-s') . '.png';
 
         if (Storage::put($fileName, $decodedPhoto)) {
-            $idPresensi = 22;
+            // $idPresensi = 22;
+            $idPegawai = Auth::user()->id_pegawai;
+
+
+            $results = DB::select("
+            SELECT *
+            FROM presensi
+            WHERE id_pegawai = ?
+            AND DATE(tanggal_masuk) = CURDATE()
+            AND DATE(tanggal_keluar) = CURDATE()
+            LIMIT 1
+        ", [$idPegawai]);
+
+            $presensi = new Presensi();
+            foreach ((array)$results[0] as $key => $value) {
+                $presensi->$key = $value;
+            }
+
+            // return $presensi;
+
             // $idPresensi = $request->id;
             $result = DB::table('presensi')
-                ->where('id', $idPresensi)
+                ->where('id', $presensi->id)
                 ->update([
                     'tanggal_keluar' => $request->tanggal_keluar,
                     'jam_keluar' => $request->jam_keluar,
@@ -126,104 +147,104 @@ class PresensiController extends Controller
     }
 
     public function exportRekapHarian(Request $request)
-{
-    // Get the date range from the request
-    $tanggal_dari = $request->tanggal_dari;
-    $tanggal_sampai = $request->tanggal_sampai;
+    {
+        // Get the date range from the request
+        $tanggal_dari = $request->tanggal_dari;
+        $tanggal_sampai = $request->tanggal_sampai;
 
-    // Validate the input dates
-    $validated = $request->validate([
-        'tanggal_dari' => 'required|date',
-        'tanggal_sampai' => 'required|date',
-    ]);
+        // Validate the input dates
+        $validated = $request->validate([
+            'tanggal_dari' => 'required|date',
+            'tanggal_sampai' => 'required|date',
+        ]);
 
-    // Retrieve the presensi data for a specific employee within the date range
-    $presensi = Presensi::where('id_pegawai', 2)  // Assuming 2 is a static ID, replace as needed
-        ->whereBetween('tanggal_masuk', [$tanggal_dari, $tanggal_sampai])
-        ->orderByDesc('tanggal_masuk')
-        ->get();
+        // Retrieve the presensi data for a specific employee within the date range
+        $presensi = Presensi::where('id_pegawai', 2)  // Assuming 2 is a static ID, replace as needed
+            ->whereBetween('tanggal_masuk', [$tanggal_dari, $tanggal_sampai])
+            ->orderByDesc('tanggal_masuk')
+            ->get();
 
-    // Get the location settings from the session or database
-    $lokasi_presensi = Session::get('lokasi_presensi');
-    $lokasi = LokasiPresensi::where('nama_lokasi', 'Kantor Pusat')->first();  // Adjust as needed
-    $jam_masuk_kantor = date('H:i:s', strtotime($lokasi->jam_masuk));
+        // Get the location settings from the session or database
+        $lokasi_presensi = Session::get('lokasi_presensi');
+        $lokasi = LokasiPresensi::where('nama_lokasi', 'Kantor Pusat')->first();  // Adjust as needed
+        $jam_masuk_kantor = date('H:i:s', strtotime($lokasi->jam_masuk));
 
-    // Create the spreadsheet and set up the first sheet
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
+        // Create the spreadsheet and set up the first sheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-    // Set the header
-    $sheet->setCellValue('A1', 'REKAP PRESENSI');
-    $sheet->setCellValue('A2', 'Tanggal Awal');
-    $sheet->setCellValue('A3', 'Tanggal Akhir');
-    $sheet->setCellValue('C2', $tanggal_dari);
-    $sheet->setCellValue('C3', $tanggal_sampai);
-    $sheet->setCellValue('A5', 'NO');
-    $sheet->setCellValue('B5', 'TANGGAL MASUK');
-    $sheet->setCellValue('C5', 'JAM MASUK');
-    $sheet->setCellValue('D5', 'TANGGAL KELUAR');
-    $sheet->setCellValue('E5', 'JAM KELUAR');
-    $sheet->setCellValue('F5', 'TOTAL JAM KERJA');
-    $sheet->setCellValue('G5', 'TOTAL JAM TERLAMBAR');
+        // Set the header
+        $sheet->setCellValue('A1', 'REKAP PRESENSI');
+        $sheet->setCellValue('A2', 'Tanggal Awal');
+        $sheet->setCellValue('A3', 'Tanggal Akhir');
+        $sheet->setCellValue('C2', $tanggal_dari);
+        $sheet->setCellValue('C3', $tanggal_sampai);
+        $sheet->setCellValue('A5', 'NO');
+        $sheet->setCellValue('B5', 'TANGGAL MASUK');
+        $sheet->setCellValue('C5', 'JAM MASUK');
+        $sheet->setCellValue('D5', 'TANGGAL KELUAR');
+        $sheet->setCellValue('E5', 'JAM KELUAR');
+        $sheet->setCellValue('F5', 'TOTAL JAM KERJA');
+        $sheet->setCellValue('G5', 'TOTAL JAM TERLAMBAR');
 
-    // Merge header cells
-    $sheet->mergeCells('A1:F1');
-    $sheet->mergeCells('A2:B2');
-    $sheet->mergeCells('A3:B3');
+        // Merge header cells
+        $sheet->mergeCells('A1:F1');
+        $sheet->mergeCells('A2:B2');
+        $sheet->mergeCells('A3:B3');
 
-    // Initialize row and counter for presensi data
-    $no = 1;
-    $row = 6;
+        // Initialize row and counter for presensi data
+        $no = 1;
+        $row = 6;
 
-    // Loop through each presensi record and add data to the sheet
-    foreach ($presensi as $data) {
-        $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($data->tanggal_masuk . ' ' . $data->jam_masuk));
-        $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($data->tanggal_keluar . ' ' . $data->jam_keluar));
+        // Loop through each presensi record and add data to the sheet
+        foreach ($presensi as $data) {
+            $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($data->tanggal_masuk . ' ' . $data->jam_masuk));
+            $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($data->tanggal_keluar . ' ' . $data->jam_keluar));
 
-        // Calculate total work hours and late hours
-        $timestamp_masuk = strtotime($jam_tanggal_masuk);
-        $timestamp_keluar = strtotime($jam_tanggal_keluar);
-        $selisih = $timestamp_keluar - $timestamp_masuk;
-        $total_jam_kerja = floor($selisih / 3600);
-        $selisih -= $total_jam_kerja * 3600;
-        $selisih_menit_kerja = floor($selisih / 60);
+            // Calculate total work hours and late hours
+            $timestamp_masuk = strtotime($jam_tanggal_masuk);
+            $timestamp_keluar = strtotime($jam_tanggal_keluar);
+            $selisih = $timestamp_keluar - $timestamp_masuk;
+            $total_jam_kerja = floor($selisih / 3600);
+            $selisih -= $total_jam_kerja * 3600;
+            $selisih_menit_kerja = floor($selisih / 60);
 
-        // Calculate late arrival
-        $jam_masuk = date('H:i:s', strtotime($data->jam_masuk));
-        $timestamp_jam_masuk_real = strtotime($jam_masuk);
-        $timestamp_jam_masuk_kantor = strtotime($jam_masuk_kantor);
-        $terlambat = $timestamp_jam_masuk_real - $timestamp_jam_masuk_kantor;
-        $total_jam_terlambat = floor($terlambat / 3600);
-        $terlambat -= $total_jam_terlambat * 3600;
-        $selisih_menit_terlambat = floor($terlambat / 60);
+            // Calculate late arrival
+            $jam_masuk = date('H:i:s', strtotime($data->jam_masuk));
+            $timestamp_jam_masuk_real = strtotime($jam_masuk);
+            $timestamp_jam_masuk_kantor = strtotime($jam_masuk_kantor);
+            $terlambat = $timestamp_jam_masuk_real - $timestamp_jam_masuk_kantor;
+            $total_jam_terlambat = floor($terlambat / 3600);
+            $terlambat -= $total_jam_terlambat * 3600;
+            $selisih_menit_terlambat = floor($terlambat / 60);
 
-        // Set row data
-        $sheet->setCellValue('A' . $row, $no);
-        $sheet->setCellValue('B' . $row, $data->tanggal_masuk);
-        $sheet->setCellValue('C' . $row, $data->jam_masuk);
-        $sheet->setCellValue('D' . $row, $data->tanggal_keluar);
-        $sheet->setCellValue('E' . $row, $data->jam_keluar);
-        $sheet->setCellValue('F' . $row, $total_jam_kerja . ' Jam ' . $selisih_menit_kerja . ' Menit');
-        $sheet->setCellValue('G' . $row, $total_jam_terlambat . ' Jam ' . $selisih_menit_terlambat . ' Menit');
+            // Set row data
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $data->tanggal_masuk);
+            $sheet->setCellValue('C' . $row, $data->jam_masuk);
+            $sheet->setCellValue('D' . $row, $data->tanggal_keluar);
+            $sheet->setCellValue('E' . $row, $data->jam_keluar);
+            $sheet->setCellValue('F' . $row, $total_jam_kerja . ' Jam ' . $selisih_menit_kerja . ' Menit');
+            $sheet->setCellValue('G' . $row, $total_jam_terlambat . ' Jam ' . $selisih_menit_terlambat . ' Menit');
 
-        $no++;
-        $row++;
+            $no++;
+            $row++;
+        }
+
+        // Return the Excel file as a response for download
+        return response()->stream(
+            function () use ($spreadsheet) {
+                $writer = new Xlsx($spreadsheet);
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment;filename="Laporan_Presensi.xlsx"',
+                'Cache-Control' => 'max-age=0',
+            ]
+        );
     }
-
-    // Return the Excel file as a response for download
-    return response()->stream(
-        function () use ($spreadsheet) {
-            $writer = new Xlsx($spreadsheet);
-            $writer->save('php://output');
-        },
-        200,
-        [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Disposition' => 'attachment;filename="Laporan_Presensi.xlsx"',
-            'Cache-Control' => 'max-age=0',
-        ]
-    );
-}
 
     public function export(Request $request)
     {
