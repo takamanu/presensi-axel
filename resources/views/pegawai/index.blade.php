@@ -83,7 +83,16 @@
 
                             @if ($status_wh == "in_wh" || $status_wh == "before_wh")
                                 <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
-                                <h4 class="my-3">Belum waktunya pulang. {{ $waktuSekarang }} {{ $jamPulang }}</h4>
+                                <h4 class="my-3">Belum waktunya pulang.</h4>
+                            @elseif($presensiMasuk && ($status_wh == "in_wh" || $status_wh == "before_wh"))
+                                <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
+                                <h4 class="my-3">Belum waktunya pulang.</h4>
+                                @elseif(!$presensiMasuk && ($status_wh == "in_wh" || $status_wh == "before_wh"))
+                                <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
+                                <h4 class="my-3">Belum waktunya pulang.</h4>
+                                @elseif(!$presensiMasuk && ($status_wh == "after_wh"))
+                                <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
+                                <h4 class="my-3">Belum presensi masuk.</h4>
                             @elseif($presensiMasuk && !$presensiKeluar)
                                 <div class="parent_date">
                                     <div id="tanggal_keluar"></div>
