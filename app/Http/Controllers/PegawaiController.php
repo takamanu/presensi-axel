@@ -34,6 +34,38 @@ class PegawaiController extends Controller
         return view('pegawai.index');
     }
 
+    public function indexSupervisor()
+    {
+        // Pegawai::all();
+
+
+        $tanggalHariIni = date('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
+
+        $countPegawaiMasuk = DB::select('
+    SELECT COUNT(*) as total
+    FROM presensi
+    WHERE tanggal_masuk = ?', [$tanggalHariIni]);
+
+        $totalPegawaiMasuk = $countPegawaiMasuk[0]->total;
+
+        $countPegawaiICS = DB::select('
+    SELECT COUNT(*) as total
+    FROM ketidakhadiran
+    WHERE tanggal = ?', [$tanggalHariIni]);
+
+        $totalPegawaiICS = $countPegawaiICS[0]->total;
+
+        $totalPegawai = DB::table('pegawai')->count();
+
+        $totalPegawaiTidakMasuk = $totalPegawai - $totalPegawaiMasuk;
+        // $userAktif = User::where('status', 'Aktif')->count();
+
+
+        // dd($results);
+        // return view('pegawai.index');
+        return view('supervisor.index', compact('totalPegawai', 'totalPegawaiMasuk', 'totalPegawaiTidakMasuk', 'totalPegawaiICS'));
+    }
+
     public function homePegawai()
     {
 

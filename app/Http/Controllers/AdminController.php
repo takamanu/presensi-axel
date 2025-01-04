@@ -22,11 +22,36 @@ class AdminController extends Controller
 {
     public function index()
     {
+        $tanggalHariIni = date('Y-m-d'); // Get today's date in 'YYYY-MM-DD' format
+
+        $countPegawaiMasuk = DB::select('
+    SELECT COUNT(*) as total
+    FROM presensi
+    WHERE tanggal_masuk = ?', [$tanggalHariIni]);
+
+        $totalPegawaiMasuk = $countPegawaiMasuk[0]->total;
+
+        $countPegawaiICS = DB::select('
+    SELECT COUNT(*) as total
+    FROM ketidakhadiran
+    WHERE tanggal = ?', [$tanggalHariIni]);
+
+        $totalPegawaiICS = $countPegawaiICS[0]->total;
+
+        $totalPegawai = DB::table('pegawai')->count();
+
+        $totalPegawaiTidakMasuk = $totalPegawai - $totalPegawaiMasuk;
+        // $userAktif = User::where('status', 'Aktif')->count();
+
         $title = "Home";
         $userAktif = User::where('status', 'Aktif')->count();
         return view('admin.index', [
             'users' => $userAktif,
             'title' => $title,
+            'totalPegawai' => $totalPegawai,
+            'totalPegawaiMasuk' => $totalPegawaiMasuk,
+            'totalPegawaiTidakMasuk' => $totalPegawaiTidakMasuk,
+            'totalPegawaiICS' => $totalPegawaiICS,
         ]);
     }
 

@@ -40,7 +40,8 @@
                         Total Pegawai Aktif
                       </div>
                       <div class="text-secondary">
-                        100 pegawai
+                        {{ $totalPegawai }}
+                        pegawai
                     </div>
                     </div>
                   </div>
@@ -61,7 +62,8 @@
                         Jumlah Hadir
                       </div>
                       <div class="text-secondary">
-                        0 pegawai
+                        {{ $totalPegawaiMasuk }}
+                        pegawai
                       </div>
                     </div>
                   </div>
@@ -82,7 +84,8 @@
                         Jumlah Alpa
                       </div>
                       <div class="text-secondary">
-                        0 pegawai
+                        {{ $totalPegawaiTidakMasuk }}
+                        pegawai
                       </div>
                     </div>
                   </div>
@@ -103,7 +106,8 @@
                         Jumlah Izin, Cuti & Sakit
                       </div>
                       <div class="text-secondary">
-                        0 pegawai
+                        {{ $totalPegawaiICS }}
+                        pegawai
                       </div>
                     </div>
                   </div>
