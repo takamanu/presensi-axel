@@ -770,18 +770,45 @@ class PegawaiController extends Controller
             'lokasi_presensi' => $request->lokasi_presensi,
         ];
 
+        //     $filename = $request->file('foto_baru')->store('foto_pegawai', 'public');
+        //     // $fotoPath = $request->file('foto')->store('foto_pegawai', 'public');
+        //     $employeeData['foto'] = $filename;
+        // } else {
+        //     $employeeData['foto'] = $request->foto_lama;
+        // }
+
         if ($request->hasFile('foto_baru')) {
-            $filename = $request->file('foto_baru')->store('foto_pegawai', 'public');
-            // $fotoPath = $request->file('foto')->store('foto_pegawai', 'public');
-            $employeeData['foto'] = $filename;
+            // dd("masuk sini");
+            $file = $request->file('foto_baru');
+            $filePath = null;
+
+            if ($file) {
+                // Store the file using the Laravel storage system
+                $storedPath = $file->store('foto_pegawai', 'public');
+
+                // Replace forward slashes with backslashes
+                $filePath = str_replace('/', '\\', $storedPath);
+                $employeeData['foto'] = $filePath;
+            }
         } else {
             $employeeData['foto'] = $request->foto_lama;
         }
 
+        // dd($request->id_pegawai);
+
         // Update employee data with raw query
         DB::update(
             "UPDATE pegawai SET nama = ?, jenis_kelamin = ?, alamat = ?, no_handphone = ?, jabatan = ?, lokasi_presensi = ?, foto = ? WHERE id = ?",
-            array_merge(array_values($employeeData), [$request->id_pegawai])
+            [
+                $employeeData['nama'],
+                $employeeData['jenis_kelamin'],
+                $employeeData['alamat'],
+                $employeeData['no_handphone'],
+                $employeeData['jabatan'],
+                $employeeData['lokasi_presensi'],
+                $employeeData['foto'],
+                $request->id_pegawai
+            ]
         );
 
         // Prepare user data

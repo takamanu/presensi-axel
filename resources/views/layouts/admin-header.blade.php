@@ -64,7 +64,7 @@
                             aria-label="Open user menu">
                             <!-- Avatar -->
                             <img class="avatar avatar-sm rounded-circle"
-                                src="{{ asset('storage/' . auth()->user()->pegawai->foto) }}" alt="Foto Profil">
+                                src="{{ Storage::url(auth()->user()->pegawai->foto) }}" alt="Foto Profil">
 
                             <!-- User Info -->
                             <div class="d-none d-xl-block ps-2">

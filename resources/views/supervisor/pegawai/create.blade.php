@@ -13,12 +13,12 @@
 
                             <div class="mb-3">
                                 <label for="">Nama</label>
-                                <input type="text" class="form-control" name="nama" value="">
+                                <input type="text" class="form-control" name="nama" value="" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Jenis Kelamin</label>
-                                <select name="jenis_kelamin" class="form-control">
+                                <select name="jenis_kelamin" class="form-control" required>
                                     <option value="">--Pilih Jenis Kelamin--</option>
                                     <option value="Laki-laki">Laki-laki</option>
                                     <option value="Perempuan">Perempuan</option>
@@ -27,17 +27,17 @@
 
                             <div class="mb-3">
                                 <label for="">Alamat</label>
-                                <input type="text" class="form-control" name="alamat" value="">
+                                <input type="text" class="form-control" name="alamat" value="" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">No. Handphone</label>
-                                <input type="text" class="form-control" name="no_handphone" value="">
+                                <input type="text" class="form-control" name="no_handphone" value="" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Jabatan</label>
-                                <select name="jabatan" class="form-control">
+                                <select name="jabatan" class="form-control" required>
                                     <option value="">--Pilih Jabatan--</option>
                                     <option value="Admin" >Admin</option>
                                     <option value="Supervisor" >Supervisor</option>
@@ -47,7 +47,7 @@
 
                             <div class="mb-3">
                                 <label for="">Status</label>
-                                <select name="status" class="form-control">
+                                <select name="status" class="form-control" required>
                                     <option value="">--Pilih Status--</option>
                                     <option value="Aktif" >Aktif</option>
                                     <option value="Tidak Aktif">Tidak Aktif</option>
@@ -63,22 +63,22 @@
 
                             <div class="mb-3">
                                 <label for="">Username</label>
-                                <input type="text" class="form-control" name="username" value="">
+                                <input type="text" class="form-control" name="username" value="" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Password</label>
-                                <input type="password" class="form-control" name="password">
+                                <input type="password" class="form-control" name="password" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Ulangi Password</label>
-                                <input type="password" class="form-control" name="ulangi_password">
+                                <input type="password" class="form-control" name="ulangi_password" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Role</label>
-                                <select name="role" class="form-control">
+                                <select name="role" class="form-control" required>
                                     <option value="">--Pilih Role--</option>
                                     <option value="admin">Admin</option>
                                     <option value="pegawai">Pegawai</option>
@@ -88,7 +88,7 @@
 
                             <div class="mb-3">
                                 <label for="">Lokasi Presensi</label>
-                                <select name="lokasi_presensi" class="form-control">
+                                <select name="lokasi_presensi" class="form-control" required>
                                     <option value="">--Pilih Lokasi Presensi--</option>
                                     <option value="Kantor Pusat">Kantor Pusat</option>
                                     <option value="Cabang A">Cabang A</option>
@@ -98,7 +98,7 @@
 
                             <div class="mb-3">
                                 <label for="">Foto</label>
-                                <input type="file" class="form-control" name="foto">
+                                <input type="file" class="form-control" name="foto" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary" name="submit">Simpan</button>

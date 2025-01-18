@@ -16,7 +16,7 @@
                     <!-- Keterangan -->
                     <div class="mb-3">
                         <label for="keterangan" class="form-label">Keterangan</label>
-                        <select name="keterangan" id="keterangan" class="form-control">
+                        <select name="keterangan" id="keterangan" class="form-control" required>
                             <option value="">--Pilih Keterangan--</option>
                             <option value="Cuti" selected>Cuti</option>
                             <option value="Izin">Izin</option>
@@ -27,19 +27,19 @@
                     <!-- Deskripsi -->
                     <div class="mb-3">
                         <label for="deskripsi" class="form-label">Deskripsi</label>
-                        <textarea name="deskripsi" id="deskripsi" class="form-control" cols="30" rows="5" placeholder="Isi keterangan ..."></textarea>
+                        <textarea name="deskripsi" id="deskripsi" class="form-control" cols="30" rows="5" placeholder="Isi keterangan ..." required></textarea>
                     </div>
 
                     <!-- Tanggal -->
                     <div class="mb-3">
                         <label for="tanggal" class="form-label">Tanggal</label>
-                        <input type="date" id="tanggal" class="form-control" name="tanggal">
+                        <input type="date" id="tanggal" class="form-control" name="tanggal" required>
                     </div>
 
                     <!-- Surat Keterangan -->
                     <div class="mb-3">
                         <label for="file" class="form-label">Surat Keterangan</label>
-                        <input type="file" class="form-control" name="file">
+                        <input type="file" class="form-control" name="file" required>
                     </div>
 
                     <!-- Hidden Status Pengajuan -->

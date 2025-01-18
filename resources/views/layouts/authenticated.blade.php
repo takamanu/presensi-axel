@@ -75,8 +75,10 @@
                         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                             aria-label="Open user menu">
                             <!-- Avatar -->
+
                             <img class="avatar avatar-sm rounded-circle"
-                                src="{{ asset('storage/' . auth()->user()->pegawai->foto) }}" alt="Foto Profil">
+                            {{-- storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR .  $ketidakhadiran->file) --}}
+                                src="{{ Storage::url(auth()->user()->pegawai->foto) }}" alt="Foto Profil">
 
                             <!-- User Info -->
                             <div class="d-none d-xl-block ps-2">

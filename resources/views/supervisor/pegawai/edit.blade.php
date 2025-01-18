@@ -10,12 +10,16 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-                                <label for="">ID Pegawai</label>
-                                <input type="text" class="form-control" name="id_pegawai" value="{{ $employee->id }}" disabled>
+                                <div class="mb-3">
+                                    <label for="">ID Pegawai</label>
+                                    <input type="text" class="form-control" value="{{ $employee->id }}" disabled>
+                                    <input type="hidden" name="id_pegawai" value="{{ $employee->id }}">
+                                </div>
 
                                 <div class="mb-3">
                                     <label for="">Nama</label>
-                                    <input type="text" class="form-control" name="nama" value="{{ $employee->nama }}" required>
+                                    <input type="text" class="form-control" name="nama" value="{{ $employee->nama }}"
+                                        required>
                                 </div>
 
                                 <div class="mb-3">
@@ -35,12 +39,14 @@
 
                                 <div class="mb-3">
                                     <label for="">Alamat</label>
-                                    <input type="text" class="form-control" name="alamat" value="{{ $employee->alamat }}" required>
+                                    <input type="text" class="form-control" name="alamat"
+                                        value="{{ $employee->alamat }}" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="">No. Handphone</label>
-                                    <input type="text" class="form-control" name="no_handphone" value="{{ $employee->no_handphone }}" required>
+                                    <input type="text" class="form-control" name="no_handphone"
+                                        value="{{ $employee->no_handphone }}" required>
                                 </div>
 
                                 <div class="mb-3">
@@ -52,7 +58,8 @@
                                         <option value="supervisor"
                                             {{ $employee->jabatan == 'supervisor' ? 'selected' : '' }}>
                                             Supervisor</option>
-                                        <option value="marketing" {{ $employee->jabatan == 'marketing' ? 'selected' : '' }}>
+                                        <option value="marketing"
+                                            {{ $employee->jabatan == 'marketing' ? 'selected' : '' }}>
                                             Marketing</option>
                                     </select>
                                 </div>
@@ -60,7 +67,7 @@
                                 <div class="mb-3">
                                     <label for="">Status</label>
                                     <select required name="status" class="form-control">
-                                        <option selected disabled  value="">--Pilih Status--</option>
+                                        <option selected disabled value="">--Pilih Status--</option>
                                         <option value="Aktif" {{ $employee->status == 'Aktif' ? 'selected' : '' }}>
                                             Aktif</option>
                                         <option value="Tidak Aktif"
